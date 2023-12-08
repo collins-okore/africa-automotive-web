@@ -11,7 +11,7 @@ import {
   leftSidebarViewTypes,
   leftSidebarImageTypes,
   preloaderTypes,
-  sidebarVisibilitytypes
+  sidebarVisibilitytypes,
 } from "../../Components/constants/layout";
 
 export const initialState = {
@@ -25,11 +25,11 @@ export const initialState = {
   leftSidebarViewType: leftSidebarViewTypes.DEFAULT,
   leftSidebarImageType: leftSidebarImageTypes.NONE,
   preloader: preloaderTypes.DISABLE,
-  sidebarVisibilitytype: sidebarVisibilitytypes.SHOW
+  sidebarVisibilitytype: sidebarVisibilitytypes.HIDDEN,
 };
 
 const LayoutSlice = createSlice({
-  name: 'LayoutSlice',
+  name: "LayoutSlice",
   initialState,
   reducers: {
     changeLayoutAction(state, action) {
@@ -65,7 +65,7 @@ const LayoutSlice = createSlice({
     changeSidebarVisibilityAction(state, action) {
       state.sidebarVisibilitytype = action.payload;
     },
-  }
+  },
 });
 
 export const {
@@ -79,7 +79,7 @@ export const {
   changeLeftsidebarViewTypeAction,
   changeSidebarImageTypeAction,
   changePreLoaderAction,
-  changeSidebarVisibilityAction
+  changeSidebarVisibilityAction,
 } = LayoutSlice.actions;
 
 export default LayoutSlice.reducer;

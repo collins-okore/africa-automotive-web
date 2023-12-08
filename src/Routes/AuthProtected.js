@@ -10,7 +10,10 @@ import { logoutUser } from "../slices/auth/login/thunk";
 const AuthProtected = (props) => {
   const dispatch = useDispatch();
   const { userProfile, loading, token } = useProfile();
-  
+
+  console.log("User Profile", userProfile);
+  console.log("Token", token);
+
   useEffect(() => {
     if (userProfile && !loading && token) {
       setAuthorization(token);
@@ -36,8 +39,13 @@ const AccessRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={props => {
-        return (<> <Component {...props} /> </>);
+      render={(props) => {
+        return (
+          <>
+            {" "}
+            <Component {...props} />{" "}
+          </>
+        );
       }}
     />
   );

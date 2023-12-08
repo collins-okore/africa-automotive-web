@@ -1,5 +1,5 @@
 module.exports = {
   api: {
-    API_URL: "https://api-node.themesbrand.website",
-  }
+    API_URL: "http://localhost:1337/api",
+  },
 };
