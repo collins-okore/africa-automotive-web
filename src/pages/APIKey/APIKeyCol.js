@@ -1,3 +1,5 @@
+import React from "react";
+
 const Name = (cell) => {
   return cell.value ? cell.value : "";
 };
@@ -8,12 +10,26 @@ const CreatedBy = (cell) => {
 
 const APIKeys = (cell) => {
   return (
-    <span type="input" className="form-control apikey-value">{cell.value}</span>
+    <span type="input" className="form-control apikey-value">
+      {cell.value}
+    </span>
   );
 };
 
 const Status = (cell) => {
-  return cell.value ? <span className={cell.value === "Disable" ? "badge bg-danger-subtle text-danger" : "badge bg-success-subtle text-success"}>{cell.value}</span> : "";
+  return cell.value ? (
+    <span
+      className={
+        cell.value === "Disable"
+          ? "badge bg-danger-subtle text-danger"
+          : "badge bg-success-subtle text-success"
+      }
+    >
+      {cell.value}
+    </span>
+  ) : (
+    ""
+  );
 };
 
 const CreatedDate = (cell) => {

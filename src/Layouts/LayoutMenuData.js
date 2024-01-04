@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -5,32 +6,19 @@ const Navdata = () => {
   const history = useNavigate();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
-  const [isApps, setIsApps] = useState(false);
+  const [isNewInspection, setIsNewInspection] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
-  const [isPages, setIsPages] = useState(false);
-  const [isBaseUi, setIsBaseUi] = useState(false);
-  const [isAdvanceUi, setIsAdvanceUi] = useState(false);
-  const [isForms, setIsForms] = useState(false);
-  const [isTables, setIsTables] = useState(false);
-  const [isCharts, setIsCharts] = useState(false);
-  const [isIcons, setIsIcons] = useState(false);
-  const [isMaps, setIsMaps] = useState(false);
-  const [isMultiLevel, setIsMultiLevel] = useState(false);
-
-  // Apps
-  const [isEmail, setEmail] = useState(false);
-  const [isSubEmail, setSubEmail] = useState(false);
-  const [isEcommerce, setIsEcommerce] = useState(false);
-  const [isProjects, setIsProjects] = useState(false);
-  const [isTasks, setIsTasks] = useState(false);
-  const [isCRM, setIsCRM] = useState(false);
-  const [isCrypto, setIsCrypto] = useState(false);
-  const [isInvoices, setIsInvoices] = useState(false);
-  const [isSupportTickets, setIsSupportTickets] = useState(false);
-  const [isNFTMarketplace, setIsNFTMarketplace] = useState(false);
-  const [isJobs, setIsJobs] = useState(false);
-  const [isJobList, setIsJobList] = useState(false);
-  const [isCandidateList, setIsCandidateList] = useState(false);
+  const [isInspections, setIsInspections] = useState(false);
+  const [isClients, setIsClients] = useState(false);
+  const [isPayments, setIsPayments] = useState(false);
+  const [isVerification, setIsVerification] = useState(false);
+  const [isVehicleMake, setIsVehicleMake] = useState(false);
+  const [isVehicleModel, setIsVehicleModel] = useState(false);
+  const [isBodyColor, setIsBodyColor] = useState(false);
+  const [isBodyType, setIsBodyType] = useState(false);
+  const [isInspectionFees, setIsInspectionFees] = useState(false);
+  const [isReports, setIsReports] = useState(false);
+  const [isUsers, setIsUsers] = useState(false);
 
   // Authentication
   const [isSignIn, setIsSignIn] = useState(false);
@@ -40,7 +28,6 @@ const Navdata = () => {
   const [isLockScreen, setIsLockScreen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const [isSuccessMessage, setIsSuccessMessage] = useState(false);
-  const [isVerification, setIsVerification] = useState(false);
   const [isError, setIsError] = useState(false);
 
   // Pages
@@ -75,61 +62,62 @@ const Navdata = () => {
     if (iscurrentState !== "Dashboard") {
       setIsDashboard(false);
     }
-    if (iscurrentState !== "Apps") {
-      setIsApps(false);
+    if (iscurrentState !== "NewInspection") {
+      setIsNewInspection(false);
     }
-    if (iscurrentState !== "Auth") {
-      setIsAuth(false);
+    if (iscurrentState !== "Inspections") {
+      setIsInspections(false);
     }
-    if (iscurrentState !== "Pages") {
-      setIsPages(false);
+    if (iscurrentState !== "Clients") {
+      setIsClients(false);
     }
-    if (iscurrentState !== "BaseUi") {
-      setIsBaseUi(false);
+    if (iscurrentState !== "Payments") {
+      setIsPayments(false);
     }
-    if (iscurrentState !== "AdvanceUi") {
-      setIsAdvanceUi(false);
+    if (iscurrentState !== "BodyColor") {
+      setIsBodyColor(false);
     }
-    if (iscurrentState !== "Forms") {
-      setIsForms(false);
+    if (iscurrentState !== "BodyType") {
+      setIsBodyType(false);
     }
-    if (iscurrentState !== "Tables") {
-      setIsTables(false);
+    if (iscurrentState !== "VehicleMake") {
+      setIsVehicleMake(false);
     }
-    if (iscurrentState !== "Charts") {
-      setIsCharts(false);
+    if (iscurrentState !== "VehicleModel") {
+      setIsVehicleModel(false);
     }
-    if (iscurrentState !== "Icons") {
-      setIsIcons(false);
+    if (iscurrentState !== "Verification") {
+      setIsVerification(false);
     }
-    if (iscurrentState !== "Maps") {
-      setIsMaps(false);
+    if (iscurrentState !== "Reports") {
+      setIsReports(false);
     }
-    if (iscurrentState !== "MuliLevel") {
-      setIsMultiLevel(false);
+    if (iscurrentState !== "Users") {
+      setIsUsers(false);
     }
-    if (iscurrentState === "Widgets") {
-      history("/widgets");
-      document.body.classList.add("twocolumn-panel");
-    }
-    if (iscurrentState !== "Landing") {
-      setIsLanding(false);
+    // if (iscurrentState === "Widgets") {
+    //   history("/widgets");
+    //   document.body.classList.add("twocolumn-panel");
+    // }
+    if (iscurrentState !== "InspectionFees") {
+      setIsInspectionFees(false);
     }
   }, [
     history,
     iscurrentState,
     isDashboard,
-    isApps,
-    isAuth,
-    isPages,
-    isBaseUi,
-    isAdvanceUi,
-    isForms,
-    isTables,
-    isCharts,
-    isIcons,
-    isMaps,
-    isMultiLevel,
+    isNewInspection,
+    isInspections,
+    isInspectionFees,
+    isPayments,
+    isClients,
+    isReports,
+    isVehicleMake,
+    isVehicleModel,
+    isBodyColor,
+    isBodyType,
+    isVerification,
+    isUsers,
   ]);
 
   const menuItems = [
@@ -153,13 +141,168 @@ const Navdata = () => {
     {
       id: "new-inspection",
       label: "New Inspection",
-      icon: "ri-dashboard-2-line",
-      link: "/dashboard",
-      stateVariables: isDashboard,
+      icon: "ri-file-add-line",
+      link: "/new-inspection",
+      stateVariables: isNewInspection,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isNewInspection);
+        setIscurrentState("NewInspection");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "inspections",
+      label: "Inspections",
+      icon: "ri-apps-2-line",
+      link: "/inspections",
+      stateVariables: isInspections,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isInspections);
+        setIscurrentState("Inspections");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "clients",
+      label: "Clients",
+      icon: "ri-user-shared-line",
+      link: "/clients",
+      stateVariables: isClients,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isClients);
+        setIscurrentState("Clients");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "payments",
+      label: "Payments",
+      icon: "ri-money-dollar-circle-line",
+      link: "/payments",
+      stateVariables: isPayments,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isPayments);
+        setIscurrentState("Payments");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "verification",
+      label: "Verification",
+      icon: "ri-file-search-line",
+      link: "/verification",
+      stateVariables: isVerification,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isVerification);
+        setIscurrentState("Verification");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      label: "Configuration",
+      isHeader: true,
+    },
+    {
+      id: "vehicle-make",
+      label: "Vehicle Make",
+      icon: "ri-car-washing-line",
+      link: "/vehicle-make",
+      stateVariables: isVehicleMake,
       click: function (e) {
         e.preventDefault();
         setIsDashboard(!isDashboard);
-        setIscurrentState("NewInspection");
+        setIscurrentState("VehicleMake");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "vehicle-model",
+      label: "Vehicle Model",
+      icon: "ri-roadster-line",
+      link: "/vehicle-model",
+      stateVariables: isVehicleModel,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isVehicleModel);
+        setIscurrentState("VehicleModel");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "vehicle-body-color",
+      label: "Body Color",
+      icon: "ri-brush-3-line",
+      link: "/body-color",
+      stateVariables: isBodyColor,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isBodyColor);
+        setIscurrentState("BodyColor");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "vehicle-body-type",
+      label: "Body Type",
+      icon: "ri-truck-line",
+      link: "/body-type",
+      stateVariables: isBodyType,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isBodyType);
+        setIscurrentState("BodyType");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "inspection-fees",
+      label: "Inspection Fees",
+      icon: "ri-exchange-funds-line",
+      link: "/inspection-fees",
+      stateVariables: isInspectionFees,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isInspectionFees);
+        setIscurrentState("InspectionFees");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      label: "Reports",
+      isHeader: true,
+    },
+    {
+      id: "reports",
+      label: "Reports",
+      icon: "ri-file-text-line",
+      link: "/reports",
+      stateVariables: isReports,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isReports);
+        setIscurrentState("Reports");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      label: "User",
+      isHeader: true,
+    },
+    {
+      id: "users",
+      label: "Users",
+      icon: "ri-user-2-line",
+      link: "/users",
+      stateVariables: isUsers,
+      click: function (e) {
+        e.preventDefault();
+        setIsDashboard(!isUsers);
+        setIscurrentState("Users");
         updateIconSidebar(e);
       },
     },

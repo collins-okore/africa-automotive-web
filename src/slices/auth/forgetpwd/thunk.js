@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import { userForgetPasswordSuccess, userForgetPasswordError } from "./reducer";
 
 //Include Both Helper File with needed methods

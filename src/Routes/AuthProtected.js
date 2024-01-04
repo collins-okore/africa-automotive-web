@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import { Navigate, Route } from "react-router-dom";
 import { setAuthorization } from "../helpers/api_helper";
@@ -10,9 +11,6 @@ import { logoutUser } from "../slices/auth/login/thunk";
 const AuthProtected = (props) => {
   const dispatch = useDispatch();
   const { userProfile, loading, token } = useProfile();
-
-  console.log("User Profile", userProfile);
-  console.log("Token", token);
 
   useEffect(() => {
     if (userProfile && !loading && token) {

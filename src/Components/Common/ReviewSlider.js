@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Card, CardBody } from "reactstrap";

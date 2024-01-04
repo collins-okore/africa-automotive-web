@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import {
@@ -8,18 +9,14 @@ import {
   useFilters,
   useExpanded,
   usePagination,
-  useRowSelect
+  useRowSelect,
 } from "react-table";
-import { Table, Row, Col, Button, Input, CardBody } from "reactstrap";
+import { Table, Row, Col, CardBody } from "reactstrap";
 import { DefaultColumnFilter } from "./filters";
 import { Link } from "react-router-dom";
 
 // Define a default UI for filtering
-function GlobalFilter({
-  globalFilter,
-  setGlobalFilter,
-  SearchPlaceholder,
-}) {
+function GlobalFilter({ globalFilter, setGlobalFilter, SearchPlaceholder }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
@@ -49,11 +46,9 @@ function GlobalFilter({
           </Row>
         </form>
       </CardBody>
-
     </React.Fragment>
   );
 }
-
 
 const TableContainer = ({
   columns,
@@ -92,7 +87,10 @@ const TableContainer = ({
       data,
       defaultColumn: { Filter: DefaultColumnFilter },
       initialState: {
-        pageIndex: 0, pageSize: customPageSize, selectedRowIds: 0, sortBy: [
+        pageIndex: 0,
+        pageSize: customPageSize,
+        selectedRowIds: 0,
+        sortBy: [
           {
             desc: true,
           },
@@ -108,15 +106,19 @@ const TableContainer = ({
   );
 
   const generateSortingIndicator = (column) => {
-    return column.isSorted ? (column.isSortedDesc ? <span>&#8593;</span> : <span>&#8595;</span>) : "";
+    return column.isSorted ? (
+      column.isSortedDesc ? (
+        <span>&#8593;</span>
+      ) : (
+        <span>&#8595;</span>
+      )
+    ) : (
+      ""
+    );
   };
 
   const onChangeInSelect = (event) => {
     setPageSize(Number(event.target.value));
-  };
-  const onChangeInInput = (event) => {
-    const page = event.target.value ? Number(event.target.value) - 1 : 0;
-    gotoPage(page);
   };
 
   return (
@@ -149,14 +151,21 @@ const TableContainer = ({
         </Row>
       )}
 
-
       <div className={divClass}>
         <Table hover {...getTableProps()} className={tableClass}>
           <thead className={theadClass}>
             {headerGroups.map((headerGroup) => (
-              <tr className={trClass} key={headerGroup.id}  {...headerGroup.getHeaderGroupProps()}>
+              <tr
+                className={trClass}
+                key={headerGroup.id}
+                {...headerGroup.getHeaderGroupProps()}
+              >
                 {headerGroup.headers.map((column) => (
-                  <th key={column.id} className={thClass} {...column.getSortByToggleProps()}>
+                  <th
+                    key={column.id}
+                    className={thClass}
+                    {...column.getSortByToggleProps()}
+                  >
                     {column.render("Header")}
                     {generateSortingIndicator(column)}
                     {/* <Filter column={column} /> */}
@@ -187,31 +196,49 @@ const TableContainer = ({
         </Table>
       </div>
 
-      {isPagination &&
+      {isPagination && (
         <Row className="align-items-center g-3 text-center text-sm-start mb-3">
-        <div className="col-sm">
-            <div className="text-muted">Showing<span className="fw-semibold ms-1">{page.length}</span> of <span className="fw-semibold">{data.length}</span> Results
+          <div className="col-sm">
+            <div className="text-muted">
+              Showing<span className="fw-semibold ms-1">{page.length}</span> of{" "}
+              <span className="fw-semibold">{data.length}</span> Results
             </div>
-        </div>
-        <div className="col-sm-auto">
+          </div>
+          <div className="col-sm-auto">
             <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
-                <li className={!canPreviousPage ? "page-item disabled" : "page-item"}>
-                    <Link to="#"  className="page-link" onClick={previousPage}>Previous</Link>
-                </li>
-                {pageOptions.map((item, key) => (
-                  <React.Fragment key={key}>
-                      <li className="page-item">
-                          <Link to="#" className={pageIndex === item ? "page-link active" : "page-link"} onClick={() => gotoPage(item)}>{item + 1}</Link>
-                      </li>
-                  </React.Fragment>
-                ))}
-                <li className={!canNextPage ? "page-item disabled" : "page-item"}>
-                    <Link to="#"  className="page-link" onClick={nextPage}>Next</Link>
-                </li>
+              <li
+                className={
+                  !canPreviousPage ? "page-item disabled" : "page-item"
+                }
+              >
+                <Link to="#" className="page-link" onClick={previousPage}>
+                  Previous
+                </Link>
+              </li>
+              {pageOptions.map((item, key) => (
+                <React.Fragment key={key}>
+                  <li className="page-item">
+                    <Link
+                      to="#"
+                      className={
+                        pageIndex === item ? "page-link active" : "page-link"
+                      }
+                      onClick={() => gotoPage(item)}
+                    >
+                      {item + 1}
+                    </Link>
+                  </li>
+                </React.Fragment>
+              ))}
+              <li className={!canNextPage ? "page-item disabled" : "page-item"}>
+                <Link to="#" className="page-link" onClick={nextPage}>
+                  Next
+                </Link>
+              </li>
             </ul>
-        </div>
-      </Row>
-      }
+          </div>
+        </Row>
+      )}
     </Fragment>
   );
 };

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   useTable,
@@ -8,9 +8,9 @@ import {
   useFilters,
   useExpanded,
   usePagination,
-  useRowSelect
+  useRowSelect,
 } from "react-table";
-import { Table, Row, Col, Button, Input, CardBody } from "reactstrap";
+import { Table, Row, Col, CardBody } from "reactstrap";
 import { DefaultColumnFilter } from "./filters";
 import {
   ProductsGlobalFilter,
@@ -20,12 +20,12 @@ import {
   CompaniesGlobalFilter,
   LeadsGlobalFilter,
   CryptoOrdersGlobalFilter,
-  InvoiceListGlobalSearch,
   TicketsListGlobalFilter,
   NFTRankingGlobalFilter,
   TaskListGlobalFilter,
 } from "../../Components/Common/GlobalSearchFilter";
 import { Link } from "react-router-dom";
+import { PaginationType } from "../../common/types";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -36,13 +36,13 @@ function GlobalFilter({
   isContactsFilter,
   isCompaniesFilter,
   isCryptoOrdersFilter,
-  isInvoiceListFilter,
+  // isInvoiceListFilter,
   isTicketsListFilter,
   isNFTRankingFilter,
   isTaskListFilter,
   isProductsFilter,
   isLeadsFilter,
-  SearchPlaceholder
+  SearchPlaceholder,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -55,7 +55,16 @@ function GlobalFilter({
         <form>
           <Row>
             <Col sm={5}>
-              <div className={(isProductsFilter || isContactsFilter || isCompaniesFilter || isNFTRankingFilter) ? "search-box me-2 mb-2 d-inline-block" : "search-box me-2 mb-2 d-inline-block col-12"}>
+              <div
+                className={
+                  isProductsFilter ||
+                  isContactsFilter ||
+                  isCompaniesFilter ||
+                  isNFTRankingFilter
+                    ? "search-box me-2 mb-2 d-inline-block"
+                    : "search-box me-2 mb-2 d-inline-block col-12"
+                }
+              >
                 <input
                   onChange={(e) => {
                     setValue(e.target.value);
@@ -70,77 +79,74 @@ function GlobalFilter({
                 <i className="bx bx-search-alt search-icon"></i>
               </div>
             </Col>
-            {isProductsFilter && (
-              <ProductsGlobalFilter />
-            )}
-            {isCustomerFilter && (
-              <CustomersGlobalFilter />
-            )}
-            {isOrderFilter && (
-              <OrderGlobalFilter />
-            )}
-            {isContactsFilter && (
-              <ContactsGlobalFilter />
-            )}
-            {isCompaniesFilter && (
-              <CompaniesGlobalFilter />
-            )}
-            {isLeadsFilter && (
-              <LeadsGlobalFilter />
-            )}
-            {isCryptoOrdersFilter && (
-              <CryptoOrdersGlobalFilter />
-            )}
-            {isInvoiceListFilter && (
+            {isProductsFilter && <ProductsGlobalFilter />}
+            {isCustomerFilter && <CustomersGlobalFilter />}
+            {isOrderFilter && <OrderGlobalFilter />}
+            {isContactsFilter && <ContactsGlobalFilter />}
+            {isCompaniesFilter && <CompaniesGlobalFilter />}
+            {isLeadsFilter && <LeadsGlobalFilter />}
+            {isCryptoOrdersFilter && <CryptoOrdersGlobalFilter />}
+            {/* {isInvoiceListFilter && (
               <InvoiceListGlobalSearch />
-            )}
-            {isTicketsListFilter && (
-              <TicketsListGlobalFilter />
-            )}
-            {isNFTRankingFilter && (
-              <NFTRankingGlobalFilter />
-            )}
-            {isTaskListFilter && (
-              <TaskListGlobalFilter />
-            )}
+            )} */}
+            {isTicketsListFilter && <TicketsListGlobalFilter />}
+            {isNFTRankingFilter && <NFTRankingGlobalFilter />}
+            {isTaskListFilter && <TaskListGlobalFilter />}
           </Row>
         </form>
       </CardBody>
-
     </React.Fragment>
   );
 }
 
+GlobalFilter.propTypes = {
+  globalFilter: PropTypes.string,
+  setGlobalFilter: PropTypes.func,
+  isCustomerFilter: PropTypes.bool,
+  isOrderFilter: PropTypes.bool,
+  isContactsFilter: PropTypes.bool,
+  isCompaniesFilter: PropTypes.bool,
+  isCryptoOrdersFilter: PropTypes.bool,
+  // isInvoiceListFilter,
+  isTicketsListFilter: PropTypes.bool,
+  isNFTRankingFilter: PropTypes.bool,
+  isTaskListFilter: PropTypes.bool,
+  isProductsFilter: PropTypes.bool,
+  isLeadsFilter: PropTypes.bool,
+  SearchPlaceholder: PropTypes.string,
+};
 
 const TableContainer = ({
   columns,
   data,
-  isGlobalSearch,
-  isGlobalFilter,
-  isProductsFilter,
-  isCustomerFilter,
-  isOrderFilter,
-  isContactsFilter,
-  isCompaniesFilter,
-  isLeadsFilter,
-  isCryptoOrdersFilter,
-  isInvoiceListFilter,
-  isTicketsListFilter,
-  isNFTRankingFilter,
-  isTaskListFilter,
-  isAddOptions,
-  isAddUserList,
-  handleOrderClicks,
-  handleUserClick,
-  handleCustomerClick,
-  isAddCustList,
+  // isGlobalSearch,
+  // isGlobalFilter,
+  // isProductsFilter,
+  // isCustomerFilter,
+  // isOrderFilter,
+  // isContactsFilter,
+  // isCompaniesFilter,
+  // isLeadsFilter,
+  // isCryptoOrdersFilter,
+  // isInvoiceListFilter,
+  // isTicketsListFilter,
+  // isNFTRankingFilter,
+  // isTaskListFilter,
+  // isAddOptions,
+  // isAddUserList,
+  // handleOrderClicks,
+  // handleUserClick,
+  // handleCustomerClick,
+  // isAddCustList,
   customPageSize,
   tableClass,
   theadClass,
   trClass,
   thClass,
   divClass,
-  SearchPlaceholder
+  pagination,
+  onPageChange,
+  FilterSection,
 }) => {
   const {
     getTableProps,
@@ -148,16 +154,17 @@ const TableContainer = ({
     headerGroups,
     page,
     prepareRow,
-    canPreviousPage,
-    canNextPage,
     pageOptions,
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
-    state,
-    preGlobalFilteredRows,
-    setGlobalFilter,
+    // setPageSize,
+    canNextPage,
+    canPreviousPage,
+    // state,
+    // preGlobalFilteredRows,
+    // setGlobalFilter,
+    setSortBy,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -165,12 +172,20 @@ const TableContainer = ({
       data,
       defaultColumn: { Filter: DefaultColumnFilter },
       initialState: {
-        pageIndex: 0, pageSize: customPageSize, selectedRowIds: 0, sortBy: [
-          {
-            desc: true,
-          },
+        pageIndex: 0,
+        pageSize: customPageSize,
+        selectedRowIds: 0,
+        sortBy: [
+          // {
+          //   desc: true,
+          // },
         ],
       },
+      manualPagination: true,
+      pageCount: pagination.pageCount,
+      autoResetPage: false,
+      manualSortBy: true,
+      autoResetSortBy: false,
     },
     useGlobalFilter,
     useFilters,
@@ -184,17 +199,34 @@ const TableContainer = ({
     return column.isSorted ? (column.isSortedDesc ? " " : "") : "";
   };
 
-  const onChangeInSelect = (event) => {
-    setPageSize(Number(event.target.value));
-  };
-  const onChangeInInput = (event) => {
-    const page = event.target.value ? Number(event.target.value) - 1 : 0;
-    gotoPage(page);
+  // const onChangeInSelect = (event) => {
+  //   setPageSize(Number(event.target.value));
+  // };
+  // const onChangeInInput = (event) => {
+  //   const page = event.target.value ? Number(event.target.value) - 1 : 0;
+  //   gotoPage(page);
+  // };
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const [sorted, setSorted] = useState([]);
+
+  useEffect(() => {
+    onPageChange(pageIndex + 1, sorted, searchValue);
+  }, [pageIndex, pageSize, onPageChange, sorted, searchValue]);
+
+  const onSort = (columnId, desc) => {
+    // Update the sorted state and trigger data fetching
+    if (columnId === "action") {
+      return;
+    }
+    setSorted([{ id: columnId, desc }]);
+    setSortBy([{ id: columnId, desc }]);
   };
 
   return (
     <Fragment>
-      <Row className="mb-3">
+      {/* <Row className="mb-3">
         {isGlobalSearch && (
           <Col md={1}>
             <select
@@ -274,21 +306,43 @@ const TableContainer = ({
             </div>
           </Col>
         )}
-      </Row>
+      </Row> */}
 
+      <>
+        <FilterSection
+          searchValue={searchValue}
+          setSearchValue={(text) => {
+            if (pageIndex != 0) {
+              gotoPage(0);
+            }
+            setSearchValue(text);
+          }}
+        />
+      </>
 
       <div className={divClass}>
         <Table hover {...getTableProps()} className={tableClass}>
           <thead className={theadClass}>
             {headerGroups.map((headerGroup) => (
-              <tr className={trClass} key={headerGroup.id}  {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th key={column.id} className={thClass} {...column.getSortByToggleProps()}>
-                    {column.render("Header")}
-                    {generateSortingIndicator(column)}
-                    {/* <Filter column={column} /> */}
-                  </th>
-                ))}
+              <tr
+                className={trClass}
+                key={headerGroup.id}
+                {...headerGroup.getHeaderGroupProps()}
+              >
+                {headerGroup.headers.map((column) => {
+                  return (
+                    <th
+                      key={column.id}
+                      className={thClass}
+                      {...column.getSortByToggleProps()}
+                      onClick={() => onSort(column.id, !column.isSortedDesc)}
+                    >
+                      {column.render("Header")}
+                      {generateSortingIndicator(column)}
+                      {/* <Filter column={column} /> */}
+                    </th>
+                  );
+                })}
               </tr>
             ))}
           </thead>
@@ -316,34 +370,68 @@ const TableContainer = ({
 
       <Row className="align-items-center mt-2 g-3 text-center text-sm-start">
         <div className="col-sm">
-          <div className="text-muted">Showing<span className="fw-semibold ms-1">{page.length}</span> of <span className="fw-semibold">{data.length}</span> Results
+          <div className="text-muted">
+            Showing<span className="fw-semibold ms-1">{data.length}</span> of{" "}
+            <span className="fw-semibold">{pagination.total}</span> Results
           </div>
         </div>
         <div className="col-sm-auto">
           <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
-            <li className={!canPreviousPage ? "page-item disabled" : "page-item"}>
-              <Link to="#" className="page-link" onClick={previousPage}>Previous</Link>
+            <li
+              className={!canPreviousPage ? "page-item disabled" : "page-item"}
+            >
+              <Link to="#" className="page-link" onClick={previousPage}>
+                Previous
+              </Link>
             </li>
             {pageOptions.map((item, key) => (
               <React.Fragment key={key}>
                 <li className="page-item">
-                  <Link to="#" className={pageIndex === item ? "page-link active" : "page-link"} onClick={() => gotoPage(item)}>{item + 1}</Link>
+                  <Link
+                    to="#"
+                    className={
+                      pageIndex === item ? "page-link active" : "page-link"
+                    }
+                    onClick={() => gotoPage(item)}
+                  >
+                    {item + 1}
+                  </Link>
                 </li>
               </React.Fragment>
             ))}
             <li className={!canNextPage ? "page-item disabled" : "page-item"}>
-              <Link to="#" className="page-link" onClick={nextPage}>Next</Link>
+              <Link to="#" className="page-link" onClick={nextPage}>
+                Next
+              </Link>
             </li>
           </ul>
         </div>
       </Row>
-
     </Fragment>
   );
 };
 
 TableContainer.propTypes = {
   preGlobalFilteredRows: PropTypes.any,
+  pagination: PaginationType,
+  data: PropTypes.array,
+  columns: PropTypes.array,
+  isGlobalSearch: PropTypes.bool,
+  isAddOptions: PropTypes.bool,
+  isAddUserList: PropTypes.bool,
+  handleOrderClicks: PropTypes.func,
+  handleUserClick: PropTypes.func,
+  handleCustomerClick: PropTypes.func,
+  isAddCustList: PropTypes.bool,
+  customPageSize: PropTypes.number,
+  tableClass: PropTypes.string,
+  theadClass: PropTypes.string,
+  trClass: PropTypes.string,
+  thClass: PropTypes.string,
+  divClass: PropTypes.string,
+  SearchPlaceholder: PropTypes.string,
+  onPageChange: PropTypes.func,
+  FilterSection: PropTypes.func,
 };
 
 export default TableContainer;

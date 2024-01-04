@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from "qs";
 import { api } from "../config";
 import { POST_JWT_LOGIN } from "./url_helper";
 
@@ -47,6 +48,8 @@ axios.interceptors.response.use(
       case 404:
         message = "Sorry! the data you are looking for could not be found";
         break;
+      case 403:
+        message = "You do not have permissions to access this resource";
       default:
         message = error.message || error;
     }
@@ -72,16 +75,18 @@ class APIClient {
   get = (url, params) => {
     let response;
 
-    let paramKeys = [];
+    // let paramKeys = [];
 
     if (params) {
-      Object.keys(params).map((key) => {
-        paramKeys.push(key + "=" + params[key]);
-        return paramKeys;
-      });
+      //   Object.keys(params).map((key) => {
+      //     paramKeys.push(key + "=" + params[key]);
+      //     return paramKeys;
+      //   });
 
-      const queryString =
-        paramKeys && paramKeys.length ? paramKeys.join("&") : "";
+      //   const queryString =
+      //     paramKeys && paramKeys.length ? paramKeys.join("&") : "";
+      const queryString = qs.stringify(params);
+
       response = axios.get(`${url}?${queryString}`, params);
     } else {
       response = axios.get(`${url}`, params);
@@ -99,7 +104,7 @@ class APIClient {
    * Updates data
    */
   update = (url, data) => {
-    return axios.patch(url, data);
+    return axios.put(url, data);
   };
 
   put = (url, data) => {

@@ -3,34 +3,35 @@ import { createSlice } from "@reduxjs/toolkit";
 export const initialState = {
   error: "",
   success: "",
-  user: {}
+  user: {},
 };
 
 const ProfileSlice = createSlice({
   name: "Profile",
   initialState,
-  reducers: { 
+  reducers: {
     profileSuccess(state, action) {
       state.success = action.payload.status;
-      state.user = action.payload.data
+      state.user = action.payload.data;
     },
     profileError(state, action) {
-        state.error = action.payload
+      state.error = action.payload;
     },
-    editProfileChange(state){
+    editProfileChange(state) {
+      // eslint-disable-next-line no-unused-vars
       state = { ...state };
     },
-    resetProfileFlagChange(state){
-      state.success = null
-    }
+    resetProfileFlagChange(state) {
+      state.success = null;
+    },
   },
 });
 
 export const {
-    profileSuccess,
-    profileError,
-    editProfileChange,
-    resetProfileFlagChange
-} = ProfileSlice.actions
+  profileSuccess,
+  profileError,
+  editProfileChange,
+  resetProfileFlagChange,
+} = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

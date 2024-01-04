@@ -25,7 +25,6 @@ const ProfileDropdown = () => {
 
   useEffect(() => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
-    console.log("Obj", obj);
     if (sessionStorage.getItem("authUser")) {
       setUserName(obj?.firstName);
       setRole(obj?.role);

@@ -31,7 +31,7 @@ import TicketsReducer from "./tickets/reducer";
 import CrmReducer from "./crm/reducer";
 
 //Invoice
-import InvoiceReducer from "./invoice/reducer";
+import InspectionsReducer from "./inspections/reducer";
 
 //Mailbox
 import MailboxReducer from "./mailbox/reducer";
@@ -69,33 +69,37 @@ import JobReducer from "./jobs/reducer";
 // API Key
 import APIKeyReducer from "./apiKey/reducer";
 
+// Vehicle Make
+import VehicleMakeReducer from "./vehicleMake/reducer";
+
 const rootReducer = combineReducers({
-    Layout: LayoutReducer,
-    Login: LoginReducer,
-    Account: AccountReducer,
-    ForgetPassword: ForgetPasswordReducer,
-    Profile: ProfileReducer,
-    Calendar: CalendarReducer,
-    Chat: chatReducer,
-    Projects: ProjectsReducer,
-    Ecommerce: EcommerceReducer,
-    Tasks: TasksReducer,
-    Crypto: CryptoReducer,
-    Tickets: TicketsReducer,
-    Crm: CrmReducer,
-    Invoice: InvoiceReducer,
-    Mailbox: MailboxReducer,
-    DashboardAnalytics: DashboardAnalyticsReducer,
-    DashboardCRM: DashboardCRMReducer,
-    DashboardEcommerce: DashboardEcommerceReducer,
-    DashboardCrypto: DashboardCryptoReducer,
-    DashboardProject: DashboardProjectReducer,
-    DashboardNFT: DashboardNFTReducer,
-    Team: TeamDataReducer,
-    FileManager: FileManagerReducer,
-    Todos: TodosReducer,
-    Jobs: JobReducer,
-    APIKey: APIKeyReducer
+  Layout: LayoutReducer,
+  Login: LoginReducer,
+  Account: AccountReducer,
+  ForgetPassword: ForgetPasswordReducer,
+  Profile: ProfileReducer,
+  Calendar: CalendarReducer,
+  Chat: chatReducer,
+  Projects: ProjectsReducer,
+  Ecommerce: EcommerceReducer,
+  Tasks: TasksReducer,
+  Crypto: CryptoReducer,
+  Tickets: TicketsReducer,
+  Crm: CrmReducer,
+  Inspections: InspectionsReducer,
+  Mailbox: MailboxReducer,
+  DashboardAnalytics: DashboardAnalyticsReducer,
+  DashboardCRM: DashboardCRMReducer,
+  DashboardEcommerce: DashboardEcommerceReducer,
+  DashboardCrypto: DashboardCryptoReducer,
+  DashboardProject: DashboardProjectReducer,
+  DashboardNFT: DashboardNFTReducer,
+  Team: TeamDataReducer,
+  FileManager: FileManagerReducer,
+  Todos: TodosReducer,
+  Jobs: JobReducer,
+  APIKey: APIKeyReducer,
+  VehicleMake: VehicleMakeReducer,
 });
 
 export default rootReducer;

@@ -89,11 +89,17 @@ export const GET_DEALS = "/deals";
 export const GET_TRANSACTION_LIST = "/transaction-list";
 export const GET_ORDRER_LIST = "/order-list";
 
-// Invoice
-export const GET_INVOICES = "/apps/invoice";
-export const ADD_NEW_INVOICE = "/apps/invoice";
-export const UPDATE_INVOICE = "/apps/invoice";
-export const DELETE_INVOICE = "/apps/invoice";
+// Inspections
+export const GET_INSPECTIONS = "/inspections";
+export const ADD_NEW_INSPECTION = "/inspections";
+export const UPDATE_INSPECTION = "/inspections";
+export const DELETE_INSPECTION = "/inspections";
+
+// Vehicle Makes
+export const GET_VEHICLE_MAKES = "/vehicle-makes";
+export const ADD_NEW_VEHICLE_MAKE = "/vehicle-makes";
+export const UPDATE_VEHICLE_MAKE = "/vehicle-makes";
+export const DELETE_VEHICLE_MAKE = "/vehicle-makes";
 
 // TicketsList
 export const GET_TICKETS_LIST = "/apps/ticket";

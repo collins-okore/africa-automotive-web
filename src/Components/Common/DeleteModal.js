@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Modal, ModalBody } from "reactstrap";
+import { Modal, ModalBody, Spinner } from "reactstrap";
 
-const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
+const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading }) => {
   return (
     <Modal fade={true} isOpen={show} toggle={onCloseClick} centered={true}>
       <ModalBody className="py-3 px-5">
@@ -35,6 +35,13 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
             id="delete-record"
             onClick={onDeleteClick}
           >
+            {loading && (
+              <Spinner
+                color="light"
+                size="sm"
+                style={{ marginRight: "8px", marginBottom: "-1px" }}
+              ></Spinner>
+            )}
             Yes, Delete It!
           </button>
         </div>
@@ -47,6 +54,7 @@ DeleteModal.propTypes = {
   onCloseClick: PropTypes.func,
   onDeleteClick: PropTypes.func,
   show: PropTypes.any,
+  loading: PropTypes.bool,
 };
 
 export default DeleteModal;

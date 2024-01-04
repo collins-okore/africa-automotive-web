@@ -1,3 +1,5 @@
+/* eslint-disable no-extra-boolean-cast */
+/* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -17,7 +19,7 @@ import {
   ModalBody,
   ModalHeader,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 import * as Yup from "yup";
@@ -37,8 +39,8 @@ import DeleteModal from "../../Components/Common/DeleteModal";
 
 //Simple bar
 import SimpleBar from "simplebar-react";
-import UpcommingEvents from './UpcommingEvents';
-import listPlugin from '@fullcalendar/list';
+import UpcommingEvents from "./UpcommingEvents";
+import listPlugin from "@fullcalendar/list";
 
 import {
   getEvents as onGetEvents,
@@ -62,18 +64,15 @@ const Calender = () => {
   const [upcommingevents, setUpcommingevents] = useState([]);
 
   const selectLayoutState = (state) => state.Calendar;
-  const calendarDataProperties = createSelector(
-    selectLayoutState,
-    (state) => ({
-      events: state.events,
-      categories: state.categories,
-      isEventUpdated: state.isEventUpdated,
-    })
-  );
+  const calendarDataProperties = createSelector(selectLayoutState, (state) => ({
+    events: state.events,
+    categories: state.categories,
+    isEventUpdated: state.isEventUpdated,
+  }));
   // Inside your component
-  const {
-    events, categories, isEventUpdated
-  } = useSelector(calendarDataProperties);
+  const { events, categories, isEventUpdated } = useSelector(
+    calendarDataProperties
+  );
 
   useEffect(() => {
     dispatch(onGetEvents());
@@ -84,13 +83,11 @@ const Calender = () => {
   }, [dispatch]);
 
   useEffect(() => {
-
     setUpcommingevents(events);
 
     upcommingevents.slice().sort(function (o1, o2) {
       return new Date(o1.start) - new Date(o2.start);
     });
-
   }, [events, upcommingevents]);
 
   useEffect(() => {
@@ -282,7 +279,6 @@ const Calender = () => {
   });
 
   const submitOtherEvent = () => {
-
     document.getElementById("form-event").classList.remove("view-event");
 
     document
@@ -456,7 +452,7 @@ const Calender = () => {
                           BootstrapTheme,
                           dayGridPlugin,
                           interactionPlugin,
-                          listPlugin
+                          listPlugin,
                         ]}
                         initialView="dayGridMonth"
                         slotDuration={"00:15:00"}
@@ -483,7 +479,11 @@ const Calender = () => {
               <div style={{ clear: "both" }}></div>
 
               <Modal isOpen={modal} id="event-modal" centered>
-                <ModalHeader toggle={toggle} tag="h5" className="p-3 bg-info-subtle modal-title">
+                <ModalHeader
+                  toggle={toggle}
+                  tag="h5"
+                  className="p-3 bg-info-subtle modal-title"
+                >
                   {!!isEdit ? "Edit Event" : "Add Event"}
                 </ModalHeader>
                 <ModalBody>
@@ -516,10 +516,7 @@ const Calender = () => {
                           Edit
                         </Link>
                       </div>
-                    ) :
-                      null
-                    }
-
+                    ) : null}
 
                     <div className="event-details">
                       <div className="d-flex mb-2">
@@ -545,7 +542,9 @@ const Calender = () => {
                           <h6 className="d-block fw-semibold mb-0">
                             {" "}
                             <span id="event-location-tag">
-                              {event && event.location !== undefined ? event.location : "No Location"}
+                              {event && event.location !== undefined
+                                ? event.location
+                                : "No Location"}
                             </span>
                           </h6>
                         </div>
@@ -559,7 +558,9 @@ const Calender = () => {
                             className="d-block text-muted mb-0"
                             id="event-description-tag"
                           >
-                            {event && event.description !== undefined ? event.description : "No Description"}
+                            {event && event.description !== undefined
+                              ? event.description
+                              : "No Description"}
                           </p>
                         </div>
                       </div>
@@ -589,7 +590,7 @@ const Calender = () => {
                             <option value="bg-warning-subtle">Warning</option>
                           </Input>
                           {validation.touched.category &&
-                            validation.errors.category ? (
+                          validation.errors.category ? (
                             <FormFeedback type="invalid">
                               {validation.errors.category}
                             </FormFeedback>
@@ -612,15 +613,15 @@ const Calender = () => {
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             value={validation.values.title || ""}
-                          // invalid={
-                          //   validation.touched.title &&
-                          //   validation.errors.title
-                          //     ? true
-                          //     : false
-                          // }
+                            // invalid={
+                            //   validation.touched.title &&
+                            //   validation.errors.title
+                            //     ? true
+                            //     : false
+                            // }
                           />
                           {validation.touched.title &&
-                            validation.errors.title ? (
+                          validation.errors.title ? (
                             <FormFeedback type="invalid">
                               {validation.errors.title}
                             </FormFeedback>
@@ -671,16 +672,18 @@ const Calender = () => {
                               placeholder="Event location"
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
-                              value={validation.values.location || "No Location"}
-                            // invalid={
-                            //   validation.touched.location &&
-                            //   validation.errors.location
-                            //     ? true
-                            //     : false
-                            // }
+                              value={
+                                validation.values.location || "No Location"
+                              }
+                              // invalid={
+                              //   validation.touched.location &&
+                              //   validation.errors.location
+                              //     ? true
+                              //     : false
+                              // }
                             />
                             {validation.touched.location &&
-                              validation.errors.location ? (
+                            validation.errors.location ? (
                               <FormFeedback type="invalid">
                                 {validation.errors.location}
                               </FormFeedback>
@@ -703,16 +706,18 @@ const Calender = () => {
                             rows="3"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.description || "No Description"}
-                          // invalid={
-                          //   validation.touched.description &&
-                          //   validation.errors.description
-                          //     ? true
-                          //     : false
-                          // }
+                            value={
+                              validation.values.description || "No Description"
+                            }
+                            // invalid={
+                            //   validation.touched.description &&
+                            //   validation.errors.description
+                            //     ? true
+                            //     : false
+                            // }
                           ></textarea>
                           {validation.touched.description &&
-                            validation.errors.description ? (
+                          validation.errors.description ? (
                             <FormFeedback type="invalid">
                               {validation.errors.description}
                             </FormFeedback>
@@ -731,13 +736,15 @@ const Calender = () => {
                           <i className="ri-close-line align-bottom"></i> Delete
                         </button>
                       )}
-                      {isEditButton && <button
-                        type="submit"
-                        className="btn btn-success"
-                        id="btn-save-event"
-                      >
-                        {!!isEdit ? "Edit Event" : "Add Event"}
-                      </button>}
+                      {isEditButton && (
+                        <button
+                          type="submit"
+                          className="btn btn-success"
+                          id="btn-save-event"
+                        >
+                          {!!isEdit ? "Edit Event" : "Add Event"}
+                        </button>
+                      )}
                     </div>
                   </Form>
                 </ModalBody>

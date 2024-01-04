@@ -4,20 +4,23 @@ import "react-toastify/dist/ReactToastify.css";
 
 //Include Both Helper File with needed methods
 import {
-  getInvoices as getInvoicesApi,
+  getInspections as getInspectionsApi,
   addNewInvoice as addNewInvoiceApi,
   updateInvoice as updateInvoiceApi,
   deleteInvoice as deleteInvoiceApi,
 } from "../../helpers/backend_helper";
 
-export const getInvoices = createAsyncThunk("invoice/getInvoices", async () => {
-  try {
-    const response = getInvoicesApi();
-    return response;
-  } catch (error) {
-    return error;
+export const getInspections = createAsyncThunk(
+  "inspections/getInspections",
+  async () => {
+    try {
+      const response = getInspectionsApi();
+      return response;
+    } catch (error) {
+      return error;
+    }
   }
-});
+);
 
 export const addNewInvoice = createAsyncThunk(
   "invoice/addNewInvoice",

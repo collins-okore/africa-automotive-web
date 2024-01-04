@@ -238,21 +238,39 @@ export const getTransationList = () => api.get(url.GET_TRANSACTION_LIST);
 // Order List
 export const getOrderList = () => api.get(url.GET_ORDRER_LIST);
 
-// Invoice
-//get Invoice
-export const getInvoices = () => api.get(url.GET_INVOICES);
+/* Inspections */
 
-// add Invoice
+//get Inspections
+export const getInspections = () => api.get(url.GET_INSPECTIONS);
+
+// add new Inspection
 export const addNewInvoice = (invoice) =>
-  api.create(url.ADD_NEW_INVOICE, invoice);
+  api.create(url.ADD_NEW_INSPECTION, invoice);
 
-// update Invoice
+// update Inspection
 export const updateInvoice = (invoice) =>
-  api.update(url.UPDATE_INVOICE + "/" + invoice._id, invoice);
+  api.update(url.UPDATE_INSPECTION + "/" + invoice._id, invoice);
 
-// delete Invoice
+// delete Inspection
 export const deleteInvoice = (invoice) =>
-  api.delete(url.DELETE_INVOICE + "/" + invoice);
+  api.delete(url.DELETE_INSPECTION + "/" + invoice);
+
+/* Vehicle Makes */
+//get Vehicle Makes
+export const getVehicleMakes = (params) =>
+  api.get(url.GET_VEHICLE_MAKES, params);
+
+// add new Vehicle Make
+export const addNewVehicleMake = (vehicleMake) =>
+  api.create(url.ADD_NEW_VEHICLE_MAKE, vehicleMake);
+
+// update Vehicle Makes
+export const updateVehicleMake = (vehicleMake) =>
+  api.update(url.UPDATE_VEHICLE_MAKE + "/" + vehicleMake.data.id, vehicleMake);
+
+// delete Vehicle Makes
+export const deleteVehicleMake = (vehicleMake) =>
+  api.delete(url.DELETE_VEHICLE_MAKE + "/" + vehicleMake.id);
 
 // Support Tickets
 // Tickets
