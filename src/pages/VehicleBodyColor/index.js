@@ -10,6 +10,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
@@ -19,8 +20,8 @@ import * as moment from "moment";
 
 //Import actions
 import {
-  getVehicleMakes as onGetVehicleMake,
-  deleteVehicleMake as onDeleteVehicleMake,
+  getVehicleBodyColors as onGetVehicleBodyColor,
+  deleteVehicleBodyColor as onDeleteVehicleBodyColor,
 } from "../../slices/thunks";
 
 //redux
@@ -32,8 +33,8 @@ import Loader from "../../Components/Common/Loader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createSelector } from "reselect";
-import AddVehicleMake from "./AddVehicleMake";
-import UpdateVehicleMake from "./UpdateVehicleMake";
+import AddBodyColor from "./AddBodyColor";
+import UpdateBodyColor from "./UpdateBodyColor";
 
 const FilterSection = ({ searchValue, setSearchValue }) => {
   return (
@@ -46,21 +47,32 @@ const FilterSection = ({ searchValue, setSearchValue }) => {
                 <div className={"search-box me-2 mb-2 d-inline-block col-12"}>
                   <input
                     onChange={(e) => {
+                      console.log("e", e);
                       setSearchValue(e.target.value);
                     }}
                     id="search-bar-0"
                     type="text"
                     className="form-control search /"
-                    placeholder={"Search vehicle make"}
+                    placeholder={"Search vehicle body color"}
                     value={searchValue || ""}
                   />
                   <i className="bx bx-search-alt search-icon"></i>
                 </div>
               </Col>
 
-              {/* {isInvoiceListFilter && (
-<InvoiceListGlobalSearch />
-)} */}
+              {searchValue.length > 0 ? (
+                <Col sm={4} xxl={1}>
+                  <Button
+                    color="primary"
+                    className="w-400"
+                    style={{ paddingInline: 10 }}
+                    onClick={() => setSearchValue("")}
+                  >
+                    <i className="ri-close-fill me-1 align-bottom"></i>
+                    Filters
+                  </Button>
+                </Col>
+              ) : null}
             </Row>
           </form>
         </CardBody>
@@ -75,24 +87,22 @@ FilterSection.propTypes = {
   getSearchResults: PropTypes.func,
 };
 
-const VehicleMake = () => {
+const VehicleBodyColor = () => {
   const dispatch = useDispatch();
 
-  const selectLayoutState = (state) => state.VehicleMake;
+  const selectLayoutState = (state) => state.VehicleBodyColor;
   const selectinvoiceProperties = createSelector(
     selectLayoutState,
     (state) => ({
-      vehicleMake: state.vehicleMake.data,
-      meta: state.vehicleMake.meta,
+      vehicleBodyColor: state.vehicleBodyColor.data,
+      meta: state.vehicleBodyColor.meta,
       error: state.error,
     })
   );
   // Inside your component
-  const {
-    vehicleMake: vehicleMake,
-    meta,
-    error,
-  } = useSelector(selectinvoiceProperties);
+  const { vehicleBodyColor, meta, error } = useSelector(
+    selectinvoiceProperties
+  );
 
   const [selectedRecord, setSelectedRecord] = useState({});
 
@@ -103,7 +113,7 @@ const VehicleMake = () => {
 
   const pageSize = 10;
 
-  const fetchVehicleMakes = () => {
+  const fetchVehicleBodyColors = () => {
     onPageChange({
       page: 1,
       sorted: [{ id: "createdAt", desc: true }],
@@ -127,7 +137,9 @@ const VehicleMake = () => {
       // Prepare sort obj
       let sortArray = [];
       sorted.forEach((el) => {
-        sortArray.push(`${el.id}:${el.desc ? "desc" : "asc"}`);
+        if (el.id !== "columnId") {
+          sortArray.push(`${el.id}:${el.desc ? "desc" : "asc"}`);
+        }
       });
 
       // Prepare search object
@@ -135,17 +147,23 @@ const VehicleMake = () => {
       if (searchValue.length > 0) {
         searchObj = {
           ...searchObj,
-          name: {
-            $containsi: searchValue,
-          },
+          $or: [
+            {
+              name: {
+                $containsi: searchValue,
+              },
+            },
+          ],
         };
       }
+
       dispatch(
-        onGetVehicleMake({
+        onGetVehicleBodyColor({
           pagination: {
             page,
             pageSize: pageSize,
           },
+
           sort: sortArray,
           filters: {
             ...searchObj,
@@ -156,22 +174,22 @@ const VehicleMake = () => {
     [dispatch]
   );
 
-  const fetchUpdatedVehicleMakes = useCallback(() => {
+  const fetchUpdatedVehicleBodyColors = useCallback(() => {
     onPageChange(pageCache);
   }, [pageCache, onPageChange]);
 
   // Delete Data
-  const onClickDelete = (vehicleMake) => {
-    setSelectedRecord(vehicleMake);
+  const onClickDelete = (vehicleBodyColor) => {
+    setSelectedRecord(vehicleBodyColor);
     setDeleteModal(true);
   };
   const [deleting, setDeleting] = useState();
-  const handleDeleteVehicleMake = () => {
+  const handleDelete = () => {
     if (selectedRecord) {
       setDeleting(true);
-      dispatch(onDeleteVehicleMake(selectedRecord)).then(() => {
+      dispatch(onDeleteVehicleBodyColor(selectedRecord)).then(() => {
         setDeleting(false);
-        fetchUpdatedVehicleMakes();
+        fetchUpdatedVehicleBodyColors();
         setDeleteModal(false);
       });
     }
@@ -183,8 +201,8 @@ const VehicleMake = () => {
   };
 
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const showUpdateModalForm = (vehicleMake) => {
-    setSelectedRecord(vehicleMake);
+  const showUpdateModalForm = (vehicleBodyColor) => {
+    setSelectedRecord(vehicleBodyColor);
     setIsUpdateModalOpen(true);
   };
 
@@ -198,7 +216,7 @@ const VehicleMake = () => {
         filterable: false,
       },
       {
-        Header: "Title",
+        Header: "Color",
         accessor: "attributes.name",
         id: "name",
         filterable: false,
@@ -209,12 +227,6 @@ const VehicleMake = () => {
             </Link>
           );
         },
-      },
-      {
-        Header: "Code",
-        accessor: "attributes.code",
-        id: "code",
-        filterable: false,
       },
 
       {
@@ -289,29 +301,30 @@ const VehicleMake = () => {
     []
   );
 
-  document.title = "Vehicle Make List | Automotive Africa";
+  document.title = "Vehicle Body Color List | Automotive Africa";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <DeleteModal
           show={deleteModal}
-          onDeleteClick={() => handleDeleteVehicleMake()}
+          onDeleteClick={() => handleDelete()}
           onCloseClick={() => setDeleteModal(false)}
           loading={deleting}
         />
 
         <Container fluid>
-          <BreadCrumb title="Vehicle Make List" pageTitle="Vehicle Makes" />
+          <BreadCrumb
+            title="Vehicle Body Color List"
+            pageTitle="Vehicle Body Color"
+          />
 
           <Row>
             <Col lg={12}>
               <Card id="invoiceList">
                 <CardHeader className="border-0">
                   <div className="d-flex align-items-center">
-                    <h5 className="card-title mb-0 flex-grow-1">
-                      Vehicle Make
-                    </h5>
+                    <h5 className="card-title mb-0 flex-grow-1">Body Colors</h5>
                     <div className="flex-shrink-0">
                       <div className="d-flex gap-2 flex-wrap">
                         <Link
@@ -323,7 +336,7 @@ const VehicleMake = () => {
                           }}
                         >
                           <i className="ri-add-line align-bottom me-1"></i>
-                          Add Vehicle Make
+                          Add Body Color
                         </Link>
                       </div>
                     </div>
@@ -331,17 +344,14 @@ const VehicleMake = () => {
                 </CardHeader>
                 <CardBody className="pt-0">
                   <div>
-                    {vehicleMake.length > -1 ? (
+                    {vehicleBodyColor.length > -1 ? (
                       <>
                         {/* Search and filter section */}
 
                         <TableContainer
                           columns={columns}
-                          data={vehicleMake || []}
-                          isGlobalFilter={true}
-                          isAddUserList={false}
+                          data={vehicleBodyColor || []}
                           customPageSize={pageSize}
-                          isInvoiceListFilter={true}
                           pagination={meta?.pagination}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
@@ -358,16 +368,18 @@ const VehicleMake = () => {
                     )}
                     <ToastContainer closeButton={false} limit={1} />
                   </div>
-                  <AddVehicleMake
+                  <AddBodyColor
                     toggle={() => setIsAddModalOpen((state) => !state)}
                     isModalOpen={isAddModalOpen}
-                    fetchVehicleMakes={fetchVehicleMakes}
+                    fetchVehicleBodyColors={fetchVehicleBodyColors}
                   />
-                  <UpdateVehicleMake
+                  <UpdateBodyColor
                     toggle={() => setIsUpdateModalOpen((state) => !state)}
                     isModalOpen={isUpdateModalOpen}
                     selectedRecord={selectedRecord}
-                    fetchUpdatedVehicleMakes={fetchUpdatedVehicleMakes}
+                    fetchUpdatedVehicleBodyColors={
+                      fetchUpdatedVehicleBodyColors
+                    }
                   />
                 </CardBody>
               </Card>
@@ -379,4 +391,4 @@ const VehicleMake = () => {
   );
 };
 
-export default VehicleMake;
+export default VehicleBodyColor;

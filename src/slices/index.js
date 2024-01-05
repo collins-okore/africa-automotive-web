@@ -72,6 +72,18 @@ import APIKeyReducer from "./apiKey/reducer";
 // Vehicle Make
 import VehicleMakeReducer from "./vehicleMake/reducer";
 
+// Vehicle Make
+import VehicleModelReducer from "./vehicleModel/reducer";
+
+// Vehicle Body Color
+import VehicleBodyColorReducer from "./vehicleBodyColor/reducer";
+
+// Vehicle Body Type
+import VehicleBodyTypeReducer from "./vehicleBodyType/reducer";
+
+// Inspection Fee
+import InspectionFeeReducer from "./inspectionFee/reducer";
+
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
   Login: LoginReducer,
@@ -100,6 +112,10 @@ const rootReducer = combineReducers({
   Jobs: JobReducer,
   APIKey: APIKeyReducer,
   VehicleMake: VehicleMakeReducer,
+  VehicleModel: VehicleModelReducer,
+  VehicleBodyColor: VehicleBodyColorReducer,
+  VehicleBodyType: VehicleBodyTypeReducer,
+  InspectionFee: InspectionFeeReducer,
 });
 
 export default rootReducer;

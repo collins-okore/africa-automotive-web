@@ -13,8 +13,8 @@ import Payments from "../pages/Payments";
 import Verification from "../pages/Verification";
 import VehicleMake from "../pages/VehicleMake";
 import VehicleModel from "../pages/VehicleModel";
-import BodyColor from "../pages/BodyColor";
-import BodyType from "../pages/BodyType";
+import VehicleBodyColor from "../pages/VehicleBodyColor";
+import VehicleBodyType from "../pages/VehicleBodyType";
 import Reports from "../pages/Reports";
 import InspectionFees from "../pages/InspectionFees";
 
@@ -83,8 +83,8 @@ const authProtectedRoutes = [
   { path: "/verification", component: <Verification /> },
   { path: "/vehicle-make", component: <VehicleMake /> },
   { path: "/vehicle-model", component: <VehicleModel /> },
-  { path: "/body-type", component: <BodyType /> },
-  { path: "/body-color", component: <BodyColor /> },
+  { path: "/body-type", component: <VehicleBodyType /> },
+  { path: "/body-color", component: <VehicleBodyColor /> },
   { path: "/inspection-fees", component: <InspectionFees /> },
   { path: "/reports", component: <Reports /> },
   { path: "/users", component: <Users /> },

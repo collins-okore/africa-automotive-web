@@ -5,16 +5,15 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { updateVehicleMake as onUpdateVehicleMake } from "../../slices/thunks";
-import VehicleMakeForm from "./VehicleMakeForm";
+import { updateVehicleBodyType as onUpdateVehicleBodyType } from "../../slices/thunks";
+import BodyTypeForm from "./BodyTypeForm";
 
-const UpdateVehicleMake = ({
+const UpdateBodyType = ({
   toggle,
   isModalOpen,
   selectedRecord,
-  fetchUpdatedVehicleMakes,
+  fetchUpdatedVehicleBodyTypes,
 }) => {
-  console.log("selectedRecord", selectedRecord);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   // validation
@@ -23,41 +22,39 @@ const UpdateVehicleMake = ({
     enableReinitialize: true,
     initialValues: {
       name: selectedRecord?.name || "",
-      code: selectedRecord?.code || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Please Enter Make"),
-      code: Yup.string().required("Please Enter Code"),
     }),
     onSubmit: (values) => {
-      const updatedVehicleMake = {
+      const updatedData = {
         data: {
           id: selectedRecord.id,
           name: values["name"],
-          code: values["code"],
         },
       };
       // save new order
       setLoading(true);
       setTimeout(1000, () => {});
-      dispatch(onUpdateVehicleMake(updatedVehicleMake)).then((result) => {
+      dispatch(onUpdateVehicleBodyType(updatedData)).then((result) => {
         setLoading(false);
 
         if (result?.payload?.data) {
-          fetchUpdatedVehicleMakes();
+          fetchUpdatedVehicleBodyTypes();
           validation.resetForm();
           toggle();
         }
       });
     },
   });
+
   return (
     <Modal id="showModal" isOpen={isModalOpen} toggle={toggle} centered>
       <ModalHeader className="bg-light p-3" toggle={toggle}>
-        Update Vehicle Make
+        Update Vehicle Body Type
       </ModalHeader>
 
-      <VehicleMakeForm
+      <BodyTypeForm
         validation={validation}
         isUpdate={true}
         loading={loading}
@@ -67,11 +64,11 @@ const UpdateVehicleMake = ({
   );
 };
 
-UpdateVehicleMake.propTypes = {
+UpdateBodyType.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   selectedRecord: PropTypes.object.isRequired,
-  fetchUpdatedVehicleMakes: PropTypes.func.isRequired,
+  fetchUpdatedVehicleBodyTypes: PropTypes.func.isRequired,
 };
 
-export default UpdateVehicleMake;
+export default UpdateBodyType;

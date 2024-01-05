@@ -68,3 +68,15 @@ export * from "./apiKey/thunk";
 
 // Vehilce Make
 export * from "./vehicleMake/thunk";
+
+// Vehilce Model
+export * from "./vehicleModel/thunk";
+
+// Vehilce Body Color
+export * from "./vehicleBodyColor/thunk";
+
+// Vehicle Body Type
+export * from "./vehicleBodyType/thunk";
+
+// Inspection Fee
+export * from "./inspectionFee/thunk";

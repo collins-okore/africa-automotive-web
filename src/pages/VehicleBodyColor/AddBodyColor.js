@@ -5,16 +5,10 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { updateVehicleMake as onUpdateVehicleMake } from "../../slices/thunks";
-import VehicleMakeForm from "./VehicleMakeForm";
+import { addNewVehicleBodyColor as onAddNewVehicleBodyColor } from "../../slices/thunks";
+import VehicleModelForm from "./BodyColorForm";
 
-const UpdateVehicleMake = ({
-  toggle,
-  isModalOpen,
-  selectedRecord,
-  fetchUpdatedVehicleMakes,
-}) => {
-  console.log("selectedRecord", selectedRecord);
+const AddBodyColor = ({ toggle, isModalOpen, fetchVehicleBodyColors }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   // validation
@@ -22,44 +16,41 @@ const UpdateVehicleMake = ({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
-      name: selectedRecord?.name || "",
-      code: selectedRecord?.code || "",
+      name: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Please Enter Make"),
-      code: Yup.string().required("Please Enter Code"),
+      name: Yup.string().required("Please enter body color"),
     }),
     onSubmit: (values) => {
-      const updatedVehicleMake = {
+      const newData = {
         data: {
-          id: selectedRecord.id,
           name: values["name"],
-          code: values["code"],
         },
       };
       // save new order
       setLoading(true);
       setTimeout(1000, () => {});
-      dispatch(onUpdateVehicleMake(updatedVehicleMake)).then((result) => {
+      dispatch(onAddNewVehicleBodyColor(newData)).then((result) => {
         setLoading(false);
 
         if (result?.payload?.data) {
-          fetchUpdatedVehicleMakes();
+          fetchVehicleBodyColors();
           validation.resetForm();
           toggle();
         }
       });
     },
   });
+
   return (
     <Modal id="showModal" isOpen={isModalOpen} toggle={toggle} centered>
       <ModalHeader className="bg-light p-3" toggle={toggle}>
-        Update Vehicle Make
+        Add Vehicle Body Color
       </ModalHeader>
 
-      <VehicleMakeForm
+      <VehicleModelForm
         validation={validation}
-        isUpdate={true}
+        isUpdate={false}
         loading={loading}
         toggle={toggle}
       />
@@ -67,11 +58,10 @@ const UpdateVehicleMake = ({
   );
 };
 
-UpdateVehicleMake.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired,
+AddBodyColor.propTypes = {
   toggle: PropTypes.func.isRequired,
-  selectedRecord: PropTypes.object.isRequired,
-  fetchUpdatedVehicleMakes: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  fetchVehicleBodyColors: PropTypes.func.isRequired,
 };
 
-export default UpdateVehicleMake;
+export default AddBodyColor;

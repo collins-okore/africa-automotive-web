@@ -101,6 +101,36 @@ export const ADD_NEW_VEHICLE_MAKE = "/vehicle-makes";
 export const UPDATE_VEHICLE_MAKE = "/vehicle-makes";
 export const DELETE_VEHICLE_MAKE = "/vehicle-makes";
 
+// Vehicle Model
+export const GET_VEHICLE_MODELS = "/vehicle-models";
+export const ADD_NEW_VEHICLE_MODEL = "/vehicle-models";
+export const UPDATE_VEHICLE_MODEL = "/vehicle-models";
+export const DELETE_VEHICLE_MODEL = "/vehicle-models";
+
+// Vehicle Body Color
+export const GET_VEHICLE_BODY_COLORS = "/vehicle-body-colors";
+export const ADD_NEW_VEHICLE_BODY_COLOR = "/vehicle-body-colors";
+export const UPDATE_VEHICLE_BODY_COLOR = "/vehicle-body-colors";
+export const DELETE_VEHICLE_BODY_COLOR = "/vehicle-body-colors";
+
+// Vehicle Body Type
+export const GET_VEHICLE_BODY_TYPES = "/vehicle-body-types";
+export const ADD_NEW_VEHICLE_BODY_TYPE = "/vehicle-body-types";
+export const UPDATE_VEHICLE_BODY_TYPE = "/vehicle-body-types";
+export const DELETE_VEHICLE_BODY_TYPE = "/vehicle-body-types";
+
+// Inspection Fees
+export const GET_INSPECTION_FEES = "/inspection-fees";
+export const ADD_NEW_INSPECTION_FEE = "/inspection-fees";
+export const UPDATE_INSPECTION_FEE = "/inspection-fees";
+export const DELETE_INSPECTION_FEE = "/inspection-fees";
+
+// Currency
+export const GET_CURRENCY = "/currencies";
+export const ADD_CURRENCY = "/currencies";
+export const UPDATE_CURRENCY = "/currencies";
+export const DELETE_CURRENCY = "/currencies";
+
 // TicketsList
 export const GET_TICKETS_LIST = "/apps/ticket";
 export const ADD_NEW_TICKET = "/apps/ticket";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Form,
   ModalBody,
@@ -6,10 +6,46 @@ import {
   FormFeedback,
   Input,
   Spinner,
+  FormGroup,
 } from "reactstrap";
 import PropTypes from "prop-types";
+import Select from "react-select";
 
-const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
+const VehicleModelForm = ({
+  validation,
+  toggle,
+  isUpdate,
+  loading,
+  vehicleMakeList,
+}) => {
+  const vehicleMakeOptions = useMemo(() => {
+    return vehicleMakeList.map((el) => {
+      return {
+        value: el?.id,
+        label: el?.attributes?.name,
+      };
+    });
+  }, [vehicleMakeList]);
+
+  // Custom styles for react-select
+  const customSelectStyles = {
+    control: (styles) => ({
+      ...styles,
+      borderColor:
+        validation.touched.vehicleMake && validation.errors.vehicleMake
+          ? "red"
+          : styles.borderColor,
+      "&:hover": {
+        borderColor:
+          validation.touched.vehicleMake && validation.errors.vehicleMake
+            ? "red"
+            : styles["&:hover"].borderColor,
+      },
+    }),
+  };
+
+  console.log("Validation Touched ", validation.touched);
+  console.log("Validation Errors ", validation.errors);
   return (
     <Form
       className="tablelist-form"
@@ -22,15 +58,43 @@ const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
       <ModalBody>
         <input type="hidden" id="id-field" />
 
+        {/* <div className="mb-3">
+          <FormGroup>
+            <Label htmlFor="vehicleMake-field" className="form-label">
+              Vehicle Make
+            </Label>
+            <Select
+              name="vehicleMake"
+              id="vehicleMake"
+              value={validation.values.vehicleMake || []}
+              isMulti={true}
+              onChange={(value) => {
+                validation.setFieldValue("vehicleMake", value);
+                // Reset the error when a value is selected
+                validation.setFieldError("vehicleMake", "");
+              }}
+              options={vehicleMakeOptions}
+              onBlur={() => validation.setFieldTouched("vehicleMake", true)}
+              className={
+                validation.touched.vehicleMake && validation.errors.vehicleMake
+                  ? "is-invalid"
+                  : ""
+              }
+              styles={customSelectStyles}
+            />
+            <FormFeedback>{validation.errors.vehicleMake}</FormFeedback>
+          </FormGroup>
+        </div> */}
+
         <div className="mb-3">
           <Label htmlFor="id-field" className="form-label">
-            Vehicle Make
+            Vehicle Model
           </Label>
           <Input
             name="name"
             id="name"
             className="form-control"
-            placeholder="Enter Vehicle Make"
+            placeholder="Enter Vehicle Model"
             type="text"
             validate={{
               required: { value: true },
@@ -45,6 +109,34 @@ const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
           {validation.touched.name && validation.errors.name ? (
             <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
           ) : null}
+        </div>
+
+        <div className="mb-3">
+          <FormGroup>
+            <Label htmlFor="vehicleMake-field" className="form-label">
+              Vehicle Make
+            </Label>
+            <Select
+              name="vehicleMake"
+              id="vehicleMake"
+              value={validation.values.vehicleMake || {}}
+              placeholder="Select vehicle make"
+              onChange={(value) => {
+                validation.setFieldValue("vehicleMake", value);
+                // Reset the error when a value is selected
+                validation.setFieldError("vehicleMake", "");
+              }}
+              options={vehicleMakeOptions}
+              onBlur={() => validation.setFieldTouched("vehicleMake", true)}
+              className={
+                validation.touched.vehicleMake && validation.errors.vehicleMake
+                  ? "is-invalid"
+                  : ""
+              }
+              styles={customSelectStyles}
+            />
+            <FormFeedback>{validation.errors.vehicleMake?.value}</FormFeedback>
+          </FormGroup>
         </div>
 
         <div className="mb-3">
@@ -102,7 +194,6 @@ const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
               </FormFeedback>
             ) : null}
           </div> */}
-
         {/* <div className="mb-3">
             <Label htmlFor="date-field" className="form-label">
               Order Date
@@ -186,7 +277,6 @@ const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
               </div>
             </div> */}
         </div>
-
         {/* <div>
             <Label htmlFor="delivered-status" className="form-label">
               Delivery Status
@@ -238,7 +328,7 @@ const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
                 style={{ marginRight: "8px", marginBottom: "-1px" }}
               ></Spinner>
             )}
-            {isUpdate ? "Update Vehicle Make" : " Add Vehicle Make"}
+            {isUpdate ? "Update Vehicle Model" : " Add Vehicle Model"}
           </button>
         </div>
       </div>
@@ -246,11 +336,12 @@ const VehicleMakeForm = ({ validation, toggle, isUpdate, loading }) => {
   );
 };
 
-VehicleMakeForm.propTypes = {
+VehicleModelForm.propTypes = {
   validation: PropTypes.object.isRequired,
   toggle: PropTypes.func.isRequired,
   isUpdate: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
+  vehicleMakeList: PropTypes.array.isRequired,
 };
 
-export default VehicleMakeForm;
+export default VehicleModelForm;

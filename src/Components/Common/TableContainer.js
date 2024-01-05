@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import {
   useTable,
@@ -154,7 +154,7 @@ const TableContainer = ({
     headerGroups,
     page,
     prepareRow,
-    pageOptions,
+    // pageOptions,
     gotoPage,
     nextPage,
     previousPage,
@@ -176,9 +176,10 @@ const TableContainer = ({
         pageSize: customPageSize,
         selectedRowIds: 0,
         sortBy: [
-          // {
-          //   desc: true,
-          // },
+          {
+            id: "createdAt",
+            desc: true,
+          },
         ],
       },
       manualPagination: true,
@@ -194,6 +195,10 @@ const TableContainer = ({
     usePagination,
     useRowSelect
   );
+
+  useEffect(() => {
+    setSortBy([{ id: "createdAt", desc: true }]);
+  }, [setSortBy]);
 
   const generateSortingIndicator = (column) => {
     return column.isSorted ? (column.isSortedDesc ? " " : "") : "";
@@ -211,8 +216,10 @@ const TableContainer = ({
 
   const [sorted, setSorted] = useState([]);
 
+  console.log("Sorted", sorted);
+
   useEffect(() => {
-    onPageChange(pageIndex + 1, sorted, searchValue);
+    onPageChange({ page: pageIndex + 1, sorted, searchValue });
   }, [pageIndex, pageSize, onPageChange, sorted, searchValue]);
 
   const onSort = (columnId, desc) => {
@@ -223,6 +230,33 @@ const TableContainer = ({
     setSorted([{ id: columnId, desc }]);
     setSortBy([{ id: columnId, desc }]);
   };
+
+  // Determine pages to be displayed in pagination
+  const currentPage = pageIndex + 1;
+  const totalPages = pagination.pageCount;
+
+  const startPage = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
+  const endPage = Math.min(totalPages, startPage + 4);
+
+  const renderPageNumbers = useMemo(() => {
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <React.Fragment key={i}>
+          <li className="page-item">
+            <Link
+              to="#"
+              className={currentPage === i ? "page-link active" : "page-link"}
+              onClick={() => gotoPage(i - 1 || 0)}
+            >
+              {i}
+            </Link>
+          </li>
+        </React.Fragment>
+      );
+    }
+    return pageNumbers;
+  }, [startPage, endPage, gotoPage, currentPage]);
 
   return (
     <Fragment>
@@ -371,8 +405,8 @@ const TableContainer = ({
       <Row className="align-items-center mt-2 g-3 text-center text-sm-start">
         <div className="col-sm">
           <div className="text-muted">
-            Showing<span className="fw-semibold ms-1">{data.length}</span> of{" "}
-            <span className="fw-semibold">{pagination.total}</span> Results
+            Showing<span className="fw-semibold ms-1">{currentPage}</span> of{" "}
+            <span className="fw-semibold">{pagination.pageCount}</span> Pages
           </div>
         </div>
         <div className="col-sm-auto">
@@ -384,7 +418,7 @@ const TableContainer = ({
                 Previous
               </Link>
             </li>
-            {pageOptions.map((item, key) => (
+            {/* {pageOptions.map((item, key) => (
               <React.Fragment key={key}>
                 <li className="page-item">
                   <Link
@@ -398,7 +432,10 @@ const TableContainer = ({
                   </Link>
                 </li>
               </React.Fragment>
-            ))}
+            ))} */}
+
+            {renderPageNumbers}
+
             <li className={!canNextPage ? "page-item disabled" : "page-item"}>
               <Link to="#" className="page-link" onClick={nextPage}>
                 Next

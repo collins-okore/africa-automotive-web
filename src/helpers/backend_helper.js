@@ -240,37 +240,86 @@ export const getOrderList = () => api.get(url.GET_ORDRER_LIST);
 
 /* Inspections */
 
-//get Inspections
 export const getInspections = () => api.get(url.GET_INSPECTIONS);
 
-// add new Inspection
 export const addNewInvoice = (invoice) =>
   api.create(url.ADD_NEW_INSPECTION, invoice);
 
-// update Inspection
 export const updateInvoice = (invoice) =>
   api.update(url.UPDATE_INSPECTION + "/" + invoice._id, invoice);
 
-// delete Inspection
 export const deleteInvoice = (invoice) =>
   api.delete(url.DELETE_INSPECTION + "/" + invoice);
 
 /* Vehicle Makes */
-//get Vehicle Makes
+
 export const getVehicleMakes = (params) =>
   api.get(url.GET_VEHICLE_MAKES, params);
 
-// add new Vehicle Make
-export const addNewVehicleMake = (vehicleMake) =>
-  api.create(url.ADD_NEW_VEHICLE_MAKE, vehicleMake);
+export const addNewVehicleMake = (payload) =>
+  api.create(url.ADD_NEW_VEHICLE_MAKE, payload);
 
-// update Vehicle Makes
-export const updateVehicleMake = (vehicleMake) =>
-  api.update(url.UPDATE_VEHICLE_MAKE + "/" + vehicleMake.data.id, vehicleMake);
+export const updateVehicleMake = (payload) =>
+  api.update(url.UPDATE_VEHICLE_MAKE + "/" + payload.data.id, payload);
 
-// delete Vehicle Makes
-export const deleteVehicleMake = (vehicleMake) =>
-  api.delete(url.DELETE_VEHICLE_MAKE + "/" + vehicleMake.id);
+export const deleteVehicleMake = (payload) =>
+  api.delete(url.DELETE_VEHICLE_MAKE + "/" + payload.id);
+
+/* Vehicle Models */
+
+export const getVehicleModels = (params) =>
+  api.get(url.GET_VEHICLE_MODELS, params);
+
+export const addNewVehicleModel = (payload) =>
+  api.create(url.ADD_NEW_VEHICLE_MODEL, payload);
+
+export const updateVehicleModel = (payload) =>
+  api.update(url.UPDATE_VEHICLE_MODEL + "/" + payload.data.id, payload);
+
+export const deleteVehicleModel = (payload) =>
+  api.delete(url.DELETE_VEHICLE_MODEL + "/" + payload.id);
+
+/* Vehicle Body Color */
+
+export const getVehicleBodyColors = (params) =>
+  api.get(url.GET_VEHICLE_BODY_COLORS, params);
+
+export const addNewVehicleBodyColor = (payload) =>
+  api.create(url.ADD_NEW_VEHICLE_BODY_COLOR, payload);
+
+export const updateVehicleBodyColor = (payload) =>
+  api.update(url.UPDATE_VEHICLE_BODY_COLOR + "/" + payload.data.id, payload);
+
+export const deleteVehicleBodyColor = (payload) =>
+  api.delete(url.DELETE_VEHICLE_BODY_COLOR + "/" + payload.id);
+
+/* Vehicle Body Type*/
+
+export const getVehicleBodyTypes = (params) =>
+  api.get(url.GET_VEHICLE_BODY_TYPES, params);
+
+export const addNewVehicleBodyType = (payload) =>
+  api.create(url.ADD_NEW_VEHICLE_BODY_TYPE, payload);
+
+export const updateVehicleBodyType = (payload) =>
+  api.update(url.UPDATE_VEHICLE_BODY_TYPE + "/" + payload.data.id, payload);
+
+export const deleteVehicleBodyType = (payload) =>
+  api.delete(url.DELETE_VEHICLE_BODY_TYPE + "/" + payload.id);
+
+/* Inspection Fees */
+
+export const getInspectionFees = (params) =>
+  api.get(url.GET_INSPECTION_FEES, params);
+
+export const addNewInspectionFee = (payload) =>
+  api.create(url.ADD_NEW_INSPECTION_FEE, payload);
+
+export const updateInspectionFee = (payload) =>
+  api.update(url.UPDATE_INSPECTION_FEE + "/" + payload.data.id, payload);
+
+export const deleteInspectionFee = (payload) =>
+  api.delete(url.DELETE_INSPECTION_FEE + "/" + payload.id);
 
 // Support Tickets
 // Tickets

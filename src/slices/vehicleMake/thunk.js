@@ -31,7 +31,7 @@ export const addNewVehicleMake = createAsyncThunk(
     try {
       const response = await addNewVehicleMakeApi(vehicleMake);
       console.log("Response", response);
-      toast.success("Vehicle Added Successfully", { autoClose: 3000 });
+      toast.success("Vehicle Make Added Successfully", { autoClose: 3000 });
 
       return response;
     } catch (error) {
