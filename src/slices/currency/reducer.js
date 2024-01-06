@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  getVehicleModels,
-  addNewVehicleModel,
-  updateVehicleModel,
-  deleteVehicleModel,
+  getCurrencies,
+  addNewCurrency,
+  updateCurrency,
+  deleteCurrency,
 } from "./thunk";
 export const initialState = {
   currency: {
@@ -26,28 +26,28 @@ const CurrencySlice = createSlice({
   initialState,
   reducer: {},
   extraReducers: (builder) => {
-    builder.addCase(getVehicleModels.fulfilled, (state, action) => {
-      state.vehicleModel.data = action.payload?.data || state.vehicleModel.data;
-      state.vehicleModel.meta = action.payload?.meta || state.vehicleModel.meta;
+    builder.addCase(getCurrencies.fulfilled, (state, action) => {
+      state.currency.data = action.payload?.data || state.currency.data;
+      state.currency.meta = action.payload?.meta || state.currency.meta;
     });
-    builder.addCase(getVehicleModels.rejected, (state, action) => {
+    builder.addCase(getCurrencies.rejected, (state, action) => {
       console.log(action);
       state.error = action.error?.message || null;
       state.isInvoiceCreated = false;
       state.isInvoiceSuccess = false;
     });
-    builder.addCase(addNewVehicleModel.fulfilled, () => {});
-    builder.addCase(addNewVehicleModel.rejected, (state, action) => {
+    builder.addCase(addNewCurrency.fulfilled, () => {});
+    builder.addCase(addNewCurrency.rejected, (state, action) => {
       state.error = action.error?.message || null;
     });
-    builder.addCase(updateVehicleModel.fulfilled, () => {});
-    builder.addCase(updateVehicleModel.rejected, (state, action) => {
+    builder.addCase(updateCurrency.fulfilled, () => {});
+    builder.addCase(updateCurrency.rejected, (state, action) => {
       state.error = action.error?.message || null;
     });
-    builder.addCase(deleteVehicleModel.fulfilled, (state, action) => {
+    builder.addCase(deleteCurrency.fulfilled, (state, action) => {
       state.error = action.error?.message || null;
     });
-    builder.addCase(deleteVehicleModel.rejected, (state, action) => {
+    builder.addCase(deleteCurrency.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
   },

@@ -139,7 +139,7 @@ const InspectionFee = () => {
       // Prepare sort obj
       let sortArray = [];
       sorted.forEach((el) => {
-        if (el.id !== "vehicleMake") {
+        if ((el.id !== "country", el.id !== "currency")) {
           sortArray.push(`${el.id}:${el.desc ? "desc" : "asc"}`);
         }
       });
@@ -151,12 +151,12 @@ const InspectionFee = () => {
           ...searchObj,
           $or: [
             {
-              name: {
+              amount: {
                 $containsi: searchValue,
               },
             },
             {
-              vehicleMake: {
+              country: {
                 name: {
                   $containsi: searchValue,
                 },
@@ -172,7 +172,7 @@ const InspectionFee = () => {
             page,
             pageSize: pageSize,
           },
-          populate: ["vehicleMake"],
+          populate: ["country", "currency"],
           sort: sortArray,
           filters: {
             ...searchObj,
@@ -226,7 +226,7 @@ const InspectionFee = () => {
       },
       {
         Header: "Country",
-        accessor: "attributes.name",
+        accessor: "attributes.country.data.attributes.name",
         id: "name",
         filterable: false,
         Cell: (cell) => {
@@ -239,7 +239,7 @@ const InspectionFee = () => {
       },
       {
         Header: "Amount",
-        accessor: "attributes.vehicleMake.data.attributes.name",
+        accessor: "attributes.amount",
         id: "vehicleMake",
         filterable: false,
         Cell: (cell) => {
@@ -252,7 +252,7 @@ const InspectionFee = () => {
       },
       {
         Header: "Currency",
-        accessor: "attributes.code",
+        accessor: "attributes.currency.data.attributes.name",
         id: "code",
         filterable: false,
       },

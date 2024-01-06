@@ -4,17 +4,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 //Include Both Helper File with needed methods
 import {
-  getVehicleModels as getVehicleModelsApi,
-  addNewVehicleModel as addNewVehicleModelApi,
-  updateVehicleModel as updateVehicleModelApi,
-  deleteVehicleModel as deleteVehicleModelApi,
+  getCurrencies as getCurrenciesApi,
+  addNewCurrency as addNewCurrencyApi,
+  updateCurrency as updateCurrencyApi,
+  deleteCurrency as deleteCurrencyApi,
 } from "../../helpers/backend_helper";
 
-export const getVehicleModels = createAsyncThunk(
-  "vehicleModel/getVehicleModels",
+export const getCurrencies = createAsyncThunk(
+  "currency/getCurrencies",
   async (params) => {
     try {
-      const response = await getVehicleModelsApi(params);
+      const response = await getCurrenciesApi(params);
       return response;
     } catch (error) {
       toast.error(error, {
@@ -25,17 +25,16 @@ export const getVehicleModels = createAsyncThunk(
   }
 );
 
-export const addNewVehicleModel = createAsyncThunk(
-  "vehicleModel/addNewVehicleModel",
-  async (vehicleModel) => {
+export const addNewCurrency = createAsyncThunk(
+  "currency/addNewCurrency",
+  async (currency) => {
     try {
-      const response = await addNewVehicleModelApi(vehicleModel);
-      console.log("Response", response);
-      toast.success("Vehicle Model Added Successfully", { autoClose: 3000 });
+      const response = await addNewCurrencyApi(currency);
+      toast.success("Currency Added Successfully", { autoClose: 3000 });
 
       return response;
     } catch (error) {
-      toast.error("Vehicle Model Creation Failed", {
+      toast.error("Currency Creation Failed", {
         autoClose: 3000,
       });
       return error;
@@ -43,30 +42,30 @@ export const addNewVehicleModel = createAsyncThunk(
   }
 );
 
-export const updateVehicleModel = createAsyncThunk(
-  "vehicleModel/updateVehicleModel",
-  async (vehicleModel) => {
+export const updateCurrency = createAsyncThunk(
+  "currency/updateCurrency",
+  async (currency) => {
     try {
-      const response = await updateVehicleModelApi(vehicleModel);
-      toast.success("Vehicle Model Updated Successfully", { autoClose: 3000 });
+      const response = await updateCurrencyApi(currency);
+      toast.success("Currency Updated Successfully", { autoClose: 3000 });
       const data = response;
       return data;
     } catch (error) {
-      toast.error("Vehicle Model Update Failed", { autoClose: 3000 });
+      toast.error("Currency Update Failed", { autoClose: 3000 });
       return error;
     }
   }
 );
 
-export const deleteVehicleModel = createAsyncThunk(
-  "vehicleModel/deleteVehicleModel",
-  async (vehicleModel) => {
+export const deleteCurrency = createAsyncThunk(
+  "currency/deleteCurrency",
+  async (currency) => {
     try {
-      const response = await deleteVehicleModelApi(vehicleModel);
-      toast.success("Vehicle Model Deleted Successfully", { autoClose: 3000 });
-      return { vehicleModel, ...response };
+      const response = await deleteCurrencyApi(currency);
+      toast.success("Currency Deleted Successfully", { autoClose: 3000 });
+      return { currency, ...response };
     } catch (error) {
-      toast.error("Vehicle Model Deletion Failed", { autoClose: 3000 });
+      toast.error("Currency Deletion Failed", { autoClose: 3000 });
       return error;
     }
   }

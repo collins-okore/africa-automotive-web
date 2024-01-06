@@ -29,8 +29,8 @@ const UpdateVehicleModel = ({
       name: selectedRecord?.name || "",
       code: selectedRecord?.code || "",
       vehicleMake: {
-        value: selectedRecord?.vehicleMake?.data?.id,
-        label: selectedRecord?.vehicleMake?.data?.attributes?.name,
+        value: selectedRecord?.vehicleMake?.data?.id || "",
+        label: selectedRecord?.vehicleMake?.data?.attributes?.name || "",
       },
     },
     validationSchema: Yup.object({

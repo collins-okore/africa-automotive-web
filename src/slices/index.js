@@ -84,6 +84,15 @@ import VehicleBodyTypeReducer from "./vehicleBodyType/reducer";
 // Inspection Fee
 import InspectionFeeReducer from "./inspectionFee/reducer";
 
+// Currency
+import CurrencyReducer from "./currency/reducer";
+
+// Country
+import CountryReducer from "./country/reducer";
+
+// Country
+import ClientReducer from "./client/reducer";
+
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
   Login: LoginReducer,
@@ -116,6 +125,9 @@ const rootReducer = combineReducers({
   VehicleBodyColor: VehicleBodyColorReducer,
   VehicleBodyType: VehicleBodyTypeReducer,
   InspectionFee: InspectionFeeReducer,
+  Currency: CurrencyReducer,
+  Country: CountryReducer,
+  Client: ClientReducer,
 });
 
 export default rootReducer;

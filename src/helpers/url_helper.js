@@ -126,10 +126,23 @@ export const UPDATE_INSPECTION_FEE = "/inspection-fees";
 export const DELETE_INSPECTION_FEE = "/inspection-fees";
 
 // Currency
-export const GET_CURRENCY = "/currencies";
-export const ADD_CURRENCY = "/currencies";
+export const GET_CURRENCIES = "/currencies";
+export const ADD_NEW_CURRENCY = "/currencies";
 export const UPDATE_CURRENCY = "/currencies";
 export const DELETE_CURRENCY = "/currencies";
+
+// Country
+export const GET_COUNTRIES = "/countries";
+export const ADD_NEW_COUNTRY = "/countries";
+export const UPDATE_COUNTRY = "/countries";
+export const DELETE_COUNTRY = "/countries";
+
+// Client
+export const GET_CLIENTS = "/clients";
+export const GET_CLIENT = "/clients";
+export const ADD_NEW_CLIENT = "/clients";
+export const UPDATE_CLIENT = "/clients";
+export const DELETE_CLIENT = "/clients";
 
 // TicketsList
 export const GET_TICKETS_LIST = "/apps/ticket";

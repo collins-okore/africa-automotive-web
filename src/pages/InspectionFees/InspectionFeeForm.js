@@ -17,6 +17,7 @@ const InspectionFeeForm = ({
   isUpdate,
   loading,
   currencyList,
+  countryList,
 }) => {
   const currencyOptions = useMemo(() => {
     return currencyList.map((el) => {
@@ -26,6 +27,15 @@ const InspectionFeeForm = ({
       };
     });
   }, [currencyList]);
+
+  const countryOptions = useMemo(() => {
+    return countryList.map((el) => {
+      return {
+        value: el?.id,
+        label: el?.attributes?.name,
+      };
+    });
+  }, [countryList]);
 
   // Custom styles for react-select
   const customSelectStyles = {
@@ -60,14 +70,14 @@ const InspectionFeeForm = ({
 
         <div className="mb-3">
           <FormGroup>
-            <Label htmlFor="vehicleMake-field" className="form-label">
+            <Label htmlFor="currency-field" className="form-label">
               Currency
             </Label>
             <Select
               name="currency"
               id="currency"
               value={validation.values.currency || {}}
-              placeholder="Select vehicle make"
+              placeholder="Select currency"
               onChange={(value) => {
                 validation.setFieldValue("currency", value);
                 // Reset the error when a value is selected
@@ -87,12 +97,12 @@ const InspectionFeeForm = ({
         </div>
 
         <div className="mb-3">
-          <Label htmlFor="id-field" className="form-label">
+          <Label htmlFor="fee-field" className="form-label">
             Inspection Fee
           </Label>
           <Input
-            name="name"
-            id="name"
+            name="amount"
+            id="amount"
             className="form-control"
             placeholder="Enter inspection fee"
             type="text"
@@ -101,14 +111,46 @@ const InspectionFeeForm = ({
             }}
             onChange={validation.handleChange}
             onBlur={validation.handleBlur}
-            value={validation.values.name || ""}
+            value={validation.values.amount || ""}
             invalid={
-              validation.touched.name && validation.errors.name ? true : false
+              validation.touched.amount && validation.errors.amount
+                ? true
+                : false
             }
           />
-          {validation.touched.name && validation.errors.name ? (
-            <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+          {validation.touched.amount && validation.errors.amount ? (
+            <FormFeedback type="invalid">
+              {validation.errors.amount}
+            </FormFeedback>
           ) : null}
+        </div>
+
+        <div className="mb-3">
+          <FormGroup>
+            <Label htmlFor="country-field" className="form-label">
+              Country
+            </Label>
+            <Select
+              name="country"
+              id="country"
+              value={validation.values.country || {}}
+              placeholder="Select country"
+              onChange={(value) => {
+                validation.setFieldValue("country", value);
+                // Reset the error when a value is selected
+                validation.setFieldError("country", "");
+              }}
+              options={countryOptions}
+              onBlur={() => validation.setFieldTouched("country", true)}
+              className={
+                validation.touched.country && validation.errors.country
+                  ? "is-invalid"
+                  : ""
+              }
+              styles={customSelectStyles}
+            />
+            <FormFeedback>{validation.errors.country?.value}</FormFeedback>
+          </FormGroup>
         </div>
       </ModalBody>
 
@@ -146,6 +188,7 @@ InspectionFeeForm.propTypes = {
   isUpdate: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   currencyList: PropTypes.array.isRequired,
+  countryList: PropTypes.array.isRequired,
 };
 
 export default InspectionFeeForm;

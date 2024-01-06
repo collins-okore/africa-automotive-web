@@ -5,7 +5,11 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-import { addNewInspectionFee as onAddNewInspectionFee } from "../../slices/thunks";
+import {
+  addNewInspectionFee as onAddNewInspectionFee,
+  getCurrencies as onGetCurrencies,
+  getCountries as onGetCountries,
+} from "../../slices/thunks";
 import InspectionFeeForm from "./InspectionFeeForm";
 import { createSelector } from "reselect";
 
@@ -62,7 +66,8 @@ const AddInspectionFee = ({ toggle, isModalOpen, fetchInspectionFee }) => {
   // Fetch Currency List
   useEffect(() => {
     setLoading(true);
-    dispatch(onGetVehicleMakes()).then(() => {
+    dispatch(onGetCountries());
+    dispatch(onGetCurrencies()).then(() => {
       setLoading(false);
     });
   }, [dispatch]);
@@ -71,11 +76,14 @@ const AddInspectionFee = ({ toggle, isModalOpen, fetchInspectionFee }) => {
   const selectinvoiceProperties = createSelector(
     selectLayoutState,
     (state) => ({
-      vehicleMake: state.vehicleMake.data,
+      currency: state.Currency.currency.data,
+      country: state.Country.country.data,
     })
   );
 
-  const { vehicleMake: vehicleMakeList } = useSelector(selectinvoiceProperties);
+  const { currency: currencyList, country: countryList } = useSelector(
+    selectinvoiceProperties
+  );
 
   return (
     <Modal id="showModal" isOpen={isModalOpen} toggle={toggle} centered>
@@ -88,6 +96,8 @@ const AddInspectionFee = ({ toggle, isModalOpen, fetchInspectionFee }) => {
         isUpdate={false}
         loading={loading}
         toggle={toggle}
+        currencyList={currencyList}
+        countryList={countryList}
       />
     </Modal>
   );

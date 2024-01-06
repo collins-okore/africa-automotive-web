@@ -321,6 +321,47 @@ export const updateInspectionFee = (payload) =>
 export const deleteInspectionFee = (payload) =>
   api.delete(url.DELETE_INSPECTION_FEE + "/" + payload.id);
 
+/* Currency */
+
+export const getCurrencies = (params) => api.get(url.GET_CURRENCIES, params);
+
+export const addNewCurrency = (payload) =>
+  api.create(url.ADD_NEW_CURRENCY, payload);
+
+export const updateCurrency = (payload) =>
+  api.update(url.UPDATE_CURRENCY + "/" + payload.data.id, payload);
+
+export const deleteCurrency = (payload) =>
+  api.delete(url.DELETE_CURRENCY + "/" + payload.id);
+
+/* Countries */
+
+export const getCountries = (params) => api.get(url.GET_COUNTRIES, params);
+
+export const addNewCountry = (payload) =>
+  api.create(url.ADD_NEW_COUNTRY, payload);
+
+export const updateCountry = (payload) =>
+  api.update(url.UPDATE_CURRENCY + "/" + payload.data.id, payload);
+
+export const deleteCountry = (payload) =>
+  api.delete(url.DELETE_CURRENCY + "/" + payload.id);
+
+/* Client */
+
+export const getClients = (params) => api.get(url.GET_CLIENTS, params);
+
+export const getClient = (params) => api.get(url.GET_CLIENT, params);
+
+export const addNewClient = (payload) =>
+  api.create(url.ADD_NEW_CLIENT, payload);
+
+export const updateClient = (payload) =>
+  api.update(url.UPDATE_CLIENT + "/" + payload.data.id, payload);
+
+export const deleteClient = (payload) =>
+  api.delete(url.DELETE_CLIENT + "/" + payload.id);
+
 // Support Tickets
 // Tickets
 export const getTicketsList = () => api.get(url.GET_TICKETS_LIST);
