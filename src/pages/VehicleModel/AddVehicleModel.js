@@ -66,14 +66,16 @@ const AddVehicleModel = ({ toggle, isModalOpen, fetchVehicleModels }) => {
   }, [dispatch]);
 
   const selectLayoutState = (state) => state.VehicleMake;
-  const selectinvoiceProperties = createSelector(
+  const selectVehicleModelProperties = createSelector(
     selectLayoutState,
     (state) => ({
       vehicleMake: state.vehicleMake.data,
     })
   );
 
-  const { vehicleMake: vehicleMakeList } = useSelector(selectinvoiceProperties);
+  const { vehicleMake: vehicleMakeList } = useSelector(
+    selectVehicleModelProperties
+  );
   return (
     <Modal id="showModal" isOpen={isModalOpen} toggle={toggle} centered>
       <ModalHeader className="bg-light p-3" toggle={toggle}>

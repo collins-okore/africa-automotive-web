@@ -50,7 +50,9 @@ const ClientSlice = createSlice({
       state.isInvoiceCreated = false;
       state.isInvoiceSuccess = false;
     });
-    builder.addCase(addNewClient.fulfilled, () => {});
+    builder.addCase(addNewClient.fulfilled, (state, action) => {
+      state.clients.data.push(action.payload?.data);
+    });
     builder.addCase(addNewClient.rejected, (state, action) => {
       state.error = action.error?.message || null;
     });

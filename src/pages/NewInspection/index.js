@@ -5,7 +5,6 @@ import BreadCrumb from "../../Components/Common/BreadCrumb";
 
 import {
   Container,
-  Form,
   Row,
   Col,
   Card,
@@ -29,6 +28,29 @@ import VehicleInfo from "./VehicleInfo";
 import Finish from "./Finish";
 
 const NewInspection = () => {
+  const [inspection, setInspection] = useState({
+    clientId: "",
+    vehicles: [],
+    paymentInfo: {
+      paymentMode: {
+        id: "",
+        name: "",
+        code: "",
+      },
+      paymentType: "",
+      bankName: "",
+      amount: "",
+      chequeNumber: "",
+      referenceNumber: "",
+      dateOfPayment: "",
+      quotationOrInvoiceNumber: "",
+      inspectionNumber: "",
+      currency: "",
+      narration: "",
+      paidBy: "",
+    },
+  });
+
   const [activeTab, setactiveTab] = useState(1);
   const [passedSteps, setPassedSteps] = useState([1]);
   const [modal, setModal] = useState(false);
@@ -53,6 +75,11 @@ const NewInspection = () => {
     }
   }
 
+  const updateInspection = (update) => {
+    setInspection((state) => ({ ...state, ...update }));
+  };
+  console.log("Inspection", inspection);
+
   document.title = "New Inspection - Automotive Africa ";
 
   return (
@@ -65,103 +92,122 @@ const NewInspection = () => {
             <Col xl="12">
               <Card>
                 <CardBody className="checkout-tab">
-                  <Form action="#">
-                    <div className="step-arrow-nav mt-n3 mx-n3 mb-3">
-                      <Nav
-                        className="nav-pills nav-justified custom-nav"
-                        role="tablist"
-                      >
-                        <NavItem role="presentation">
-                          <NavLink
-                            href="#"
-                            className={classnames(
-                              {
-                                active: activeTab === 1,
-                                done: activeTab <= 4 && activeTab >= 0,
-                              },
-                              "p-3 fs-15"
-                            )}
-                            onClick={() => {
-                              toggleTab(1);
-                            }}
-                          >
-                            <i className="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                            Client Info
-                          </NavLink>
-                        </NavItem>
-                        <NavItem role="presentation">
-                          <NavLink
-                            href="#"
-                            className={classnames(
-                              {
-                                active: activeTab === 3,
-                                done: activeTab <= 4 && activeTab > 2,
-                              },
-                              "p-3 fs-15"
-                            )}
-                            onClick={() => {
-                              toggleTab(3);
-                            }}
-                          >
-                            <i className="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                            Payment Info
-                          </NavLink>
-                        </NavItem>
-                        <NavItem role="presentation">
-                          <NavLink
-                            href="#"
-                            className={classnames(
-                              {
-                                active: activeTab === 2,
-                                done: activeTab <= 4 && activeTab > 1,
-                              },
-                              "p-3 fs-15"
-                            )}
-                            onClick={() => {
-                              toggleTab(2);
-                            }}
-                          >
-                            <i className="ri-truck-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                            Vehicle Info
-                          </NavLink>
-                        </NavItem>
+                  <div className="step-arrow-nav mt-n3 mx-n3 mb-3">
+                    <Nav
+                      className="nav-pills nav-justified custom-nav"
+                      role="tablist"
+                    >
+                      <NavItem role="presentation">
+                        <NavLink
+                          href="#"
+                          className={classnames(
+                            {
+                              active: activeTab === 1,
+                              done: activeTab <= 4 && activeTab >= 0,
+                            },
+                            "p-3 fs-15"
+                          )}
+                          onClick={() => {
+                            toggleTab(1);
+                          }}
+                        >
+                          <i className="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                          Client Info
+                        </NavLink>
+                      </NavItem>
+                      <NavItem role="presentation">
+                        <NavLink
+                          href="#"
+                          className={classnames(
+                            {
+                              active: activeTab === 2,
+                              done: activeTab <= 4 && activeTab > 1,
+                            },
+                            "p-3 fs-15"
+                          )}
+                          onClick={() => {
+                            if (inspection.clientId === "") {
+                              return;
+                            }
+                            toggleTab(2);
+                          }}
+                        >
+                          <i className="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                          Payment Info
+                        </NavLink>
+                      </NavItem>
+                      <NavItem role="presentation">
+                        <NavLink
+                          href="#"
+                          className={classnames(
+                            {
+                              active: activeTab === 3,
+                              done: activeTab <= 4 && activeTab > 2,
+                            },
+                            "p-3 fs-15"
+                          )}
+                          onClick={() => {
+                            if (
+                              inspection.clientId === "" ||
+                              inspection.paymentId === ""
+                            ) {
+                              return;
+                            }
+                            toggleTab(3);
+                          }}
+                        >
+                          <i className="ri-truck-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                          Vehicle Info
+                        </NavLink>
+                      </NavItem>
 
-                        <NavItem role="presentation">
-                          <NavLink
-                            href="#"
-                            className={classnames(
-                              {
-                                active: activeTab === 4,
-                                done: activeTab <= 4 && activeTab > 3,
-                              },
-                              "p-3 fs-15"
-                            )}
-                            onClick={() => {
-                              toggleTab(4);
-                            }}
-                          >
-                            <i className="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                            Finish
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                    </div>
+                      <NavItem role="presentation">
+                        <NavLink
+                          href="#"
+                          className={classnames(
+                            {
+                              active: activeTab === 4,
+                              done: activeTab <= 4 && activeTab > 3,
+                            },
+                            "p-3 fs-15"
+                          )}
+                          onClick={() => {
+                            if (
+                              inspection.clientId === "" ||
+                              inspection.vehicles.length === 0 ||
+                              inspection.paymentId === ""
+                            ) {
+                              return;
+                            }
+                            toggleTab(4);
+                          }}
+                        >
+                          <i className="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                          Finish
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                  </div>
 
-                    <TabContent activeTab={activeTab}>
-                      <ClientInfo activeTab={activeTab} toggleTab={toggleTab} />
-                      <PaymentInfo
-                        activeTab={activeTab}
-                        toggleTab={toggleTab}
-                      />
-                      <VehicleInfo
-                        activeTab={activeTab}
-                        toggleTab={toggleTab}
-                        togglemodal={togglemodal}
-                        toggledeletemodal={toggledeletemodal}
-                      />
-                      <Finish />
-                    </TabContent>
-                  </Form>
+                  <TabContent activeTab={activeTab}>
+                    <ClientInfo
+                      activeTab={activeTab}
+                      toggleTab={toggleTab}
+                      updateInspection={updateInspection}
+                    />
+                    <PaymentInfo
+                      activeTab={activeTab}
+                      toggleTab={toggleTab}
+                      updateInspection={updateInspection}
+                    />
+                    <VehicleInfo
+                      activeTab={activeTab}
+                      toggleTab={toggleTab}
+                      togglemodal={togglemodal}
+                      toggledeletemodal={toggledeletemodal}
+                    />
+                    <Finish />
+                  </TabContent>
                 </CardBody>
               </Card>
             </Col>

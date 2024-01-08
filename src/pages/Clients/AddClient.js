@@ -11,7 +11,7 @@ import {
 } from "../../slices/thunks";
 import ClientForm from "./ClientForm";
 
-const AddClient = ({ toggle, isModalOpen, fetchClient }) => {
+const AddClient = ({ toggle, isModalOpen, fetchClient, setNewClient }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   // validation
@@ -57,13 +57,21 @@ const AddClient = ({ toggle, isModalOpen, fetchClient }) => {
       // save new order
       setLoading(true);
       setTimeout(1000, () => {});
-      dispatch(onAddNewClient(data)).then((result) => {
+      dispatch(
+        onAddNewClient({
+          data: data,
+          params: {
+            populate: ["user"],
+          },
+        })
+      ).then((result) => {
         setLoading(false);
-
+        console.log("Result", result);
         if (result?.payload?.data) {
           fetchClient();
           validation.resetForm();
           toggle();
+          if (setNewClient) setNewClient(result.payload.data);
         }
       });
     },
@@ -112,6 +120,7 @@ AddClient.propTypes = {
   toggle: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   fetchClient: PropTypes.func.isRequired,
+  setNewClient: PropTypes.func,
 };
 
 export default AddClient;

@@ -353,14 +353,22 @@ export const getClients = (params) => api.get(url.GET_CLIENTS, params);
 
 export const getClient = (params) => api.get(url.GET_CLIENT, params);
 
-export const addNewClient = (payload) =>
-  api.create(url.ADD_NEW_CLIENT, payload);
+export const addNewClient = (payload, params) =>
+  api.create(url.ADD_NEW_CLIENT, payload, params);
 
 export const updateClient = (payload) =>
   api.update(url.UPDATE_CLIENT + "/" + payload.data.id, payload);
 
 export const deleteClient = (payload) =>
   api.delete(url.DELETE_CLIENT + "/" + payload.id);
+
+/* Payment Mode */
+export const getPaymentModes = (params) =>
+  api.get(url.GET_PAYMENT_MODES, params);
+
+/* Payment Type */
+export const getPaymentTypes = (params) =>
+  api.get(url.GET_PAYMENT_TYPES, params);
 
 // Support Tickets
 // Tickets

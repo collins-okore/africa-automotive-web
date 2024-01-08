@@ -50,6 +50,7 @@ axios.interceptors.response.use(
         break;
       case 403:
         message = "You do not have permissions to access this resource";
+        break;
       default:
         message = error.message || error;
     }
@@ -97,7 +98,12 @@ class APIClient {
   /**
    * post given data to url
    */
-  create = (url, data) => {
+  create = (url, data, params) => {
+    console.log("Params", params);
+    if (params) {
+      const queryString = qs.stringify(params);
+      return axios.post(`${url}?${queryString}`, data);
+    }
     return axios.post(url, data);
   };
   /**

@@ -89,3 +89,9 @@ export * from "./country/thunk";
 
 // Clients
 export * from "./client/thunk";
+
+// Payment Mode
+export * from "./paymentMode/thunk";
+
+// Payment Type
+export * from "./paymentType/thunk";

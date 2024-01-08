@@ -22,7 +22,7 @@ const Revenue = () => {
     setchartData(revenueData);
   }, [revenueData]);
 
-  const onChangeChartPeriod = pType => {
+  const onChangeChartPeriod = (pType) => {
     dispatch(getRevenueChartsData(pType));
   };
 
@@ -33,18 +33,42 @@ const Revenue = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="border-0 align-items-center d-flex">
-          <h4 className="card-title mb-0 flex-grow-1">Revenue</h4>
+          <h4 className="card-title mb-0 flex-grow-1">Inspections</h4>
           <div className="d-flex gap-1">
-            <button type="button" className="btn btn-soft-secondary btn-sm" onClick={() => { onChangeChartPeriod("all"); }}>
+            <button
+              type="button"
+              className="btn btn-soft-secondary btn-sm"
+              onClick={() => {
+                onChangeChartPeriod("all");
+              }}
+            >
               ALL
             </button>
-            <button type="button" className="btn btn-soft-secondary btn-sm" onClick={() => { onChangeChartPeriod("month"); }}>
+            <button
+              type="button"
+              className="btn btn-soft-secondary btn-sm"
+              onClick={() => {
+                onChangeChartPeriod("month");
+              }}
+            >
               1M
             </button>
-            <button type="button" className="btn btn-soft-secondary btn-sm" onClick={() => { onChangeChartPeriod("halfyear"); }}>
+            <button
+              type="button"
+              className="btn btn-soft-secondary btn-sm"
+              onClick={() => {
+                onChangeChartPeriod("halfyear");
+              }}
+            >
               6M
             </button>
-            <button type="button" className="btn btn-soft-primary btn-sm" onClick={() => { onChangeChartPeriod("year"); }}>
+            <button
+              type="button"
+              className="btn btn-soft-primary btn-sm"
+              onClick={() => {
+                onChangeChartPeriod("year");
+              }}
+            >
               1Y
             </button>
           </div>
@@ -57,22 +81,22 @@ const Revenue = () => {
                 <h5 className="mb-1">
                   <CountUp start={0} end={7585} duration={3} separator="," />
                 </h5>
-                <p className="text-muted mb-0">Orders</p>
+                <p className="text-muted mb-0">Inspections</p>
               </div>
             </Col>
             <Col xs={6} sm={3}>
               <div className="p-3 border border-dashed border-start-0">
                 <h5 className="mb-1">
                   <CountUp
-                    suffix="k"
-                    prefix="$"
+                    suffix=""
+                    prefix=""
                     start={0}
                     decimals={2}
-                    end={22.89}
+                    end={22}
                     duration={3}
                   />
                 </h5>
-                <p className="text-muted mb-0">Earnings</p>
+                <p className="text-muted mb-0">Clients</p>
               </div>
             </Col>
             <Col xs={6} sm={3}>
@@ -80,7 +104,7 @@ const Revenue = () => {
                 <h5 className="mb-1">
                   <CountUp start={0} end={367} duration={3} />
                 </h5>
-                <p className="text-muted mb-0">Refunds</p>
+                <p className="text-muted mb-0">Pending Invoices</p>
               </div>
             </Col>
             <Col xs={6} sm={3}>
@@ -103,7 +127,10 @@ const Revenue = () => {
         <CardBody className="p-0 pb-2">
           <div className="w-100">
             <div dir="ltr">
-              <RevenueCharts series={chartData} dataColors='["--vz-light",  "--vz-primary", "--vz-secondary"]' />
+              <RevenueCharts
+                series={chartData}
+                dataColors='["--vz-light",  "--vz-primary", "--vz-secondary"]'
+              />
             </div>
           </div>
         </CardBody>

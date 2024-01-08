@@ -31,7 +31,7 @@ const ClientForm = ({ validation, toggle, isUpdate, loading }) => {
                 First Name
               </Label>
               <Input
-                firstName="firstName"
+                name="firstName"
                 id="firstName"
                 className="form-control"
                 placeholder="Enter first name"
@@ -61,7 +61,7 @@ const ClientForm = ({ validation, toggle, isUpdate, loading }) => {
                 Other Names
               </Label>
               <Input
-                otherNames="otherNames"
+                name="otherNames"
                 id="otherNames"
                 className="form-control"
                 placeholder="Enter other names"

@@ -1,63 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
-import { Row, Col, TabPane, Label, Input, Form } from "reactstrap";
+import {
+  Row,
+  Col,
+  TabPane,
+  Label,
+  Input,
+  Form,
+  Card,
+  FormFeedback,
+} from "reactstrap";
 
 import Select from "react-select";
 import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { Link } from "react-router-dom";
+import AddClient from "../Clients/AddClient";
 
-import { addNewClient as onAddNewClient } from "../../slices/thunks";
+import { getClients as onGetClients } from "../../slices/thunks";
 
-const ClientInformation = ({ toggleTab, activeTab }) => {
+const ClientInfo = ({ toggleTab, updateInspection }) => {
   const dispatch = useDispatch();
-
-  const [selectedCountry, setselectedCountry] = useState(null);
-  const [selectedState, setselectedState] = useState(null);
-
-  function handleSelectCountry(selectedCountry) {
-    setselectedCountry(selectedCountry);
-  }
-
-  function handleSelectState(selectedState) {
-    setselectedState(selectedState);
-  }
-
-  const productState = [
-    {
-      options: [
-        { label: "Select State...", value: "Select State" },
-        { label: "Alabama", value: "Alabama" },
-        { label: "Alaska", value: "Alaska" },
-        { label: "American Samoa", value: "American Samoa" },
-        { label: "California", value: "California" },
-        { label: "Colorado", value: "Colorado" },
-        { label: "District Of Columbia", value: "District Of Columbia" },
-        { label: "Florida", value: "Florida" },
-        { label: "Georgia", value: "Georgia" },
-        { label: "Guam", value: "Guam" },
-        { label: "Hawaii", value: "Hawaii" },
-        { label: "Idaho", value: "Idaho" },
-        { label: "Kansas", value: "Kansas" },
-        { label: "Louisiana", value: "Louisiana" },
-        { label: "Montana", value: "Montana" },
-        { label: "Nevada", value: "Nevada" },
-        { label: "New Jersey", value: "New Jersey" },
-        { label: "New Mexico", value: "New Mexico" },
-        { label: "New York", value: "New York" },
-      ],
-    },
-  ];
-
-  const productCountry = [
-    {
-      options: [
-        { label: "Select Country...", value: "Select Country" },
-        { label: "United States", value: "United States" },
-      ],
-    },
-  ];
 
   const [loading, setLoading] = useState(false);
 
@@ -65,62 +31,146 @@ const ClientInformation = ({ toggleTab, activeTab }) => {
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
-      email: "",
-      phoneCode: "",
-      phoneNumber: "",
-      firstName: "",
-      otherNames: "",
-      postalAddress: "",
-      postalCode: "",
-      idOrPassportNumber: "",
-      tinNumber: "",
+      client: {
+        value: "",
+        label: "",
+      },
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please enter email"),
-      phoneCode: Yup.string().required("Please enter phone code"),
-      phoneNumber: Yup.string().required("Please enter phone number"),
-      firstName: Yup.string().required("Please enter first name"),
-      otherNames: Yup.string().required("Please enter other names"),
-      postalAddress: Yup.string().required("Please enter postal code"),
-      postalCode: Yup.string().required("Please enter postal code"),
-      idOrPassportNumber: Yup.string().required("Please enter id or passport"),
-      tinNumber: Yup.string().required("Please enter tin number"),
+      client: Yup.object().shape({
+        value: Yup.number().required("Please select a client"),
+      }),
     }),
     onSubmit: (values) => {
-      const data = {
-        data: {
-          email: values["email"],
-          phoneCode: values["phoneCode"],
-          phoneNumber: values["phoneNumber"],
-          firstName: values["firstName"],
-          otherNames: values["otherNames"],
-          postalAddress: values["postalAddress"],
-          postalCode: values["postalCode"],
-          idOrPassportNumber: values["idOrPassportNumber"],
-          tinNumber: values["tinNumber"],
-        },
-      };
-      // save new order
-      setLoading(true);
-      setTimeout(1000, () => {});
-      dispatch(onAddNewClient(data)).then(() => {
-        setLoading(false);
-
-        // if (result?.payload?.data) {
-        //   validation.resetForm();
-        // }
+      updateInspection({
+        clientId: values.client["value"],
       });
+      toggleTab(2);
     },
   });
 
-  const vehicleMakeOptions = useMemo(() => {
-    return vehicleMakeList.map((el) => {
+  // Fetch Client List
+  useEffect(() => {
+    setLoading(true);
+    dispatch(
+      onGetClients({
+        populate: ["user"],
+        pagination: {
+          page: 1,
+          pageSize: 1000,
+        },
+      })
+    ).then(() => {
+      setLoading(false);
+    });
+  }, [dispatch]);
+
+  const fetchClient = () => {
+    dispatch(
+      onGetClients({
+        populate: ["user"],
+        pagination: {
+          page: 1,
+          pageSize: 1000,
+        },
+      })
+    );
+  };
+
+  const selectLayoutState = (state) => state.Client;
+  const selectinvoiceProperties = createSelector(
+    selectLayoutState,
+    (state) => ({
+      clients: state.clients.data,
+    })
+  );
+
+  const { clients: clientsList } = useSelector(selectinvoiceProperties);
+
+  const clientOptions = useMemo(() => {
+    return clientsList.map((el) => {
       return {
         value: el?.id,
-        label: el?.attributes?.name,
+        label: `${el?.attributes?.user?.data?.attributes?.firstName} ${el?.attributes?.user?.data?.attributes?.otherNames}`,
       };
     });
-  }, [vehicleMakeList]);
+  }, [clientsList]);
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const showAddModalForm = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const [selectedClient, setSelectedClient] = useState({
+    id: "",
+    firstName: "",
+    otherNames: "",
+    email: "",
+    phoneCode: "",
+    phoneNumber: "",
+    postalAddress: "",
+    postalCode: "",
+    idOrPassportNumber: "",
+    tinNumber: "",
+  });
+
+  const setNewClient = (client) => {
+    // console.log("Received client", client);
+    const clientOption = {
+      value: client?.id,
+      label: `${client?.attributes?.user?.data?.attributes?.firstName} ${client?.attributes?.user?.data?.attributes?.otherNames}`,
+    };
+    // console.log("Received client", clientOption);
+    validation.setFieldValue("client", clientOption);
+    setSelectedClient({
+      id: client?.id,
+      firstName: client?.attributes?.user?.data?.attributes?.firstName,
+      otherNames: client?.attributes?.user?.data?.attributes?.otherNames,
+      email: client?.attributes?.user?.data?.attributes?.email,
+      phoneCode: client?.attributes?.user?.data?.attributes?.phoneCode,
+      phoneNumber: client?.attributes?.user?.data?.attributes?.phoneNumber,
+      postalAddress: client?.attributes?.user?.data?.attributes?.postalAddress,
+      postalCode: client?.attributes?.user?.data?.attributes?.postalCode,
+      idOrPassportNumber:
+        client?.attributes?.user?.data?.attributes?.idOrPassportNumber,
+      tinNumber: client?.attributes?.user?.data?.attributes?.tinNumber,
+    });
+  };
+
+  const populateSelectedClient = (clientId) => {
+    const client = clientsList.find((el) => el.id === clientId);
+    setSelectedClient({
+      id: client?.id,
+      firstName: client?.attributes?.user?.data?.attributes?.firstName,
+      otherNames: client?.attributes?.user?.data?.attributes?.otherNames,
+      email: client?.attributes?.user?.data?.attributes?.email,
+      phoneCode: client?.attributes?.user?.data?.attributes?.phoneCode,
+      phoneNumber: client?.attributes?.user?.data?.attributes?.phoneNumber,
+      postalAddress: client?.attributes?.user?.data?.attributes?.postalAddress,
+      postalCode: client?.attributes?.user?.data?.attributes?.postalCode,
+      idOrPassportNumber:
+        client?.attributes?.user?.data?.attributes?.idOrPassportNumber,
+      tinNumber: client?.attributes?.user?.data?.attributes?.tinNumber,
+    });
+  };
+
+  // Custom styles for react-select
+  const customSelectStyles = {
+    control: (styles) => ({
+      ...styles,
+      borderColor:
+        validation.touched.client && validation.errors.client
+          ? "red"
+          : styles.borderColor,
+      "&:hover": {
+        borderColor:
+          validation.touched.client && validation.errors.client
+            ? "red"
+            : styles["&:hover"].borderColor,
+      },
+    }),
+  };
+
   return (
     <TabPane tabId={1} id="pills-bill-info">
       <Form
@@ -133,175 +183,222 @@ const ClientInformation = ({ toggleTab, activeTab }) => {
       >
         <div>
           <h5 className="mb-1">Client Information</h5>
-          <p className="text-muted mb-4">Please fill all information below</p>
+          <p className="text-muted mb-4">
+            Please select existing client or add new client
+          </p>
         </div>
 
         <div>
-          <Row>
+          <Row className="align-items-end">
             <Col sm={6}>
               <div className="mb-3">
-                <Label htmlFor="vehicleMake-field" className="form-label">
+                <Label htmlFor="clients-field" className="form-label">
                   Select existing client
                 </Label>
                 <Select
-                  name="vehicleMake"
-                  id="vehicleMake"
-                  value={{}}
-                  placeholder="Select vehicle make"
+                  name="client"
+                  id="client"
+                  value={validation.values.client || ""}
+                  placeholder="Select client"
                   onChange={(value) => {
-                    validation.setFieldValue("vehicleMake", value);
+                    validation.setFieldValue("client", value);
                     // Reset the error when a value is selected
-                    validation.setFieldError("vehicleMake", "");
+                    validation.setFieldError("client", "");
+                    populateSelectedClient(value?.value);
                   }}
-                  options={vehicleMakeOptions}
-                  onBlur={() => validation.setFieldTouched("vehicleMake", true)}
+                  options={clientOptions}
+                  onBlur={() => validation.setFieldTouched("client", true)}
+                  className={
+                    validation.touched.client && validation.errors.client
+                      ? "is-invalid"
+                      : ""
+                  }
+                  styles={customSelectStyles}
                 />
+                <FormFeedback>{validation.errors.client?.value}</FormFeedback>
               </div>
+            </Col>
+
+            <Col sm={5} className="">
+              <div className="mb-3 d-inline mx-3">OR</div>
+              <Link
+                to="#"
+                className="btn btn-secondary mb-3 mx-3"
+                onClick={(e) => {
+                  e.preventDefault();
+                  showAddModalForm();
+                }}
+              >
+                <i className="ri-add-line align-bottom me-1"></i>
+                Add New Client
+              </Link>
             </Col>
           </Row>
-          <Row>
-            <Col sm={6}>
-              <div className="mb-3">
-                <Label htmlFor="billinginfo-firstName" className="form-label">
-                  First Name
-                </Label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="billinginfo-firstName"
-                  placeholder="Enter first name"
-                />
-              </div>
-            </Col>
+          <Card className="p-4 border shadow-none mb-0 mt-4">
+            <Row>
+              <Col sm={6}>
+                <div className="mb-3">
+                  <Label htmlFor="firstName" className="form-label">
+                    First Name
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="firstName"
+                    placeholder="Enter first name"
+                    value={selectedClient.firstName}
+                    disabled
+                  />
+                </div>
+              </Col>
 
-            <Col sm={6}>
-              <div className="mb-3">
-                <Label htmlFor="billinginfo-lastName" className="form-label">
-                  Last Name
-                </Label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="billinginfo-lastName"
-                  placeholder="Enter last name"
-                />
-              </div>
-            </Col>
-          </Row>
+              <Col sm={6}>
+                <div className="mb-3">
+                  <Label htmlFor="otherNames" className="form-label">
+                    Other Names
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="otherNames"
+                    placeholder="Enter other names"
+                    value={selectedClient.otherNames}
+                    disabled
+                  />
+                </div>
+              </Col>
+            </Row>
 
-          <Row>
-            <Col sm={6}>
-              <div className="mb-3">
-                <Label htmlFor="billinginfo-email" className="form-label">
-                  Email
-                  <span className="text-muted">(Optional)</span>
-                </Label>
-                <Input
-                  type="email"
-                  className="form-control"
-                  id="billinginfo-email"
-                  placeholder="Enter email"
-                />
-              </div>
-            </Col>
+            <Row>
+              <Col sm={6}>
+                <div className="mb-3">
+                  <Label htmlFor="email" className="form-label">
+                    Email
+                    {/* <span className="text-muted">(Optional)</span> */}
+                  </Label>
+                  <Input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="Enter email"
+                    value={selectedClient.email}
+                    disabled
+                  />
+                </div>
+              </Col>
 
-            <Col sm={6}>
-              <div className="mb-3">
-                <Label htmlFor="billinginfo-phone" className="form-label">
-                  Phone
-                </Label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="billinginfo-phone"
-                  placeholder="Enter phone no."
-                />
-              </div>
-            </Col>
-          </Row>
+              <Col sm={6}>
+                <div className="mb-3">
+                  <Label htmlFor="phoneNumber" className="form-label">
+                    Phone
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="phoneNumber"
+                    placeholder="Enter phone number"
+                    disabled
+                  />
+                </div>
+              </Col>
+            </Row>
 
-          <div className="mb-3">
-            <Label htmlFor="billinginfo-address" className="form-label">
-              Address
-            </Label>
-            <textarea
-              className="form-control"
-              id="billinginfo-address"
-              placeholder="Enter address"
-              rows="3"
-            ></textarea>
-          </div>
+            <Row>
+              <Col sm={6}>
+                <div className="mb-3">
+                  <Label htmlFor="email" className="form-label">
+                    ID or Passport Number
+                    {/* <span className="text-muted">(Optional)</span> */}
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="idOrPassportNumber"
+                    placeholder="Enter id or passport number"
+                    value={selectedClient.idOrPassportNumber}
+                    disabled
+                  />
+                </div>
+              </Col>
 
-          <Row>
-            <Col md={4}>
-              <div className="mb-3">
-                <Label htmlFor="country" className="form-label">
-                  Country
-                </Label>
-                <Select
-                  value={selectedCountry}
-                  onChange={() => {
-                    handleSelectCountry();
-                  }}
-                  options={productCountry}
-                  id="country"
-                ></Select>
-              </div>
-            </Col>
+              <Col sm={6}>
+                <div className="mb-3">
+                  <Label htmlFor="phoneNumber" className="form-label">
+                    TIN Number
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="tinNumber"
+                    placeholder="Enter phone number"
+                    disabled
+                  />
+                </div>
+              </Col>
+            </Row>
 
-            <Col md={4}>
-              <div className="mb-3">
-                <Label htmlFor="state" className="form-label">
-                  State
-                </Label>
-                <Select
-                  id="state"
-                  value={selectedState}
-                  onChange={() => {
-                    handleSelectState();
-                  }}
-                  options={productState}
-                ></Select>
-              </div>
-            </Col>
+            <Row>
+              <Col sm={12}>
+                <div className="mb-3">
+                  <Label htmlFor="postalCode" className="form-label">
+                    Postal Code
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="postalCode"
+                    placeholder="Enter phone number"
+                    value={`${selectedClient.postalCode}`}
+                    disabled
+                  />
+                </div>
+              </Col>
+            </Row>
 
-            <Col md={4}>
-              <div className="mb-3">
-                <Label htmlFor="zip" className="form-label">
-                  Zip Code
-                </Label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="zip"
-                  placeholder="Enter zip code"
-                />
-              </div>
-            </Col>
-          </Row>
+            <div className="mb-3">
+              <Label htmlFor="address" className="form-label">
+                Address
+              </Label>
+              <textarea
+                className="form-control"
+                id="address"
+                placeholder="Enter postal address"
+                rows="3"
+                value={selectedClient.postalAddress}
+                disabled
+              ></textarea>
+            </div>
+          </Card>
 
           <div className="d-flex align-items-start gap-3 mt-3">
             <button
-              type="button"
+              type="submit"
               className="btn btn-secondary btn-label right ms-auto nexttab"
               onClick={() => {
-                toggleTab(activeTab + 1);
+                // toggleTab(activeTab + 1);
               }}
               disabled={loading}
             >
               <i className="ri-truck-line label-icon align-middle fs-16 ms-2"></i>
-              Proceed to Shipping
+              Proceed to Payment
             </button>
           </div>
         </div>
       </Form>
+      <AddClient
+        toggle={() => setIsAddModalOpen((state) => !state)}
+        isModalOpen={isAddModalOpen}
+        fetchClient={fetchClient}
+        setNewClient={setNewClient}
+      />
     </TabPane>
   );
 };
 
-ClientInformation.propTypes = {
+ClientInfo.propTypes = {
   toggleTab: PropTypes.func.isRequired,
   activeTab: PropTypes.number.isRequired,
+  updateInspection: PropTypes.func.isRequired,
 };
 
-export default ClientInformation;
+export default ClientInfo;

@@ -93,6 +93,12 @@ import CountryReducer from "./country/reducer";
 // Country
 import ClientReducer from "./client/reducer";
 
+// Payment Mode
+import PaymentModeReducer from "./paymentMode/reducer";
+
+// Payment Type
+import PaymentTypeReducer from "./paymentType/reducer";
+
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
   Login: LoginReducer,
@@ -128,6 +134,8 @@ const rootReducer = combineReducers({
   Currency: CurrencyReducer,
   Country: CountryReducer,
   Client: ClientReducer,
+  PaymentMode: PaymentModeReducer,
+  PaymentType: PaymentTypeReducer,
 });
 
 export default rootReducer;

@@ -44,8 +44,7 @@ const VehicleModelForm = ({
     }),
   };
 
-  console.log("Validation Touched ", validation.touched);
-  console.log("Validation Errors ", validation.errors);
+
   return (
     <Form
       className="tablelist-form"

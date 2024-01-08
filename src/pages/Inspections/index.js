@@ -20,7 +20,7 @@ import * as moment from "moment";
 
 //Import actions
 import {
-  getVehicleModels as onGetVehicleModels,
+  getInspections as onGetVehicleModels,
   deleteVehicleModel as onDeleteVehicleModel,
 } from "../../slices/thunks";
 
@@ -51,7 +51,7 @@ const FilterSection = ({ searchValue, setSearchValue }) => {
                     id="search-bar-0"
                     type="text"
                     className="form-control search /"
-                    placeholder={"Search vehicle model"}
+                    placeholder={"Search inspections"}
                     value={searchValue || ""}
                   />
                   <i className="bx bx-search-alt search-icon"></i>
@@ -198,13 +198,13 @@ const VehicleModel = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "ID",
+        Header: "No",
         accessor: "id",
         id: "id",
         filterable: false,
       },
       {
-        Header: "Model",
+        Header: "#INS",
         accessor: "attributes.name",
         id: "name",
         filterable: false,
@@ -217,9 +217,9 @@ const VehicleModel = () => {
         },
       },
       {
-        Header: "Make",
+        Header: "Client",
         accessor: "attributes.vehicleMake.data.attributes.name",
-        id: "vehicleMake",
+        id: "client",
         filterable: false,
         Cell: (cell) => {
           return (
@@ -230,9 +230,40 @@ const VehicleModel = () => {
         },
       },
       {
-        Header: "Code",
+        Header: "Vehicle Make",
         accessor: "attributes.code",
-        id: "code",
+        id: "vehicleMake",
+        filterable: false,
+      },
+
+      {
+        Header: "Vehicle Model",
+        accessor: "attributes.code",
+        id: "vehicleModel",
+        filterable: false,
+      },
+      {
+        Header: "Chasis Number",
+        accessor: "attributes.code",
+        id: "chasisNumber",
+        filterable: false,
+      },
+      {
+        Header: "COR",
+        accessor: "attributes.code",
+        id: "cor",
+        filterable: false,
+      },
+      {
+        Header: "Status",
+        accessor: "attributes.code",
+        id: "status",
+        filterable: false,
+      },
+      {
+        Header: "Date of Inspection",
+        accessor: "attributes.code",
+        id: "dateOfInspection",
         filterable: false,
       },
 
@@ -313,24 +344,19 @@ const VehicleModel = () => {
         />
 
         <Container fluid>
-          <BreadCrumb title="Vehicle Model List" pageTitle="Vehicle Models" />
+          <BreadCrumb title="Inspections List" pageTitle="Inspections" />
 
           <Row>
             <Col lg={12}>
               <Card id="invoiceList">
                 <CardHeader className="border-0">
                   <div className="d-flex align-items-center">
-                    <h5 className="card-title mb-0 flex-grow-1">
-                      Vehicle Models
-                    </h5>
+                    <h5 className="card-title mb-0 flex-grow-1">Inspections</h5>
                     <div className="flex-shrink-0">
                       <div className="d-flex gap-2 flex-wrap">
                         <Link
-                          to="#"
+                          to="/new-inspection"
                           className="btn btn-secondary"
-                          onClick={(e) => {
-                            e.preventDefault();
-                          }}
                         >
                           <i className="ri-add-line align-bottom me-1"></i>
                           New Inspection

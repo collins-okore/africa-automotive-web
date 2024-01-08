@@ -14,13 +14,21 @@ const Finish = () => {
             style={{ width: "120px", height: "120px" }}
           ></lord-icon>
         </div>
-        <h5>Thank you ! Your Order is Completed !</h5>
+        <h5>Inspection Confirmation</h5>
         <p className="text-muted">
-          You will receive an order confirmation email with details of your
-          order.
+          Please Confirm all the details of inspection then submit
         </p>
 
-        <h3 className="fw-semibold">
+        <button
+          type="button"
+          className="btn btn-secondary btn-label right ms-auto nexttab"
+          onClick={() => {}}
+        >
+          <i className="ri-check-double-line label-icon align-middle fs-16 ms-2"></i>
+          Submit Inspection
+        </button>
+
+        {/* <h3 className="fw-semibold">
           Order ID:{" "}
           <a
             href="apps-ecommerce-order-details"
@@ -28,7 +36,7 @@ const Finish = () => {
           >
             VZ2451
           </a>
-        </h3>
+        </h3> */}
       </div>
     </TabPane>
   );

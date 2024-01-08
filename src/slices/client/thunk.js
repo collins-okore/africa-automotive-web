@@ -43,10 +43,11 @@ export const getClient = createAsyncThunk(
 
 export const addNewClient = createAsyncThunk(
   "client/addNewClient",
-  async (client) => {
+  async (payload) => {
     try {
-      const response = await addNewClientApi(client);
-      console.log("Response", response);
+      console.log("adding new client", payload.params);
+      const response = await addNewClientApi(payload.data, payload.params);
+      // console.log("Response", response);
       toast.success("Client Added Successfully", { autoClose: 3000 });
 
       return response;

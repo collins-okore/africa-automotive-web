@@ -144,6 +144,12 @@ export const ADD_NEW_CLIENT = "/clients";
 export const UPDATE_CLIENT = "/clients";
 export const DELETE_CLIENT = "/clients";
 
+// Payment Mode
+export const GET_PAYMENT_MODES = "/payment-modes";
+
+// Payment Type
+export const GET_PAYMENT_TYPES = "/payment-types";
+
 // TicketsList
 export const GET_TICKETS_LIST = "/apps/ticket";
 export const ADD_NEW_TICKET = "/apps/ticket";
