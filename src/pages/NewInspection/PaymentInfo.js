@@ -32,7 +32,10 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
       payment: { label: "", value: "" },
     },
     validationSchema: Yup.object({
-      payment: Yup.object().required("Please select payment"),
+      // payment: Yup.object().required("Please select payment"),
+      payment: Yup.object().shape({
+        value: Yup.number().required("Please select payment"),
+      }),
       // bankName: Yup.string().when("paymentMode", {
       //   is: (paymentMode) => paymentMode === "BANK_DEPOSIT",
       //   then: Yup.string().required("Please enter bank name"),
@@ -98,6 +101,7 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
           page: 1,
           pageSize: 1000,
         },
+        filter: [{ fieldName: "booked", value: false }],
       })
     ).then(() => {
       setLoading(false);

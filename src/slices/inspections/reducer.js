@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getInspections, getInspection } from "./thunk";
+import { getInspections, getInspection, inspect } from "./thunk";
 export const initialState = {
   inspections: {
     data: [],
@@ -42,6 +42,8 @@ const InspectionSlice = createSlice({
     builder.addCase(getInspection.fulfilled, (state, action) => {
       state.inspection = action.payload.data;
     });
+    builder.addCase(inspect.fulfilled, () => {});
+    builder.addCase(inspect.rejected, () => {});
   },
 });
 

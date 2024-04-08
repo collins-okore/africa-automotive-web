@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 
-import {
-  CardBody,
-  Row,
-  Col,
-  Card,
-  Table,
-  CardHeader,
-  TabPane,
-} from "reactstrap";
+import { CardBody, Row, Col, Card, TabPane, Spinner } from "reactstrap";
 
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import * as moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 import { addNewInspection as onAddNewInspection } from "../../slices/thunks";
 
 const Finish = ({ inspection }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -42,9 +36,11 @@ const Finish = ({ inspection }) => {
     };
     dispatch(onAddNewInspection(newInspection)).then((result) => {
       setLoading(false);
-
+      console.log("Result", result);
       if (result?.payload?.data) {
+        console.log("Inspection booked successfully", result?.payload?.data);
         // Redirect to view inspection page
+        navigate(`/inspections/new`);
       }
     });
   };
@@ -198,6 +194,13 @@ const Finish = ({ inspection }) => {
             }}
           >
             <i className="ri-check-double-line label-icon align-middle fs-16 ms-2"></i>
+            {loading && (
+              <Spinner
+                color="light"
+                size="sm"
+                style={{ marginRight: "8px", marginBottom: "-1px" }}
+              ></Spinner>
+            )}
             Submit Inspection
           </button>
         </div>

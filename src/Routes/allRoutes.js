@@ -49,6 +49,9 @@ import Register from "../pages/Authentication/Register";
 // User Profile
 import Users from "../pages/Users";
 
+// Print Report Routes
+import Receipt from "../pages/PrintReports/Receipt";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/index", component: <Dashboard /> },
@@ -97,4 +100,7 @@ const publicRoutes = [
   { path: "/auth-pass-reset-basic", component: <BasicPasswReset /> },
 ];
 
-export { authProtectedRoutes, publicRoutes };
+const printReportRoutes = [
+  { path: "/print-report/receipt", component: <Receipt /> },
+];
+export { authProtectedRoutes, publicRoutes, printReportRoutes };

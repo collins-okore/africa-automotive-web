@@ -13,12 +13,13 @@ const CountryOfOrigin = ({ validation }) => {
     control: (styles) => ({
       ...styles,
       borderColor:
-        validation.touched.country && validation.errors.country
+        validation.touched.countryOfOrigin && validation.errors.countryOfOrigin
           ? "red"
           : styles.borderColor,
       "&:hover": {
         borderColor:
-          validation.touched.country && validation.errors.country
+          validation.touched.countryOfOrigin &&
+          validation.errors.countryOfOrigin
             ? "red"
             : styles["&:hover"].borderColor,
       },

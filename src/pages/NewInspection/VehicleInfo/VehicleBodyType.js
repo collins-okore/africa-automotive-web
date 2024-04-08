@@ -59,6 +59,11 @@ const VehicleBodyType = ({ validation }) => {
         onBlur={() => validation.setFieldTouched("bodyType", true)}
         value={validation.values.bodyType || ""}
         defaultValue={validation.values.bodyType || ""}
+        invalid={
+          validation.touched.bodyType && validation.errors.bodyType
+            ? true
+            : false
+        }
       >
         <option value="" disabled>
           Select an option

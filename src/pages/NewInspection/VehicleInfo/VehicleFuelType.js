@@ -58,6 +58,11 @@ const VehicleFuelType = ({ validation }) => {
         }}
         onBlur={() => validation.setFieldTouched("fuelType", true)}
         value={validation.values.fuelType || ""}
+        invalid={
+          validation.touched.fuelType && validation.errors.fuelType
+            ? true
+            : false
+        }
       >
         <option value="" disabled selected>
           Select an option
@@ -68,8 +73,8 @@ const VehicleFuelType = ({ validation }) => {
           </option>
         ))}
       </Input>
-      {validation.touched.color && validation.errors.color ? (
-        <FormFeedback type="invalid">{validation.errors.color}</FormFeedback>
+      {validation.touched.fuelType && validation.errors.fuelType ? (
+        <FormFeedback type="invalid">{validation.errors.fuelType}</FormFeedback>
       ) : null}
     </>
   );

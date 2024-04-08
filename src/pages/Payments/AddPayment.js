@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ModalHeader } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { addNewPayment as onAddNewPayment } from "../../slices/thunks";
+import {
+  addNewPayment as onAddNewPayment,
+  getInspectionFees as onGetInspectionFee,
+} from "../../slices/thunks";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
@@ -112,6 +115,37 @@ const AddPayment = ({ toggle, isModalOpen, fetchPayments }) => {
       });
     },
   });
+
+  // Get default inspection fee
+  useEffect(() => {
+    dispatch(
+      onGetInspectionFee({
+        filter: [
+          {
+            fieldName: "default",
+            value: true,
+          },
+        ],
+      })
+    );
+  }, [dispatch]);
+
+  // Get Inspection Fee from store
+  const selectInspectionFee = createSelector(
+    (state) => state.InspectionFee,
+    (state) => ({
+      inspectionFee: state.inspectionFee.data,
+    })
+  );
+  const { inspectionFee } = useSelector(selectInspectionFee);
+
+  // Set default inspection fee
+  useEffect(() => {
+    if (inspectionFee && inspectionFee.length > 0) {
+      validation.setFieldValue("amount", inspectionFee[0].amount);
+    }
+  }, [inspectionFee]);
+
   return (
     <Modal
       id="showModal"

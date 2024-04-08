@@ -22,8 +22,6 @@ import VehicleBodyType from "./VehicleBodyType";
 const VehicleForm = ({ validation, toggle, isUpdate }) => {
   const [loading, setLoading] = useState(false);
 
-  console.log("Form Errors", validation.errors);
-
   return (
     <Form
       className="tablelist-form"
@@ -76,6 +74,12 @@ const VehicleForm = ({ validation, toggle, isUpdate }) => {
                 validation.setFieldTouched("yearOfManufacture", true)
               }
               value={validation.values.yearOfManufacture || ""}
+              invalid={
+                validation.touched.yearOfManufacture &&
+                validation.errors.yearOfManufacture
+                  ? true
+                  : false
+              }
             >
               <option value="" disabled selected>
                 Select an option
@@ -115,6 +119,12 @@ const VehicleForm = ({ validation, toggle, isUpdate }) => {
                 validation.setFieldTouched("yearOfRegistration", true)
               }
               value={validation.values.yearOfRegistration || ""}
+              invalid={
+                validation.touched.yearOfRegistration &&
+                validation.errors.yearOfRegistration
+                  ? true
+                  : false
+              }
             >
               <option value="" disabled selected>
                 Select an option
@@ -255,6 +265,12 @@ const VehicleForm = ({ validation, toggle, isUpdate }) => {
                 validation.setFieldTouched("odometerDistanceUnit", true)
               }
               value={validation.values.odometerDistanceUnit || ""}
+              invalid={
+                validation.touched.odometerDistanceUnit &&
+                validation.errors.odometerDistanceUnit
+                  ? true
+                  : false
+              }
             >
               {["KM"].map((odometerDistanceUnit) => (
                 <option value={odometerDistanceUnit} key={odometerDistanceUnit}>
@@ -367,16 +383,15 @@ const VehicleForm = ({ validation, toggle, isUpdate }) => {
                 altFormat: "d M, Y, G:i K",
                 dateFormat: "d M, Y, G:i K",
               }}
-              onChange={(e) => {
-                validation.setFieldValue("inspectionDate", e && e[0]);
+              onChange={(date) => {
+                validation.setFieldValue("inspectionDate", date[0]);
               }}
               value={validation.values.inspectionDate || ""}
             />
+            <FormFeedback>{validation.errors.inspectionDate}</FormFeedback>
             {validation.touched.inspectionDate &&
             validation.errors.inspectionDate ? (
-              <FormFeedback type="invalid">
-                {validation.errors.inspectionDate}
-              </FormFeedback>
+              <FormFeedback>{validation.errors.inspectionDate}</FormFeedback>
             ) : null}
           </div>
         </div>

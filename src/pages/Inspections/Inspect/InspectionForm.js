@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { addNewVehicleMake as onAddNewVehicleMake } from "../../../slices/thunks";
+import { inspect as onInspect } from "../../../slices/thunks";
 import PropTypes from "prop-types";
 import {
   Form,
@@ -14,8 +14,10 @@ import {
   Row,
 } from "reactstrap";
 import Dropzone from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 
 const InspectionForm = ({ inspection }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   // validation
@@ -29,20 +31,26 @@ const InspectionForm = ({ inspection }) => {
       remarks: "",
     },
     validationSchema: Yup.object({
-      dropBoxLink: Yup.string().required("Please Enter Make"),
-      result: Yup.string().required("Please Enter Code"),
+      dropBoxLink: Yup.string().required("Please Enter dropbox link"),
+      result: Yup.string().required("Please Enter result"),
       remarks: Yup.string(),
     }),
     onSubmit: (values) => {
-      const newVehicleMake = {
-        name: values["name"],
-        code: values["code"],
+      console.log("Submitted values");
+      const inspectionResult = {
+        inspectionId: inspection.id,
+        dropBoxLink: values["dropBoxLink"],
+        result: values["result"],
+        remarks: values["remarks"],
       };
       // save new order
       setLoading(true);
       setTimeout(1000, () => {});
-      dispatch(onAddNewVehicleMake(newVehicleMake)).then(() => {
+      dispatch(onInspect(inspectionResult)).then((payload) => {
+        console.log("Inspection Result", payload);
         validation.resetForm();
+        setLoading(false);
+        navigate("/inspections/view/" + inspection.id);
       });
     },
   });
@@ -141,6 +149,9 @@ const InspectionForm = ({ inspection }) => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
+              value={"Pass"}
+              checked={validation.values.result === "Pass"}
+              onChange={() => validation.setFieldValue("result", "Pass")}
             />
             <Label className="form-check-label" htmlFor="flexRadioDefault1">
               Inspection Passed
@@ -152,6 +163,9 @@ const InspectionForm = ({ inspection }) => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault2"
+              value={"Fail"}
+              checked={validation.values.result === "Fail"}
+              onChange={() => validation.setFieldValue("result", "Fail")}
             />
             <Label className="form-check-label" htmlFor="flexRadioDefault2">
               Inspection Failed

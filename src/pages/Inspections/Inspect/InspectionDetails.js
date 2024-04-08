@@ -119,6 +119,7 @@ const InspectionDetails = ({ inspection }) => {
                   </NavItem>
                   <NavItem>
                     <NavLink
+                      disabled
                       style={{ cursor: "pointer" }}
                       className={classnames({
                         active: navBadgeTab === "2",
@@ -133,6 +134,7 @@ const InspectionDetails = ({ inspection }) => {
                   </NavItem>
                   <NavItem>
                     <NavLink
+                      disabled
                       style={{ cursor: "pointer" }}
                       className={classnames({
                         active: navBadgeTab === "3",

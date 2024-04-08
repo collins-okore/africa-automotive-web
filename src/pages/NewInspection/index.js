@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Import Breadcrumb
 import BreadCrumb from "../../Components/Common/BreadCrumb";
@@ -26,12 +26,18 @@ import ClientInfo from "./ClientInfo";
 import PaymentInfo from "./PaymentInfo";
 import VehicleInfo from "./VehicleInfo";
 import Finish from "./Finish";
+import { useDispatch } from "react-redux";
+
+import { getInspectionFees as onGetInspectionFee } from "../../slices/thunks";
+import { createSelector } from "reselect";
+import { useSelector } from "react-redux";
 
 const NewInspection = () => {
   const [inspection, setInspection] = useState({
     client: {},
     vehicles: [],
     payment: {},
+    inspectionFee: 0,
   });
 
   const [activeTab, setactiveTab] = useState(1);
@@ -61,6 +67,38 @@ const NewInspection = () => {
   const updateInspection = (update) => {
     setInspection((state) => ({ ...state, ...update }));
   };
+
+  const dispatch = useDispatch();
+
+  // Get default inspection fee
+  useEffect(() => {
+    dispatch(
+      onGetInspectionFee({
+        filter: [
+          {
+            fieldName: "default",
+            value: true,
+          },
+        ],
+      })
+    );
+  }, [dispatch]);
+
+  // Get Inspection Fee from store
+  const selectInspectionFee = createSelector(
+    (state) => state.InspectionFee,
+    (state) => ({
+      inspectionFee: state.inspectionFee.data,
+    })
+  );
+  const { inspectionFee } = useSelector(selectInspectionFee);
+
+  // Set default inspection fee
+  useEffect(() => {
+    if (inspectionFee && inspectionFee.length > 0) {
+      updateInspection({ inspectionFee: inspectionFee[0].amount });
+    }
+  }, [inspectionFee]);
 
   document.title = "New Inspection - Automotive Africa ";
 
@@ -191,6 +229,7 @@ const NewInspection = () => {
                       toggledeletemodal={toggledeletemodal}
                       updateInspection={updateInspection}
                       vehicles={inspection?.vehicles}
+                      inspection={inspection}
                     />
                     <Finish inspection={inspection} />
                   </TabContent>

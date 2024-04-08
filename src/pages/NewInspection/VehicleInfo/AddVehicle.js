@@ -6,7 +6,13 @@ import PropTypes from "prop-types";
 
 import VehicleForm from "./VehicleForm";
 
-const AddVehicle = ({ toggle, isModalOpen, updateInspection, vehicles }) => {
+const AddVehicle = ({
+  toggle,
+  isModalOpen,
+  updateInspection,
+  vehicles,
+  vehicleLimitReached,
+}) => {
   // validation
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -35,10 +41,7 @@ const AddVehicle = ({ toggle, isModalOpen, updateInspection, vehicles }) => {
         label: "",
       },
       fuelType: "",
-      transmission: {
-        value: "",
-        label: "",
-      },
+      transmission: "",
       inspectionDate: "",
       narration: "",
     },
@@ -78,7 +81,11 @@ const AddVehicle = ({ toggle, isModalOpen, updateInspection, vehicles }) => {
     }),
 
     onSubmit: (values) => {
+      if (vehicleLimitReached) {
+        return;
+      }
       console.log("Received values", values);
+
       const data = {
         vehicleMake: values["vehicleMake"]["label"],
         vehicleModel: values["vehicleModel"]["label"],
@@ -129,6 +136,7 @@ AddVehicle.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   updateInspection: PropTypes.func,
   vehicles: PropTypes.array.isRequired,
+  vehicleLimitReached: PropTypes.bool.isRequired,
 };
 
 export default AddVehicle;

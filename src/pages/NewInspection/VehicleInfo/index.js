@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Row, Col, TabPane, Container } from "reactstrap";
 
@@ -7,9 +7,13 @@ import AddVehicle from "./AddVehicle";
 import UpdateVehicle from "./UpdateVehicle";
 import * as moment from "moment";
 
-const VehicleInfo = ({ activeTab, toggleTab, vehicles, updateInspection }) => {
-  // const [vehicles, setVehicles] = useState([]);
-
+const VehicleInfo = ({
+  activeTab,
+  toggleTab,
+  vehicles,
+  updateInspection,
+  inspection,
+}) => {
   // Create toggle logic for Add Vehicle Modal - use isAddModalOpen
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const toggleAddModal = () => setIsAddModalOpen(!isAddModalOpen);
@@ -18,12 +22,31 @@ const VehicleInfo = ({ activeTab, toggleTab, vehicles, updateInspection }) => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const toggleUpdateModal = () => setIsUpdateModalOpen(!isUpdateModalOpen);
 
+  const maxVehicles = useMemo(() => {
+    const estimatedVehicles = Math.floor(
+      parseFloat(inspection?.payment?.amount) /
+        parseFloat(inspection?.inspectionFee)
+    );
+    return estimatedVehicles > 0 ? estimatedVehicles : 1;
+  }, [inspection?.payment?.amount, inspection?.inspectionFee]);
+
+  const [vehicleLimitReached, setVehicleLimitReached] = useState(false);
+
+  useEffect(() => {
+    if (vehicles.length >= maxVehicles) {
+      setVehicleLimitReached(true);
+    } else {
+      setVehicleLimitReached(false);
+    }
+  }, [vehicles, maxVehicles]);
+
   return (
     <TabPane tabId={3}>
       <div>
         <h5 className="mb-1">Vehicle Information</h5>
         <p className="text-muted mb-4">
-          Please enter vehicle information below
+          Please enter vehicle information below. Maximum number of vehicles is{" "}
+          {maxVehicles}.
         </p>
       </div>
 
@@ -74,6 +97,7 @@ const VehicleInfo = ({ activeTab, toggleTab, vehicles, updateInspection }) => {
                       onClick={() => {
                         toggleAddModal();
                       }}
+                      disabled={vehicleLimitReached}
                     >
                       <i className="ri-add-fill align-bottom" /> Add Vehicle
                     </button>
@@ -174,6 +198,7 @@ const VehicleInfo = ({ activeTab, toggleTab, vehicles, updateInspection }) => {
             isModalOpen={isAddModalOpen}
             updateInspection={updateInspection}
             vehicles={vehicles}
+            vehicleLimitReached={vehicleLimitReached}
           />
           <UpdateVehicle
             toggle={toggleUpdateModal}
@@ -215,6 +240,7 @@ VehicleInfo.propTypes = {
   toggledeletemodal: PropTypes.func,
   vehicles: PropTypes.array,
   updateInspection: PropTypes.func,
+  inspection: PropTypes.object,
 };
 
 export default VehicleInfo;

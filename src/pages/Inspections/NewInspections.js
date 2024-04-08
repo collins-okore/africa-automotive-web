@@ -106,8 +106,6 @@ const NewInspections = () => {
     searchValue: "",
   });
 
-  console.log(pageCache);
-
   const onPageChange = useCallback(
     ({ page, sorted, searchValue }) => {
       if (sorted.length === 0) {
@@ -168,6 +166,8 @@ const NewInspections = () => {
 
   // Add Modal visibility state for View Receipt
   const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+
+  const [selectedRecord, setSelectedRecord] = useState({});
 
   //Column
   const columns = useMemo(
@@ -321,7 +321,10 @@ const NewInspections = () => {
                 size="sm"
                 color="secondary"
                 style={{ marginRight: 5 }}
-                onClick={() => setIsReceiptModalOpen(true)}
+                onClick={() => {
+                  setIsReceiptModalOpen(true);
+                  setSelectedRecord(rowData);
+                }}
               >
                 {" "}
                 View Receipt{" "}
@@ -398,6 +401,7 @@ const NewInspections = () => {
                   <ViewReceipt
                     toggle={() => setIsReceiptModalOpen((state) => !state)}
                     isModalOpen={isReceiptModalOpen}
+                    inspection={selectedRecord}
                   />
                 </CardBody>
               </Card>

@@ -56,6 +56,11 @@ const Transmission = ({ validation }) => {
           // Reset the error when a value is selected
           validation.setFieldError("transmission", "");
         }}
+        invalid={
+          validation.touched.transmission && validation.errors.transmission
+            ? true
+            : false
+        }
         onBlur={() => validation.setFieldTouched("transmission", true)}
         value={validation.values.transmission || ""}
       >
@@ -68,6 +73,7 @@ const Transmission = ({ validation }) => {
           </option>
         ))}
       </Input>
+
       {validation.touched.transmission && validation.errors.transmission ? (
         <FormFeedback type="invalid">
           {validation.errors.transmission}

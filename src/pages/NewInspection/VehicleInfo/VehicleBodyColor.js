@@ -53,6 +53,9 @@ const VehicleBodyColor = ({ validation }) => {
         onChange={validation.handleChange}
         onBlur={validation.handleBlur}
         value={validation.values.color || ""}
+        invalid={
+          validation.touched.color && validation.errors.color ? true : false
+        }
       >
         <option value="" disabled selected>
           Select an option
