@@ -37,7 +37,7 @@ const InspectionSlice = createSlice({
       state.inspections.meta = action.payload.meta;
     });
     builder.addCase(getInspections.rejected, (state, action) => {
-      state.error = action.payload.error || null;
+      state.error = { errorExists: true };
     });
     builder.addCase(getInspection.fulfilled, (state, action) => {
       state.inspection = action.payload.data;
