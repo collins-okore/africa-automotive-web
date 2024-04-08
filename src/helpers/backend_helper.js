@@ -78,6 +78,8 @@ export const getInspections = (params) => api.get(url.GET_INSPECTIONS, params);
 
 export const addNewInspection = (payload) =>
   api.create(url.ADD_NEW_INSPECTION, payload);
+export const getInspection = (inspectionId) =>
+  api.get(url.GET_INSPECTION + "/" + inspectionId);
 
 export const updateInvoice = (invoice) =>
   api.update(url.UPDATE_INSPECTION + "/" + invoice._id, invoice);

@@ -6,11 +6,16 @@ import {
   Card,
   Container,
   CardHeader,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import TableContainer from "../../Components/Common/TableContainer";
+import DeleteModal from "../../Components/Common/DeleteModal";
 import * as moment from "moment";
 
 //Import actions
@@ -25,7 +30,7 @@ import Loader from "../../Components/Common/Loader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createSelector } from "reselect";
-import ViewReceipt from "./ViewReceipt";
+import UpdateInspection from "./UpdateInspection";
 
 const FilterSection = ({ searchValue, setSearchValue }) => {
   return (
@@ -77,7 +82,7 @@ FilterSection.propTypes = {
   getSearchResults: PropTypes.func,
 };
 
-const NewInspections = () => {
+const FailedInspections = () => {
   const dispatch = useDispatch();
 
   const selectLayoutState = (state) => state.Inspections;
@@ -96,6 +101,11 @@ const NewInspections = () => {
     error,
   } = useSelector(selectinvoiceProperties);
 
+  const [selectedRecord, setSelectedRecord] = useState({});
+
+  //delete invoice
+  const [deleteModal, setDeleteModal] = useState(false);
+
   // Fetch vehicle make list
 
   const pageSize = 10;
@@ -105,8 +115,6 @@ const NewInspections = () => {
     sorted: [{ id: "createdAt", desc: true }],
     searchValue: "",
   });
-
-  console.log(pageCache);
 
   const onPageChange = useCallback(
     ({ page, sorted, searchValue }) => {
@@ -166,14 +174,38 @@ const NewInspections = () => {
     [dispatch]
   );
 
-  // Add Modal visibility state for View Receipt
-  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+  const fetchUpdatedInspections = useCallback(() => {
+    onPageChange(pageCache);
+  }, [pageCache, onPageChange]);
+
+  // Delete Data
+  const onClickDelete = (vehicleModel) => {
+    setSelectedRecord(vehicleModel);
+    setDeleteModal(true);
+  };
+  const [deleting, setDeleting] = useState();
+  const handleDelete = () => {
+    if (selectedRecord) {
+      // setDeleting(true);
+      // dispatch(onDeleteInspections(selectedRecord)).then(() => {
+      //   setDeleting(false);
+      //   fetchUpdatedInspections();
+      //   setDeleteModal(false);
+      // });
+    }
+  };
+
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const showUpdateModalForm = (inspection) => {
+    setSelectedRecord(inspection);
+    setIsUpdateModalOpen(true);
+  };
 
   //Column
   const columns = useMemo(
     () => [
       {
-        Header: "No",
+        Header: "No.",
         accessor: "id",
         id: "id",
         filterable: false,
@@ -191,6 +223,19 @@ const NewInspections = () => {
       //     );
       //   },
       // },
+      {
+        Header: "#INS",
+        accessor: "id",
+        id: "ins-id",
+        filterable: false,
+        Cell: (cell) => {
+          return (
+            <Link to="#" className="fw-medium link-primary">
+              {`#INS-${cell?.value}`}
+            </Link>
+          );
+        },
+      },
       {
         Header: "Client",
         accessor: "client",
@@ -225,58 +270,34 @@ const NewInspections = () => {
         filterable: false,
       },
       {
-        Header: "Customs Ref No.",
-        accessor: "vehicle.customsReferenceNumber",
-        id: "customsReferenceNumber",
-        filterable: true,
-      },
-      {
-        Header: "Type",
-        accessor: "inspectionType",
-        id: "inspectionType",
+        Header: "Transmission",
+        accessor: "vehicle.vehicleTransmission",
+        id: "transmission",
         filterable: false,
-        Cell: (cell) => {
-          switch (cell.value) {
-            case "Walk In":
-              return (
-                <span className="badge text-uppercase bg-success-subtle text-success">
-                  {" "}
-                  {cell.value}{" "}
-                </span>
-              );
-
-            default:
-              return (
-                <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  {" "}
-                  {cell.value}{" "}
-                </span>
-              );
-          }
-        },
       },
+
       {
-        Header: "Payment Status",
+        Header: "Inspection Result",
         accessor: "payment.status",
         id: "paymentStatus",
         filterable: false,
         Cell: (cell) => {
           switch (cell.value) {
-            case "Paid":
+            case "Paidz":
               return (
                 <span className="badge text-uppercase bg-success-subtle text-success">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Pending":
+            case "Pendingz":
               return (
                 <span className="badge text-uppercase bg-warning-subtle text-warning">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Cancelled":
+            case "Cancelledz":
               return (
                 <span className="badge text-uppercase bg-danger-subtle text-danger">
                   {" "}
@@ -286,8 +307,7 @@ const NewInspections = () => {
             default:
               return (
                 <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  {" "}
-                  {cell.value}{" "}
+                  Passed
                 </span>
               );
           }
@@ -295,7 +315,7 @@ const NewInspections = () => {
       },
 
       {
-        Header: "Date Booked",
+        Header: "Date of Inspection",
         accessor: "createdAt",
         id: "createdAt",
         filterable: false,
@@ -317,20 +337,18 @@ const NewInspections = () => {
           const rowData = cellProps.row.original;
           return (
             <>
-              <Button
-                size="sm"
-                color="secondary"
-                style={{ marginRight: 5 }}
-                onClick={() => setIsReceiptModalOpen(true)}
-              >
+              {/* <Button size="sm" color="secondary" style={{ marginRight: 5 }}>
+                View Receipt
+              </Button> */}
+              <Button size="sm" color="primary" style={{ marginRight: 5 }}>
                 {" "}
-                View Receipt{" "}
+                Pay Now{" "}
               </Button>{" "}
               <Link
                 to={`/inspections/inspect/${rowData.id}`}
                 className="btn btn-sm btn-outline-secondary"
               >
-                Inspect
+                Re-inspect
               </Link>
             </>
           );
@@ -340,13 +358,20 @@ const NewInspections = () => {
     []
   );
 
-  document.title = "Inspection List | Automotive Africa";
+  document.title = "Failed Inspection List | Automotive Africa";
 
   return (
     <React.Fragment>
       <div className="page-content">
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={() => handleDelete()}
+          onCloseClick={() => setDeleteModal(false)}
+          loading={deleting}
+        />
+
         <Container fluid>
-          <BreadCrumb title="New Inspections List" pageTitle="Inspections" />
+          <BreadCrumb title="Failed Inspections List" pageTitle="Inspections" />
 
           <Row>
             <Col lg={12}>
@@ -354,19 +379,9 @@ const NewInspections = () => {
                 <CardHeader className="border-0">
                   <div className="d-flex align-items-center">
                     <h5 className="card-title mb-0 flex-grow-1">
-                      New Inspections
+                      Failed Inspections
                     </h5>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex gap-2 flex-wrap">
-                        {/* <Link
-                          to="/new-inspection"
-                          className="btn btn-secondary"
-                        >
-                          <i className="ri-add-line align-bottom me-1"></i>
-                          New Inspection
-                        </Link> */}
-                      </div>
-                    </div>
+                    <div className="flex-shrink-0"></div>
                   </div>
                 </CardHeader>
                 <CardBody className="pt-0">
@@ -395,9 +410,10 @@ const NewInspections = () => {
                     )}
                     <ToastContainer closeButton={false} limit={1} />
                   </div>
-                  <ViewReceipt
-                    toggle={() => setIsReceiptModalOpen((state) => !state)}
-                    isModalOpen={isReceiptModalOpen}
+                  <UpdateInspection
+                    toggle={() => setIsUpdateModalOpen((state) => !state)}
+                    isModalOpen={isUpdateModalOpen}
+                    selectedRecord={selectedRecord}
                   />
                 </CardBody>
               </Card>
@@ -409,4 +425,4 @@ const NewInspections = () => {
   );
 };
 
-export default NewInspections;
+export default FailedInspections;

@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 //Include Both Helper File with needed methods
 import {
   getInspections as getInspectionsApi,
+  getInspection as getInspectionApi,
   addNewInspection as addNewInspectionApi,
 } from "../../helpers/backend_helper";
 
@@ -24,6 +25,18 @@ export const addNewInspection = createAsyncThunk(
   async (payload) => {
     try {
       const response = addNewInspectionApi(payload);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getInspection = createAsyncThunk(
+  "inspections/getInspection",
+  async (inspectionId) => {
+    try {
+      const response = getInspectionApi(inspectionId);
       return response;
     } catch (error) {
       return error;

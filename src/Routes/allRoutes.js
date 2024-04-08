@@ -3,13 +3,16 @@ import { Navigate } from "react-router-dom";
 
 //Dashboard
 
-import DashboardEcommerce from "../pages/DashboardEcommerce";
+import Dashboard from "../pages/Dashboard";
 
 // Inspection
 import NewInspection from "../pages/NewInspection";
 import Inspections from "../pages/Inspections";
 import NewInspections from "../pages/Inspections/NewInspections";
+import Inspect from "../pages/Inspections/Inspect";
 import CompletedInspections from "../pages/Inspections/CompletedInspections";
+import FailedInspections from "../pages/Inspections/FailedInspections";
+import ViewInspection from "../pages/Inspections/ViewInspection";
 import Payments from "../pages/Payments";
 import Verification from "../pages/Verification";
 import VehicleMake from "../pages/VehicleMake";
@@ -18,6 +21,8 @@ import VehicleBodyColor from "../pages/VehicleBodyColor";
 import VehicleBodyType from "../pages/VehicleBodyType";
 import Reports from "../pages/Reports";
 import InspectionFees from "../pages/InspectionFees";
+import PaidInvoices from "../pages/Invoices/PaidInvoices";
+import UnpaidInvoices from "../pages/Invoices/UnpaidInvoices";
 
 // Clients
 import Clients from "../pages/Clients";
@@ -45,15 +50,20 @@ import Register from "../pages/Authentication/Register";
 import Users from "../pages/Users";
 
 const authProtectedRoutes = [
-  { path: "/dashboard", component: <DashboardEcommerce /> },
-  { path: "/index", component: <DashboardEcommerce /> },
+  { path: "/dashboard", component: <Dashboard /> },
+  { path: "/index", component: <Dashboard /> },
   { path: "/new-inspection", component: <NewInspection /> },
   { path: "/inspections", component: <Inspections /> },
   { path: "/inspections/new", component: <NewInspections /> },
   { path: "/inspections/completed", component: <CompletedInspections /> },
+  { path: "/inspections/failed", component: <FailedInspections /> },
+  { path: "/inspections/inspect/:id", component: <Inspect /> },
+  { path: "/inspections/view/:id", component: <ViewInspection /> },
   { path: "/clients", component: <Clients /> },
   { path: "/payments", component: <Payments /> },
   { path: "/verification", component: <Verification /> },
+  { path: "/invoices/paid", component: <PaidInvoices /> },
+  { path: "/invoices/unpaid", component: <UnpaidInvoices /> },
   { path: "/vehicle-make", component: <VehicleMake /> },
   { path: "/vehicle-model", component: <VehicleModel /> },
   { path: "/body-type", component: <VehicleBodyType /> },

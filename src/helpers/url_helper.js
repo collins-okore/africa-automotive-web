@@ -22,6 +22,7 @@ export const UPDATE_USER = "/users";
 // Inspections
 export const GET_INSPECTIONS = "/inspections";
 export const ADD_NEW_INSPECTION = "/inspections";
+export const GET_INSPECTION = "/inspections";
 export const UPDATE_INSPECTION = "/inspections";
 export const DELETE_INSPECTION = "/inspections";
 

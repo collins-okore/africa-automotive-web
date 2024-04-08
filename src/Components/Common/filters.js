@@ -1,10 +1,12 @@
-import React from 'react';
-import { Input } from 'reactstrap';
+import React from "react";
+import { Input } from "reactstrap";
+//import prop-types
+import PropTypes from "prop-types";
 
 export const Filter = ({ column }) => {
   return (
     <div style={{ marginTop: 5 }}>
-      {column.canFilter && column.render('Filter')}
+      {column.canFilter && column.render("Filter")}
     </div>
   );
 };
@@ -18,7 +20,7 @@ export const DefaultColumnFilter = ({
 }) => {
   return (
     <Input
-      value={filterValue || ''}
+      value={filterValue || ""}
       onChange={(e) => {
         setFilter(e.target.value || undefined);
       }}
@@ -40,14 +42,14 @@ export const SelectColumnFilter = ({
 
   return (
     <select
-      id='custom-select'
+      id="custom-select"
       className="form-select"
       value={filterValue}
       onChange={(e) => {
         setFilter(e.target.value || undefined);
       }}
     >
-      <option value=''>All</option>
+      <option value="">All</option>
       {options.map((option) => (
         <option key={option} value={option}>
           {option}
@@ -55,4 +57,19 @@ export const SelectColumnFilter = ({
       ))}
     </select>
   );
+};
+
+// Add prop-types for typechecking
+Filter.propTypes = {
+  column: PropTypes.object,
+};
+
+// Add prop-types for typechecking
+DefaultColumnFilter.propTypes = {
+  column: PropTypes.object,
+};
+
+// Add prop-types for typechecking
+SelectColumnFilter.propTypes = {
+  column: PropTypes.object,
 };

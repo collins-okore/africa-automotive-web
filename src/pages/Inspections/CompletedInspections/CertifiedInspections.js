@@ -3,9 +3,6 @@ import {
   CardBody,
   Row,
   Col,
-  Card,
-  Container,
-  CardHeader,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -13,19 +10,17 @@ import {
   Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import BreadCrumb from "../../Components/Common/BreadCrumb";
-import TableContainer from "../../Components/Common/TableContainer";
-import DeleteModal from "../../Components/Common/DeleteModal";
+import TableContainer from "../../../Components/Common/TableContainer";
 import * as moment from "moment";
 
 //Import actions
-import { getInspections as onGetInspections } from "../../slices/thunks";
+import { getInspections as onGetInspections } from "../../../slices/thunks";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import Loader from "../../Components/Common/Loader";
+import Loader from "../../../Components/Common/Loader";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -81,7 +76,7 @@ FilterSection.propTypes = {
   getSearchResults: PropTypes.func,
 };
 
-const CompletedInspections = () => {
+const CertifiedInspections = () => {
   const dispatch = useDispatch();
 
   const selectLayoutState = (state) => state.Inspections;
@@ -101,9 +96,6 @@ const CompletedInspections = () => {
   } = useSelector(selectinvoiceProperties);
 
   const [selectedRecord, setSelectedRecord] = useState({});
-
-  //delete invoice
-  const [deleteModal, setDeleteModal] = useState(false);
 
   // Fetch vehicle make list
 
@@ -173,15 +165,15 @@ const CompletedInspections = () => {
     [dispatch]
   );
 
-  const fetchUpdatedInspections = useCallback(() => {
-    onPageChange(pageCache);
-  }, [pageCache, onPageChange]);
+  //   const fetchUpdatedInspections = useCallback(() => {
+  //     onPageChange(pageCache);
+  //   }, [pageCache, onPageChange]);
 
-  // Delete Data
-  const onClickDelete = (vehicleModel) => {
-    setSelectedRecord(vehicleModel);
-    setDeleteModal(true);
-  };
+  //   // Delete Data
+  //   const onClickDelete = (vehicleModel) => {
+  //     setSelectedRecord(vehicleModel);
+  //     setDeleteModal(true);
+  //   };
   const [deleting, setDeleting] = useState();
   const handleDelete = () => {
     if (selectedRecord) {
@@ -194,11 +186,17 @@ const CompletedInspections = () => {
     }
   };
 
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const showUpdateModalForm = (inspection) => {
+    setSelectedRecord(inspection);
+    setIsUpdateModalOpen(true);
+  };
+
   //Column
   const columns = useMemo(
     () => [
       {
-        Header: "Inspection No",
+        Header: "No.",
         accessor: "id",
         id: "id",
         filterable: false,
@@ -216,6 +214,19 @@ const CompletedInspections = () => {
       //     );
       //   },
       // },
+      {
+        Header: "#INS",
+        accessor: "id",
+        id: "ins-id",
+        filterable: false,
+        Cell: (cell) => {
+          return (
+            <Link to="#" className="fw-medium link-primary">
+              {`#INS-${cell?.value}`}
+            </Link>
+          );
+        },
+      },
       {
         Header: "Client",
         accessor: "client",
@@ -255,22 +266,48 @@ const CompletedInspections = () => {
         id: "cor",
         filterable: false,
       },
+
       {
-        Header: "Payment Status",
-        accessor: "attributes.code",
-        id: "status",
+        Header: "Inspection Result",
+        accessor: "payment.status",
+        id: "paymentStatus",
         filterable: false,
-      },
-      {
-        Header: "Date of Inspection",
-        accessor: "attributes.code",
-        id: "dateOfInspection",
-        filterable: false,
+        Cell: (cell) => {
+          switch (cell.value) {
+            case "Paidz":
+              return (
+                <span className="badge text-uppercase bg-success-subtle text-success">
+                  {" "}
+                  {cell.value}{" "}
+                </span>
+              );
+            case "Pendingz":
+              return (
+                <span className="badge text-uppercase bg-warning-subtle text-warning">
+                  {" "}
+                  {cell.value}{" "}
+                </span>
+              );
+            case "Cancelledz":
+              return (
+                <span className="badge text-uppercase bg-danger-subtle text-danger">
+                  {" "}
+                  {cell.value}{" "}
+                </span>
+              );
+            default:
+              return (
+                <span className="badge text-uppercase bg-primary-subtle text-primary">
+                  Passed
+                </span>
+              );
+          }
+        },
       },
 
       {
-        Header: "Created At",
-        accessor: "attributes.createdAt",
+        Header: "Date of Inspection",
+        accessor: "createdAt",
         id: "createdAt",
         filterable: false,
         Cell: (cell) => {
@@ -299,19 +336,19 @@ const CompletedInspections = () => {
                 <i className="ri-more-fill align-middle"></i>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-end" end>
-                {/* <DropdownItem href="/apps-invoices-details">
-                  <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "}
-                  View
-                </DropdownItem> */}
-
-                <DropdownItem href="#" onClick={() => {}}>
-                  <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "}
-                  Edit
+                <DropdownItem href={`/inspections/view/${rowData.id}`}>
+                  <i className="ri-eye-line align-bottom me-2 text-muted"></i>{" "}
+                  View Inspection
                 </DropdownItem>
 
-                <DropdownItem divider />
+                <DropdownItem href={`/inspections/view/${rowData.id}`}>
+                  <i className="ri-file-text-line align-bottom me-2 text-muted"></i>{" "}
+                  View Certificate
+                </DropdownItem>
 
-                <DropdownItem
+                {/* <DropdownItem divider /> */}
+
+                {/* <DropdownItem
                   href="#"
                   onClick={() => {
                     onClickDelete({
@@ -322,7 +359,7 @@ const CompletedInspections = () => {
                 >
                   <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
                   Delete
-                </DropdownItem>
+                </DropdownItem> */}
               </DropdownMenu>
             </UncontrolledDropdown>
           );
@@ -332,79 +369,35 @@ const CompletedInspections = () => {
     []
   );
 
-  document.title = "Inspection List | Automotive Africa";
-
   return (
     <React.Fragment>
-      <div className="page-content">
-        <DeleteModal
-          show={deleteModal}
-          onDeleteClick={() => handleDelete()}
-          onCloseClick={() => setDeleteModal(false)}
-          loading={deleting}
-        />
+      <div>
+        {inspections.length > -1 ? (
+          <>
+            {/* Search and filter section */}
 
-        <Container fluid>
-          <BreadCrumb
-            title="Completed Inspections List"
-            pageTitle="Inspections"
-          />
-
-          <Row>
-            <Col lg={12}>
-              <Card id="invoiceList">
-                <CardHeader className="border-0">
-                  <div className="d-flex align-items-center">
-                    <h5 className="card-title mb-0 flex-grow-1">
-                      Completed Inspections
-                    </h5>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex gap-2 flex-wrap">
-                        <Link
-                          to="/new-inspection"
-                          className="btn btn-secondary"
-                        >
-                          <i className="ri-add-line align-bottom me-1"></i>
-                          New Inspection
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardBody className="pt-0">
-                  <div>
-                    {inspections.length > -1 ? (
-                      <>
-                        {/* Search and filter section */}
-
-                        <TableContainer
-                          columns={columns}
-                          data={inspections || []}
-                          customPageSize={pageSize}
-                          pagination={meta?.pagination}
-                          onPageChange={onPageChange}
-                          FilterSection={FilterSection}
-                          className="custom-header-css"
-                          divClass="table-responsive table-card mb-4"
-                          tableClass="align-middle table-nowrap mb-0"
-                          theadClass="table-light table-nowrap"
-                          thClass="table-light text-muted"
-                          SearchPlaceholder={""}
-                        />
-                      </>
-                    ) : (
-                      <Loader error={error} />
-                    )}
-                    <ToastContainer closeButton={false} limit={1} />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+            <TableContainer
+              columns={columns}
+              data={inspections || []}
+              customPageSize={pageSize}
+              pagination={meta?.pagination}
+              onPageChange={onPageChange}
+              FilterSection={FilterSection}
+              className="custom-header-css"
+              divClass="table-responsive table-card mb-4"
+              tableClass="align-middle table-nowrap mb-0"
+              theadClass="table-light table-nowrap"
+              thClass="table-light text-muted"
+              SearchPlaceholder={""}
+            />
+          </>
+        ) : (
+          <Loader error={error} />
+        )}
+        <ToastContainer closeButton={false} limit={1} />
       </div>
     </React.Fragment>
   );
 };
 
-export default CompletedInspections;
+export default CertifiedInspections;

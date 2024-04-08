@@ -41,7 +41,7 @@ const ReviewSlider = () => {
               <div className="flex-grow-1 ms-3">
                 <div>
                   <p className="text-muted mb-1 fst-italic text-truncate-two-lines">
-                    " Great product and looks great, lots of features. "
+                    Great product and looks great, lots of features.
                   </p>
                   <div className="fs-11 align-middle text-warning">
                     <i className="ri-star-fill"></i>
@@ -69,8 +69,7 @@ const ReviewSlider = () => {
               <div className="flex-grow-1 ms-3">
                 <div>
                   <p className="text-muted mb-1 fst-italic text-truncate-two-lines">
-                    " Amazing template, very easy to understand and manipulate.
-                    "
+                    Amazing template, very easy to understand and manipulate.
                   </p>
                   <div className="fs-11 align-middle text-warning">
                     <i className="ri-star-fill"></i>
@@ -100,7 +99,7 @@ const ReviewSlider = () => {
               <div className="flex-grow-1 ms-3">
                 <div>
                   <p className="text-muted mb-1 fst-italic text-truncate-two-lines">
-                    "Very beautiful product and Very helpful customer service."
+                    Very beautiful product and Very helpful customer service.
                   </p>
                   <div className="fs-11 align-middle text-warning">
                     <i className="ri-star-fill"></i>
@@ -128,7 +127,7 @@ const ReviewSlider = () => {
               <div className="flex-grow-1 ms-3">
                 <div>
                   <p className="text-muted mb-1 fst-italic text-truncate-two-lines">
-                    " The product is very beautiful. I like it. "
+                    The product is very beautiful. I like it.
                   </p>
                   <div className="fs-11 align-middle text-warning">
                     <i className="ri-star-fill"></i>

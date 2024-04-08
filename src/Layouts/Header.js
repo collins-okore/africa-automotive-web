@@ -9,17 +9,16 @@ import logoLight from "../assets/images/logo-light.png";
 
 //import Components
 import SearchOption from "../Components/Common/SearchOption";
-import LanguageDropdown from "../Components/Common/LanguageDropdown";
-import WebAppsDropdown from "../Components/Common/WebAppsDropdown";
-import MyCartDropdown from "../Components/Common/MyCartDropdown";
 import FullScreenDropdown from "../Components/Common/FullScreenDropdown";
-import NotificationDropdown from "../Components/Common/NotificationDropdown";
 import ProfileDropdown from "../Components/Common/ProfileDropdown";
 import LightDark from "../Components/Common/LightDark";
 
 import { changeSidebarVisibility } from "../slices/thunks";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
+
+// Import proptype
+import PropTypes from "prop-types";
 
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
   const dispatch = useDispatch();
@@ -173,6 +172,13 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
       </header>
     </React.Fragment>
   );
+};
+
+// Add prop-types for typechecking
+Header.propTypes = {
+  onChangeLayoutMode: PropTypes.func,
+  layoutModeType: PropTypes.string,
+  headerClass: PropTypes.string,
 };
 
 export default Header;

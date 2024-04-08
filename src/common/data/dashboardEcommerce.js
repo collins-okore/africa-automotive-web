@@ -17,7 +17,7 @@ import avatar3 from "../../assets/images/users/avatar-3.jpg";
 import avatar4 from "../../assets/images/users/avatar-4.jpg";
 import avatar6 from "../../assets/images/users/avatar-6.jpg";
 
-const ecomWidgets = [
+const dashboardWidgets = [
   {
     id: 1,
     cardColor: "primary",
@@ -28,7 +28,7 @@ const ecomWidgets = [
     counter: "12",
     link: "View all bookings",
     bgcolor: "secondary",
-    icon: "bx bx-dollar-circle",
+    icon: "bx bx-book",
     decimals: 2,
     prefix: "",
     suffix: "",
@@ -43,7 +43,7 @@ const ecomWidgets = [
     counter: "6894",
     link: "View all inspections",
     bgcolor: "primary",
-    icon: "bx bx-shopping-bag",
+    icon: "bx bx-file",
     decimals: 0,
     prefix: "",
     separator: ",",
@@ -391,7 +391,7 @@ const yearRevenueData = [
 ];
 
 export {
-  ecomWidgets,
+  dashboardWidgets,
   bestSellingProducts,
   topSellers,
   recentOrders,

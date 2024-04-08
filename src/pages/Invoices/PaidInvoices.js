@@ -25,7 +25,6 @@ import Loader from "../../Components/Common/Loader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createSelector } from "reselect";
-import ViewReceipt from "./ViewReceipt";
 
 const FilterSection = ({ searchValue, setSearchValue }) => {
   return (
@@ -43,7 +42,7 @@ const FilterSection = ({ searchValue, setSearchValue }) => {
                     id="search-bar-0"
                     type="text"
                     className="form-control search /"
-                    placeholder={"Search inspections"}
+                    placeholder={"Search paid invoices..."}
                     value={searchValue || ""}
                   />
                   <i className="bx bx-search-alt search-icon"></i>
@@ -77,7 +76,7 @@ FilterSection.propTypes = {
   getSearchResults: PropTypes.func,
 };
 
-const NewInspections = () => {
+const PaidInvoices = () => {
   const dispatch = useDispatch();
 
   const selectLayoutState = (state) => state.Inspections;
@@ -105,8 +104,6 @@ const NewInspections = () => {
     sorted: [{ id: "createdAt", desc: true }],
     searchValue: "",
   });
-
-  console.log(pageCache);
 
   const onPageChange = useCallback(
     ({ page, sorted, searchValue }) => {
@@ -166,16 +163,13 @@ const NewInspections = () => {
     [dispatch]
   );
 
-  // Add Modal visibility state for View Receipt
-  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
-
   //Column
   const columns = useMemo(
     () => [
       {
-        Header: "No",
+        Header: "Invoice No.",
         accessor: "id",
-        id: "id",
+        id: "invoiceNo",
         filterable: false,
       },
       // {
@@ -191,6 +185,7 @@ const NewInspections = () => {
       //     );
       //   },
       // },
+
       {
         Header: "Client",
         accessor: "client",
@@ -205,19 +200,7 @@ const NewInspections = () => {
           );
         },
       },
-      {
-        Header: "Vehicle Make",
-        accessor: "vehicle.vehicleMake",
-        id: "vehicleMake",
-        filterable: false,
-      },
 
-      {
-        Header: "Vehicle Model",
-        accessor: "vehicle.vehicleModel",
-        id: "vehicleModel",
-        filterable: false,
-      },
       {
         Header: "Chasis Number",
         accessor: "vehicle.chasisNumber",
@@ -225,58 +208,47 @@ const NewInspections = () => {
         filterable: false,
       },
       {
-        Header: "Customs Ref No.",
-        accessor: "vehicle.customsReferenceNumber",
-        id: "customsReferenceNumber",
-        filterable: true,
+        Header: "Customs Ref No",
+        accessor: "vehicle.vehicleMake",
+        id: "customsRefereneceNumber",
+        filterable: false,
       },
       {
-        Header: "Type",
-        accessor: "inspectionType",
-        id: "inspectionType",
+        Header: "Inspection Fee",
+        accessor: "id",
+        id: "insepctionFee",
         filterable: false,
         Cell: (cell) => {
-          switch (cell.value) {
-            case "Walk In":
-              return (
-                <span className="badge text-uppercase bg-success-subtle text-success">
-                  {" "}
-                  {cell.value}{" "}
-                </span>
-              );
-
-            default:
-              return (
-                <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  {" "}
-                  {cell.value}{" "}
-                </span>
-              );
-          }
+          return (
+            <Link to="#" className="fw-medium link-primary">
+              {`#INS-${cell?.value}`}
+            </Link>
+          );
         },
       },
+
       {
-        Header: "Payment Status",
+        Header: "Invoice Date",
         accessor: "payment.status",
-        id: "paymentStatus",
+        id: "invoiceDate",
         filterable: false,
         Cell: (cell) => {
           switch (cell.value) {
-            case "Paid":
+            case "Paidz":
               return (
                 <span className="badge text-uppercase bg-success-subtle text-success">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Pending":
+            case "Pendingz":
               return (
                 <span className="badge text-uppercase bg-warning-subtle text-warning">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Cancelled":
+            case "Cancelledz":
               return (
                 <span className="badge text-uppercase bg-danger-subtle text-danger">
                   {" "}
@@ -286,8 +258,7 @@ const NewInspections = () => {
             default:
               return (
                 <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  {" "}
-                  {cell.value}{" "}
+                  Passed
                 </span>
               );
           }
@@ -295,7 +266,7 @@ const NewInspections = () => {
       },
 
       {
-        Header: "Date Booked",
+        Header: "Date of Inspection",
         accessor: "createdAt",
         id: "createdAt",
         filterable: false,
@@ -317,21 +288,9 @@ const NewInspections = () => {
           const rowData = cellProps.row.original;
           return (
             <>
-              <Button
-                size="sm"
-                color="secondary"
-                style={{ marginRight: 5 }}
-                onClick={() => setIsReceiptModalOpen(true)}
-              >
-                {" "}
-                View Receipt{" "}
-              </Button>{" "}
-              <Link
-                to={`/inspections/inspect/${rowData.id}`}
-                className="btn btn-sm btn-outline-secondary"
-              >
-                Inspect
-              </Link>
+              <Button size="sm" color="secondary" style={{ marginRight: 5 }}>
+                View Receipt
+              </Button>
             </>
           );
         },
@@ -340,13 +299,13 @@ const NewInspections = () => {
     []
   );
 
-  document.title = "Inspection List | Automotive Africa";
+  document.title = "Paid Invoices | Automotive Africa";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="New Inspections List" pageTitle="Inspections" />
+          <BreadCrumb title="Paid Invoices" pageTitle="Invoices" />
 
           <Row>
             <Col lg={12}>
@@ -354,18 +313,10 @@ const NewInspections = () => {
                 <CardHeader className="border-0">
                   <div className="d-flex align-items-center">
                     <h5 className="card-title mb-0 flex-grow-1">
-                      New Inspections
+                      Paid Invoices
                     </h5>
                     <div className="flex-shrink-0">
-                      <div className="d-flex gap-2 flex-wrap">
-                        {/* <Link
-                          to="/new-inspection"
-                          className="btn btn-secondary"
-                        >
-                          <i className="ri-add-line align-bottom me-1"></i>
-                          New Inspection
-                        </Link> */}
-                      </div>
+                      <div className="d-flex gap-2 flex-wrap"></div>
                     </div>
                   </div>
                 </CardHeader>
@@ -395,10 +346,6 @@ const NewInspections = () => {
                     )}
                     <ToastContainer closeButton={false} limit={1} />
                   </div>
-                  <ViewReceipt
-                    toggle={() => setIsReceiptModalOpen((state) => !state)}
-                    isModalOpen={isReceiptModalOpen}
-                  />
                 </CardBody>
               </Card>
             </Col>
@@ -409,4 +356,4 @@ const NewInspections = () => {
   );
 };
 
-export default NewInspections;
+export default PaidInvoices;

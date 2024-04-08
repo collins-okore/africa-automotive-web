@@ -6,7 +6,6 @@ const Navdata = () => {
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
   const [isNewInspection, setIsNewInspection] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
   const [isInspections, setIsInspections] = useState(false);
   const [isClients, setIsClients] = useState(false);
   const [isPayments, setIsPayments] = useState(false);
@@ -18,27 +17,8 @@ const Navdata = () => {
   const [isInspectionFees, setIsInspectionFees] = useState(false);
   const [isReports, setIsReports] = useState(false);
   const [isUsers, setIsUsers] = useState(false);
-
-  // Authentication
-  const [isSignIn, setIsSignIn] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [isPasswordReset, setIsPasswordReset] = useState(false);
-  const [isPasswordCreate, setIsPasswordCreate] = useState(false);
-  const [isLockScreen, setIsLockScreen] = useState(false);
-  const [isLogout, setIsLogout] = useState(false);
-  const [isSuccessMessage, setIsSuccessMessage] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  // Pages
-  const [isProfile, setIsProfile] = useState(false);
-  const [isLanding, setIsLanding] = useState(false);
-
-  // Charts
-  const [isApex, setIsApex] = useState(false);
-
-  // Multi Level
-  const [isLevel1, setIsLevel1] = useState(false);
-  const [isLevel2, setIsLevel2] = useState(false);
+  const [isPaidInvoices, setIsPaidInvoices] = useState(false);
+  const [isUnpaidInvoices, setIsUnpaidInvoices] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
 
@@ -93,6 +73,12 @@ const Navdata = () => {
     }
     if (iscurrentState !== "Users") {
       setIsUsers(false);
+    }
+    if (iscurrentState !== "PaidInvoices") {
+      setIsPaidInvoices(false);
+    }
+    if (iscurrentState !== "UnpaidInvoices") {
+      setIsUnpaidInvoices(false);
     }
     // if (iscurrentState === "Widgets") {
     //   history("/widgets");
@@ -182,6 +168,12 @@ const Navdata = () => {
           link: "/inspections/completed",
           parentId: "inspections",
         },
+        {
+          id: "failed-inspections",
+          label: "Failed Inspections",
+          link: "/inspections/failed",
+          parentId: "inspections",
+        },
       ],
     },
     {
@@ -220,6 +212,36 @@ const Navdata = () => {
         e.preventDefault();
         setIsVerification(!isVerification);
         setIscurrentState("Verification");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      label: "Invoices",
+      isHeader: true,
+    },
+    {
+      id: "paid-invoices",
+      label: "Paid Invoices",
+      icon: "ri-file-list-3-line",
+      link: "/invoices/paid",
+      stateVariables: isPaidInvoices,
+      click: function (e) {
+        e.preventDefault();
+        setIsPaidInvoices(!isPaidInvoices);
+        setIscurrentState("PaidInvoices");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "unpaid-invoices",
+      label: "Unpaid Invoices",
+      icon: "ri-file-list-3-line",
+      link: "/invoices/unpaid",
+      stateVariables: isUnpaidInvoices,
+      click: function (e) {
+        e.preventDefault();
+        setIsUnpaidInvoices(!isUnpaidInvoices);
+        setIscurrentState("UnpaidInvoices");
         updateIconSidebar(e);
       },
     },

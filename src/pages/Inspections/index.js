@@ -30,6 +30,7 @@ import Loader from "../../Components/Common/Loader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createSelector } from "reselect";
+import UpdateInspection from "./UpdateInspection";
 
 const FilterSection = ({ searchValue, setSearchValue }) => {
   return (
@@ -194,11 +195,17 @@ const Inspections = () => {
     }
   };
 
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const showUpdateModalForm = (inspection) => {
+    setSelectedRecord(inspection);
+    setIsUpdateModalOpen(true);
+  };
+
   //Column
   const columns = useMemo(
     () => [
       {
-        Header: "Inspection No",
+        Header: "No.",
         accessor: "id",
         id: "id",
         filterable: false,
@@ -216,6 +223,19 @@ const Inspections = () => {
       //     );
       //   },
       // },
+      {
+        Header: "#INS",
+        accessor: "id",
+        id: "ins-id",
+        filterable: false,
+        Cell: (cell) => {
+          return (
+            <Link to="#" className="fw-medium link-primary">
+              {`#INS-${cell?.value}`}
+            </Link>
+          );
+        },
+      },
       {
         Header: "Client",
         accessor: "client",
@@ -255,22 +275,48 @@ const Inspections = () => {
         id: "cor",
         filterable: false,
       },
+
       {
-        Header: "Payment Status",
-        accessor: "attributes.code",
-        id: "status",
+        Header: "Inspection Result",
+        accessor: "payment.status",
+        id: "paymentStatus",
         filterable: false,
-      },
-      {
-        Header: "Date of Inspection",
-        accessor: "attributes.code",
-        id: "dateOfInspection",
-        filterable: false,
+        Cell: (cell) => {
+          switch (cell.value) {
+            case "Paidz":
+              return (
+                <span className="badge text-uppercase bg-success-subtle text-success">
+                  {" "}
+                  {cell.value}{" "}
+                </span>
+              );
+            case "Pendingz":
+              return (
+                <span className="badge text-uppercase bg-warning-subtle text-warning">
+                  {" "}
+                  {cell.value}{" "}
+                </span>
+              );
+            case "Cancelledz":
+              return (
+                <span className="badge text-uppercase bg-danger-subtle text-danger">
+                  {" "}
+                  {cell.value}{" "}
+                </span>
+              );
+            default:
+              return (
+                <span className="badge text-uppercase bg-primary-subtle text-primary">
+                  Passed
+                </span>
+              );
+          }
+        },
       },
 
       {
-        Header: "Created At",
-        accessor: "attributes.createdAt",
+        Header: "Date of Inspection",
+        accessor: "createdAt",
         id: "createdAt",
         filterable: false,
         Cell: (cell) => {
@@ -299,19 +345,24 @@ const Inspections = () => {
                 <i className="ri-more-fill align-middle"></i>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-end" end>
-                {/* <DropdownItem href="/apps-invoices-details">
-                  <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "}
-                  View
-                </DropdownItem> */}
-
-                <DropdownItem href="#" onClick={() => {}}>
-                  <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "}
-                  Edit
+                <DropdownItem href={`/inspections/view/${rowData.id}`}>
+                  <i className="ri-eye-line align-bottom me-2 text-muted"></i>{" "}
+                  View Inspection
                 </DropdownItem>
 
-                <DropdownItem divider />
-
                 <DropdownItem
+                  href="#"
+                  onClick={() => {
+                    showUpdateModalForm(rowData);
+                  }}
+                >
+                  <i className="ri-pencil-line align-bottom me-2 text-muted"></i>{" "}
+                  Edit Inspection
+                </DropdownItem>
+
+                {/* <DropdownItem divider /> */}
+
+                {/* <DropdownItem
                   href="#"
                   onClick={() => {
                     onClickDelete({
@@ -322,7 +373,7 @@ const Inspections = () => {
                 >
                   <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
                   Delete
-                </DropdownItem>
+                </DropdownItem> */}
               </DropdownMenu>
             </UncontrolledDropdown>
           );
@@ -394,6 +445,11 @@ const Inspections = () => {
                     )}
                     <ToastContainer closeButton={false} limit={1} />
                   </div>
+                  <UpdateInspection
+                    toggle={() => setIsUpdateModalOpen((state) => !state)}
+                    isModalOpen={isUpdateModalOpen}
+                    selectedRecord={selectedRecord}
+                  />
                 </CardBody>
               </Card>
             </Col>

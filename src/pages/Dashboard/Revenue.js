@@ -34,7 +34,7 @@ const Revenue = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="border-0 align-items-center d-flex">
-          <h4 className="card-title mb-0 flex-grow-1">Revenue</h4>
+          <h4 className="card-title mb-0 flex-grow-1">Past Year</h4>
           <div className="d-flex gap-1">
             <button
               type="button"
@@ -45,7 +45,7 @@ const Revenue = () => {
             >
               ALL
             </button>
-            <button
+            {/* <button
               type="button"
               className="btn btn-soft-secondary btn-sm"
               onClick={() => {
@@ -71,7 +71,7 @@ const Revenue = () => {
               }}
             >
               1Y
-            </button>
+            </button> */}
           </div>
         </CardHeader>
 
@@ -97,7 +97,7 @@ const Revenue = () => {
                     duration={3}
                   />
                 </h5>
-                <p className="text-muted mb-0">Clients</p>
+                <p className="text-muted mb-0">Total Fees</p>
               </div>
             </Col>
             <Col xs={6} sm={3}>
@@ -105,21 +105,15 @@ const Revenue = () => {
                 <h5 className="mb-1">
                   <CountUp start={0} end={367} duration={3} />
                 </h5>
-                <p className="text-muted mb-0">Pending Invoices</p>
+                <p className="text-muted mb-0">Clients</p>
               </div>
             </Col>
             <Col xs={6} sm={3}>
               <div className="p-3 border border-dashed border-start-0 border-end-0">
-                <h5 className="mb-1 text-success">
-                  <CountUp
-                    start={0}
-                    end={18.92}
-                    decimals={2}
-                    duration={3}
-                    suffix="%"
-                  />
+                <h5 className="mb-1 ">
+                  <CountUp start={0} end={200} decimals={2} duration={3} />
                 </h5>
-                <p className="text-muted mb-0">Conversation Ratio</p>
+                <p className="text-muted mb-0">Vehicles</p>
               </div>
             </Col>
           </Row>

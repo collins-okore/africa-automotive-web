@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getInspections } from "./thunk";
+import { getInspections, getInspection } from "./thunk";
 export const initialState = {
   inspections: {
     data: [],
@@ -11,6 +11,18 @@ export const initialState = {
         total: 0,
       },
     },
+  },
+  inspection: {
+    id: "",
+    vehicleMake: "",
+    vehicleModel: "",
+    chasisNumber: "",
+    customsReferenceNumber: "",
+    countryOfOrigin: "",
+    color: "",
+    engineNumber: "",
+    yearOfManufacture: "",
+    odometerOnEC: "",
   },
   error: {},
 };
@@ -26,6 +38,9 @@ const InspectionSlice = createSlice({
     });
     builder.addCase(getInspections.rejected, (state, action) => {
       state.error = action.payload.error || null;
+    });
+    builder.addCase(getInspection.fulfilled, (state, action) => {
+      state.inspection = action.payload.data;
     });
   },
 });

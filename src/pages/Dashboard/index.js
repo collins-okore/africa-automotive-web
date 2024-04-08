@@ -5,7 +5,7 @@ import Widget from "./Widgets";
 import RecentActivity from "./RecentActivity";
 // import RecentOrders from "./RecentOrders";
 import Revenue from "./Revenue";
-import Section from "./Section";
+import Section from "./HeaderSection";
 import StoreVisits from "./StoreVisits";
 // import TopSellers from "./TopSellers";
 
@@ -28,12 +28,12 @@ const DashboardEcommerce = () => {
                 <Row>
                   <Widget />
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col xl={8}>
                     <Revenue />
                   </Col>
                   <StoreVisits />
-                </Row>
+                </Row> */}
                 {/* <Row>
                   <BestSellingProducts />
                   <TopSellers />
