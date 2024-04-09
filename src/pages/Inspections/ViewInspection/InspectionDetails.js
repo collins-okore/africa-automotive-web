@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Card,
   CardBody,
@@ -26,6 +26,18 @@ const InspectionDetails = ({ inspection }) => {
       setnavBadgeTab(tab);
     }
   };
+
+  const [isInspection2Active, isInspection3Active] = useMemo(() => {
+    // check whether to activate tab 2 and 3
+    if (inspection?.inspectionCount === 1) {
+      return [false, false];
+    } else if (inspection?.inspectionCount === 2) {
+      return [true, false];
+    } else if (inspection?.inspectionCount === 3) {
+      return [true, true];
+    }
+    return [false, false];
+  }, [inspection?.inspectionCount]);
 
   return (
     <React.Fragment>
@@ -113,12 +125,13 @@ const InspectionDetails = ({ inspection }) => {
                         navBadgeToggle("1");
                       }}
                     >
-                      1st Inspection{" "}
+                      1st Inspection
                       {/* <span className="badge bg-danger">Fail</span> */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink
+                      disabled={!isInspection2Active}
                       style={{ cursor: "pointer" }}
                       className={classnames({
                         active: navBadgeTab === "2",
@@ -127,12 +140,13 @@ const InspectionDetails = ({ inspection }) => {
                         navBadgeToggle("2");
                       }}
                     >
-                      2nd Inspection{" "}
+                      2nd Inspection
                       {/* <span className="badge bg-success">Done</span> */}
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink
+                      disabled={!isInspection3Active}
                       style={{ cursor: "pointer" }}
                       className={classnames({
                         active: navBadgeTab === "3",

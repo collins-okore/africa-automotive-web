@@ -150,15 +150,24 @@ const InspectionDetails = ({ inspection }) => {
 
                 <TabContent activeTab={navBadgeTab} className="text-muted">
                   <TabPane tabId="1" id="nav-badge-home">
-                    <InspectionForm inspection={inspection} />
+                    <InspectionForm
+                      inspection={inspection}
+                      inspectionResultCount={1}
+                    />
                   </TabPane>
 
                   <TabPane tabId="2" id="nav-badge-profile">
-                    <InspectionForm inspection={inspection} />
+                    <InspectionForm
+                      inspection={inspection}
+                      inspectionResultCount={2}
+                    />
                   </TabPane>
 
                   <TabPane tabId="3" id="nav-badge-messages">
-                    <InspectionForm inspection={inspection} />
+                    <InspectionForm
+                      inspection={inspection}
+                      inspectionResultCount={3}
+                    />
                   </TabPane>
                 </TabContent>
                 {/* </CardBody>

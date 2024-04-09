@@ -1,7 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getInspections, getInspection, inspect } from "./thunk";
+import {
+  getInspections,
+  getInspection,
+  inspect,
+  getCertifiedInspections,
+} from "./thunk";
 export const initialState = {
   inspections: {
+    data: [],
+    meta: {
+      pagination: {
+        page: 1,
+        pageSize: 25,
+        pageCount: 0,
+        total: 0,
+      },
+    },
+  },
+  certifiedInspections: {
     data: [],
     meta: {
       pagination: {
@@ -44,6 +60,10 @@ const InspectionSlice = createSlice({
     });
     builder.addCase(inspect.fulfilled, () => {});
     builder.addCase(inspect.rejected, () => {});
+    builder.addCase(getCertifiedInspections.fulfilled, (state, action) => {
+      state.certifiedInspections.data = action.payload.data;
+      state.certifiedInspections.meta = action.payload.meta;
+    });
   },
 });
 

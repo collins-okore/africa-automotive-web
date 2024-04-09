@@ -133,6 +133,7 @@ const InspectionForm = ({ inspection }) => {
                 : false
             }
           />
+
           {validation.touched.dropBoxLink && validation.errors.dropBoxLink ? (
             <FormFeedback type="invalid">
               {validation.errors.dropBoxLink}
@@ -152,11 +153,17 @@ const InspectionForm = ({ inspection }) => {
               value={"Pass"}
               checked={validation.values.result === "Pass"}
               onChange={() => validation.setFieldValue("result", "Pass")}
+              invalid={
+                validation.touched.result && validation.errors.result
+                  ? true
+                  : false
+              }
             />
             <Label className="form-check-label" htmlFor="flexRadioDefault1">
               Inspection Passed
             </Label>
           </div>
+
           <div className="form-check">
             <Input
               className="form-check-input"
@@ -166,12 +173,22 @@ const InspectionForm = ({ inspection }) => {
               value={"Fail"}
               checked={validation.values.result === "Fail"}
               onChange={() => validation.setFieldValue("result", "Fail")}
+              invalid={
+                validation.touched.result && validation.errors.result
+                  ? true
+                  : false
+              }
             />
+
             <Label className="form-check-label" htmlFor="flexRadioDefault2">
               Inspection Failed
             </Label>
+            {/* <FormFeedback type="invalid">
+              {validation.errors.result}
+            </FormFeedback> */}
           </div>
         </div>
+
         <div className="mb-3">
           <Label htmlFor="customername-field" className="form-label">
             Remarks
@@ -194,6 +211,7 @@ const InspectionForm = ({ inspection }) => {
                 : false
             }
           />
+
           {validation.touched.remarks && validation.errors.remarks ? (
             <FormFeedback type="invalid">
               {validation.errors.remarks}

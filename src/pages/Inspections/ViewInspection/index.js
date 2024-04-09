@@ -34,7 +34,7 @@ const ViewInspection = () => {
   const { inspection } = useSelector(selectInspectionProperties);
   console.log("Inspection", inspection);
 
-  document.title = "Inspect | Automotive Africa";
+  document.title = "View Inspection | Automotive Africa";
   return (
     <React.Fragment>
       <div className="page-content">

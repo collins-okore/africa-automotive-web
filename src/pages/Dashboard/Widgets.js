@@ -58,7 +58,7 @@ const Widgets = () => {
                       />
                     </span>
                   </h4>
-                  <Link to="#" className="text-decoration-underline">
+                  <Link to={item.linkTo} className="text-decoration-underline">
                     {item.link}
                   </Link>
                 </div>

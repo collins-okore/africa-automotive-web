@@ -14,7 +14,7 @@ import TableContainer from "../../../Components/Common/TableContainer";
 import * as moment from "moment";
 
 //Import actions
-import { getInspections as onGetInspections } from "../../../slices/thunks";
+import { getCertifiedInspections as onGetInspections } from "../../../slices/thunks";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -83,8 +83,8 @@ const CertifiedInspections = () => {
   const selectinvoiceProperties = createSelector(
     selectLayoutState,
     (state) => ({
-      inspections: state.inspections.data,
-      meta: state.inspections.meta,
+      inspections: state.certifiedInspections.data,
+      meta: state.certifiedInspections.meta,
       error: state.error,
     })
   );
@@ -114,35 +114,13 @@ const CertifiedInspections = () => {
       }
       setPageCache({ page, sorted, searchValue });
 
-      // Prepare sort obj
-      let sortArray = [];
-      sorted.forEach((el) => {
-        if (el.id !== "vehicleMake") {
-          sortArray.push(`${el.id}:${el.desc ? "desc" : "asc"}`);
-        }
-      });
+      let sortObj = {};
 
-      // Prepare search object
-      let searchObj = {};
-      if (searchValue.length > 0) {
-        searchObj = {
-          ...searchObj,
-          $or: [
-            {
-              name: {
-                $containsi: searchValue,
-              },
-            },
-            {
-              vehicleMake: {
-                name: {
-                  $containsi: searchValue,
-                },
-              },
-            },
-          ],
+      if (sorted.length > 0)
+        sortObj = {
+          fieldName: sorted[0]?.id,
+          order: sorted[0]?.desc ? "desc" : "asc",
         };
-      }
 
       dispatch(
         onGetInspections({
@@ -150,15 +128,18 @@ const CertifiedInspections = () => {
             page,
             pageSize: pageSize,
           },
-          populate: [
+          sort: sortObj,
+          search: searchValue,
+          filter: [
             {
-              vehicle: {},
+              fieldName: "status",
+              value: "Completed",
+            },
+            {
+              fieldName: "isCertified",
+              value: true,
             },
           ],
-          sort: sortArray,
-          filters: {
-            ...searchObj,
-          },
         })
       );
     },
@@ -349,17 +330,17 @@ const CertifiedInspections = () => {
                 {/* <DropdownItem divider /> */}
 
                 {/* <DropdownItem
-                  href="#"
-                  onClick={() => {
-                    onClickDelete({
-                      id: rowData.id,
-                      ...rowData.attributes,
-                    });
-                  }}
-                >
-                  <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
-                  Delete
-                </DropdownItem> */}
+                    href="#"
+                    onClick={() => {
+                      onClickDelete({
+                        id: rowData.id,
+                        ...rowData.attributes,
+                      });
+                    }}
+                  >
+                    <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
+                    Delete
+                  </DropdownItem> */}
               </DropdownMenu>
             </UncontrolledDropdown>
           );

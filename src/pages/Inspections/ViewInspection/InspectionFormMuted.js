@@ -47,7 +47,6 @@ const InspectionFormMuted = ({ inspection }) => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
-              defaultChecked
             />
             <Label className="form-check-label" htmlFor="flexRadioDefault1">
               Inspection Passed

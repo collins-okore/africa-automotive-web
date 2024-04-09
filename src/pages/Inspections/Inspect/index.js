@@ -11,8 +11,10 @@ import { createSelector } from "reselect";
 import { useParams } from "react-router-dom";
 //Import actions
 import { getInspection as onGetInspection } from "../../../slices/thunks";
+import { useNavigate } from "react-router-dom";
 
 const Inspect = () => {
+  const { navigate } = useNavigate();
   const dispatch = useDispatch();
 
   // Get :id from url
@@ -32,6 +34,13 @@ const Inspect = () => {
   // Inside your component
   const { inspection } = useSelector(selectInspectionProperties);
   console.log("Inspection", inspection);
+
+  useEffect(() => {
+    if (inspection?.status === "completed") {
+      // Redirect to view inspection page
+      navigate("/inspections/view/" + inspection.id);
+    }
+  });
 
   document.title = "Inspect | Automotive Africa";
   return (

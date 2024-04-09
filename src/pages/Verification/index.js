@@ -145,13 +145,14 @@ const Verification = () => {
                     </div>
                     <div className="row mb-3 ">
                       <div className="col-md-8">
-                        <UncontrolledAlert
+                        {/* <UncontrolledAlert
                           color="danger"
                           className="alert-border-left material-shadow mb-xl-0"
                         >
                           <i className="ri-error-warning-line me-3 align-middle fs-16"></i>
-                          <strong>Danger</strong>- Left border alert
-                        </UncontrolledAlert>
+                          <strong>Required</strong> - Please enter valid chasis
+                          number or COR number
+                        </UncontrolledAlert> */}
                       </div>
                     </div>
                   </Form>
@@ -159,10 +160,10 @@ const Verification = () => {
               </Card>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <InspectionDetails inspection={{}} />
             <DocumentDetails inspection={{}} />
-          </Row>
+          </Row> */}
         </Container>
       </div>
     </React.Fragment>

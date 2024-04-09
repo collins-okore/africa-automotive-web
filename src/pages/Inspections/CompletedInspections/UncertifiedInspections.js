@@ -117,35 +117,13 @@ const UnCertifiedInspections = () => {
       }
       setPageCache({ page, sorted, searchValue });
 
-      // Prepare sort obj
-      let sortArray = [];
-      sorted.forEach((el) => {
-        if (el.id !== "vehicleMake") {
-          sortArray.push(`${el.id}:${el.desc ? "desc" : "asc"}`);
-        }
-      });
+      let sortObj = {};
 
-      // Prepare search object
-      let searchObj = {};
-      if (searchValue.length > 0) {
-        searchObj = {
-          ...searchObj,
-          $or: [
-            {
-              name: {
-                $containsi: searchValue,
-              },
-            },
-            {
-              vehicleMake: {
-                name: {
-                  $containsi: searchValue,
-                },
-              },
-            },
-          ],
+      if (sorted.length > 0)
+        sortObj = {
+          fieldName: sorted[0]?.id,
+          order: sorted[0]?.desc ? "desc" : "asc",
         };
-      }
 
       dispatch(
         onGetInspections({
@@ -153,15 +131,18 @@ const UnCertifiedInspections = () => {
             page,
             pageSize: pageSize,
           },
-          populate: [
+          sort: sortObj,
+          search: searchValue,
+          filter: [
             {
-              vehicle: {},
+              fieldName: "status",
+              value: "Completed",
+            },
+            {
+              fieldName: "isCertified",
+              value: false,
             },
           ],
-          sort: sortArray,
-          filters: {
-            ...searchObj,
-          },
         })
       );
     },

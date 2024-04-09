@@ -21,6 +21,18 @@ export const getInspections = createAsyncThunk(
   }
 );
 
+export const getCertifiedInspections = createAsyncThunk(
+  "inspections/getCertifiedInspections",
+  async (params) => {
+    try {
+      const response = getInspectionsApi(params);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const addNewInspection = createAsyncThunk(
   "inspections/addNewInspection",
   async (payload) => {
