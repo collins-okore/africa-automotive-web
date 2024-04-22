@@ -353,7 +353,7 @@ const VehicleModel = () => {
                           columns={columns}
                           data={vehicleModel || []}
                           customPageSize={pageSize}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

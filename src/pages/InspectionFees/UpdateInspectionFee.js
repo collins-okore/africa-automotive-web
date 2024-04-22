@@ -21,6 +21,7 @@ const UpdateInspectionFee = ({
 }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  console.log("Update Inspection Fee -> selectedRecord", selectedRecord);
 
   // validation
   const validation = useFormik({
@@ -28,14 +29,15 @@ const UpdateInspectionFee = ({
     enableReinitialize: true,
     initialValues: {
       currency: {
-        value: selectedRecord?.currency?.data?.id || "",
-        label: selectedRecord?.currency?.data?.attributes?.name || "",
+        value: selectedRecord?.currency?.id || "",
+        label: selectedRecord?.currency?.name || "",
       },
       amount: selectedRecord?.amount || "",
       country: {
-        value: selectedRecord?.country?.data?.id || "",
-        label: selectedRecord?.country?.data?.attributes?.name || "",
+        value: selectedRecord?.country?.id || "",
+        label: selectedRecord?.country?.name || "",
       },
+      default: "false",
     },
     validationSchema: Yup.object({
       currency: Yup.object().shape({
@@ -45,6 +47,7 @@ const UpdateInspectionFee = ({
       country: Yup.object().shape({
         value: Yup.number().required("Please select country"),
       }),
+      default: Yup.string(),
     }),
     onSubmit: (values) => {
       const updatedData = {
@@ -52,6 +55,7 @@ const UpdateInspectionFee = ({
         currencyId: values["currency"]["value"],
         amount: values["amount"],
         countryId: values["country"]["value"],
+        default: values["default"] === "true" ? true : false,
       };
       // save new order
       setLoading(true);

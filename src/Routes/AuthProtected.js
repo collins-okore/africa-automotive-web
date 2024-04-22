@@ -15,6 +15,7 @@ const AuthProtected = (props) => {
   console.log("Token", token);
   console.log("Loading", loading);
   console.log("UserProfile", userProfile);
+  console.log("How often does this run?");
 
   useEffect(() => {
     if (userProfile && !loading && token) {

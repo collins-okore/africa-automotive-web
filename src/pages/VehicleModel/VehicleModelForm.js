@@ -85,31 +85,6 @@ const VehicleModelForm = ({
         </div> */}
 
         <div className="mb-3">
-          <Label htmlFor="id-field" className="form-label">
-            Vehicle Model
-          </Label>
-          <Input
-            name="name"
-            id="name"
-            className="form-control"
-            placeholder="Enter Vehicle Model"
-            type="text"
-            validate={{
-              required: { value: true },
-            }}
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            value={validation.values.name || ""}
-            invalid={
-              validation.touched.name && validation.errors.name ? true : false
-            }
-          />
-          {validation.touched.name && validation.errors.name ? (
-            <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
-          ) : null}
-        </div>
-
-        <div className="mb-3">
           <FormGroup>
             <Label htmlFor="vehicleMake-field" className="form-label">
               Vehicle Make
@@ -135,6 +110,31 @@ const VehicleModelForm = ({
             />
             <FormFeedback>{validation.errors.vehicleMake?.value}</FormFeedback>
           </FormGroup>
+        </div>
+
+        <div className="mb-3">
+          <Label htmlFor="id-field" className="form-label">
+            Vehicle Model
+          </Label>
+          <Input
+            name="name"
+            id="name"
+            className="form-control"
+            placeholder="Enter Vehicle Model"
+            type="text"
+            validate={{
+              required: { value: true },
+            }}
+            onChange={validation.handleChange}
+            onBlur={validation.handleBlur}
+            value={validation.values.name || ""}
+            invalid={
+              validation.touched.name && validation.errors.name ? true : false
+            }
+          />
+          {validation.touched.name && validation.errors.name ? (
+            <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+          ) : null}
         </div>
 
         <div className="mb-3">

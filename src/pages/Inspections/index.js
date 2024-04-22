@@ -123,35 +123,13 @@ const Inspections = () => {
       }
       setPageCache({ page, sorted, searchValue });
 
-      // Prepare sort obj
-      let sortArray = [];
-      sorted.forEach((el) => {
-        if (el.id !== "vehicleMake") {
-          sortArray.push(`${el.id}:${el.desc ? "desc" : "asc"}`);
-        }
-      });
+      let sortObj = {};
 
-      // Prepare search object
-      let searchObj = {};
-      if (searchValue.length > 0) {
-        searchObj = {
-          ...searchObj,
-          $or: [
-            {
-              name: {
-                $containsi: searchValue,
-              },
-            },
-            {
-              vehicleMake: {
-                name: {
-                  $containsi: searchValue,
-                },
-              },
-            },
-          ],
+      if (sorted.length > 0)
+        sortObj = {
+          fieldName: sorted[0]?.id,
+          order: sorted[0]?.desc ? "desc" : "asc",
         };
-      }
 
       dispatch(
         onGetInspections({
@@ -159,15 +137,9 @@ const Inspections = () => {
             page,
             pageSize: pageSize,
           },
-          populate: [
-            {
-              vehicle: {},
-            },
-          ],
-          sort: sortArray,
-          filters: {
-            ...searchObj,
-          },
+          sort: sortObj,
+          search: searchValue,
+          filter: [],
         })
       );
     },
@@ -307,7 +279,7 @@ const Inspections = () => {
             default:
               return (
                 <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  Passed
+                  N/A
                 </span>
               );
           }
@@ -429,7 +401,7 @@ const Inspections = () => {
                           columns={columns}
                           data={inspections || []}
                           customPageSize={pageSize}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

@@ -336,7 +336,7 @@ const Payment = () => {
                           isAddUserList={false}
                           customPageSize={pageSize}
                           isInvoiceListFilter={true}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

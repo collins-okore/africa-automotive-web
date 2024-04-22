@@ -255,6 +255,20 @@ const InspectionFee = () => {
         id: "currency",
         filterable: false,
       },
+      {
+        Header: "Is Default Fee?",
+        accessor: "default",
+        id: "default",
+        filterable: false,
+        Cell: (cell) => {
+          switch (cell.value) {
+            case true:
+              return <span className="badge bg-success">Default</span>;
+            default:
+              return <span className="badge bg-secondary">Non-Default</span>;
+          }
+        },
+      },
 
       {
         Header: "Created At",
@@ -373,7 +387,7 @@ const InspectionFee = () => {
                           columns={columns}
                           data={inspectionFee || []}
                           customPageSize={pageSize}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

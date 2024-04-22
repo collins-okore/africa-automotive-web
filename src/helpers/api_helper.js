@@ -37,13 +37,19 @@ axios.interceptors.response.use(
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
+    console.log("Error Intercepted", error);
     let message;
-    switch (error.status) {
+    switch (error.response.status) {
       case 500:
         message = "Internal Server Error";
         break;
       case 401:
         message = "Invalid credentials";
+        if (error.response.data && error?.response?.data?.tokenExpired) {
+          message = "Session Expired. Please login again";
+          sessionStorage.removeItem("authUser");
+          window.location.href = "/login";
+        }
         break;
       case 404:
         message = "Sorry! the data you are looking for could not be found";
@@ -109,7 +115,7 @@ class APIClient {
    * Updates data
    */
   update = (url, data) => {
-    return axios.put(url, data);
+    return axios.patch(url, data);
   };
 
   put = (url, data) => {

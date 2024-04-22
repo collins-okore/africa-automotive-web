@@ -4,12 +4,10 @@ export const initialState = {
   users: {
     data: [],
     meta: {
-      pagination: {
-        page: 1,
-        pageSize: 25,
-        pageCount: 0,
-        total: 0,
-      },
+      page: 1,
+      pageSize: 25,
+      pageCount: 0,
+      total: 0,
     },
   },
   user: {},

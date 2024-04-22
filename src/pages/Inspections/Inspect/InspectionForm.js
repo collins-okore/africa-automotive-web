@@ -4,17 +4,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { inspect as onInspect } from "../../../slices/thunks";
 import PropTypes from "prop-types";
-import {
-  Form,
-  ModalBody,
-  Label,
-  FormFeedback,
-  Input,
-  Spinner,
-  Row,
-} from "reactstrap";
+import { Form, Label, FormFeedback, Input, Spinner, Row } from "reactstrap";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const InspectionForm = ({ inspection }) => {
   const navigate = useNavigate();
@@ -36,7 +29,8 @@ const InspectionForm = ({ inspection }) => {
       remarks: Yup.string(),
     }),
     onSubmit: (values) => {
-      console.log("Submitted values");
+      console.log("Submitted values", values);
+
       const inspectionResult = {
         inspectionId: inspection.id,
         dropBoxLink: values["dropBoxLink"],
@@ -46,10 +40,21 @@ const InspectionForm = ({ inspection }) => {
       // save new order
       setLoading(true);
       setTimeout(1000, () => {});
-      dispatch(onInspect(inspectionResult)).then((payload) => {
-        console.log("Inspection Result", payload);
-        validation.resetForm();
+      dispatch(onInspect(inspectionResult)).then((action) => {
         setLoading(false);
+        console.log("Action", action);
+        if (action.error?.message) {
+          toast.error("Error while submitting inspection", {
+            autoClose: 1000,
+            toastId: "inspect-error",
+          });
+          return;
+        }
+        toast.success("Inspection submitted successfully", {
+          autoClose: 1000,
+          toastId: "inspect-success",
+        });
+        validation.resetForm();
         navigate("/inspections/view/" + inspection.id);
       });
     },

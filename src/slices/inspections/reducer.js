@@ -9,23 +9,19 @@ export const initialState = {
   inspections: {
     data: [],
     meta: {
-      pagination: {
-        page: 1,
-        pageSize: 25,
-        pageCount: 0,
-        total: 0,
-      },
+      page: 1,
+      pageSize: 25,
+      pageCount: 0,
+      total: 0,
     },
   },
   certifiedInspections: {
     data: [],
     meta: {
-      pagination: {
-        page: 1,
-        pageSize: 25,
-        pageCount: 0,
-        total: 0,
-      },
+      page: 1,
+      pageSize: 25,
+      pageCount: 0,
+      total: 0,
     },
   },
   inspection: {
@@ -59,7 +55,9 @@ const InspectionSlice = createSlice({
       state.inspection = action.payload.data;
     });
     builder.addCase(inspect.fulfilled, () => {});
-    builder.addCase(inspect.rejected, () => {});
+    builder.addCase(inspect.rejected, (state, action) => {
+      console.log("Inspect Error Caught", action.error.message);
+    });
     builder.addCase(getCertifiedInspections.fulfilled, (state, action) => {
       state.certifiedInspections.data = action.payload.data;
       state.certifiedInspections.meta = action.payload.meta;

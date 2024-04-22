@@ -150,6 +150,41 @@ const InspectionFeeForm = ({
             <FormFeedback>{validation.errors.country?.value}</FormFeedback>
           </FormGroup>
         </div>
+
+        <div className="mb-3">
+          <FormGroup>
+            <Label>Is Default Inspection Fee?</Label>
+            <FormGroup check className="d-flex">
+              <Label check>
+                <Input
+                  type="radio"
+                  name="default"
+                  value="true"
+                  checked={validation.values.default === "true"}
+                  onChange={() => validation.setFieldValue("default", "true")}
+                  onBlur={validation.handleBlur}
+                />{" "}
+                Yes
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="radio"
+                  name="default"
+                  value="false"
+                  checked={validation.values.default === "false"}
+                  onChange={() => validation.setFieldValue("default", "false")}
+                  onBlur={validation.handleBlur}
+                />{" "}
+                No
+              </Label>
+            </FormGroup>
+            {validation.touched.default && validation.errors.default ? (
+              <FormFeedback>{validation.errors.default}</FormFeedback>
+            ) : null}
+          </FormGroup>
+        </div>
       </ModalBody>
 
       <div className="modal-footer">

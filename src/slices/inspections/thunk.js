@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import "react-toastify/dist/ReactToastify.css";
 
 //Include Both Helper File with needed methods
 import {
@@ -61,7 +60,6 @@ export const inspect = createAsyncThunk(
   "inspections/inspect",
   async (payload) => {
     try {
-      console.log("Inspecting...", payload);
       const response = inspectApi(payload);
       return response;
     } catch (error) {

@@ -331,7 +331,7 @@ const VehicleBodyType = () => {
                           columns={columns}
                           data={vehicleBodyType || []}
                           customPageSize={pageSize}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

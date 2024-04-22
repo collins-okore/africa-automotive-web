@@ -319,7 +319,7 @@ const Client = () => {
                           columns={columns}
                           data={clients || []}
                           customPageSize={pageSize}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

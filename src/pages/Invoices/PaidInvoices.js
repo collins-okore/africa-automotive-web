@@ -330,7 +330,7 @@ const PaidInvoices = () => {
                           columns={columns}
                           data={inspections || []}
                           customPageSize={pageSize}
-                          pagination={meta?.pagination}
+                          pagination={meta}
                           onPageChange={onPageChange}
                           FilterSection={FilterSection}
                           className="custom-header-css"

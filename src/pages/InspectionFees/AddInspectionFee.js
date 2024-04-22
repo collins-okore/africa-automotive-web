@@ -30,6 +30,7 @@ const AddInspectionFee = ({ toggle, isModalOpen, fetchInspectionFee }) => {
         value: "",
         label: "",
       },
+      default: "false",
     },
     validationSchema: Yup.object({
       currency: Yup.object().shape({
@@ -39,12 +40,14 @@ const AddInspectionFee = ({ toggle, isModalOpen, fetchInspectionFee }) => {
       country: Yup.object().shape({
         value: Yup.number().required("Please select country"),
       }),
+      default: Yup.string(),
     }),
     onSubmit: (values) => {
       const data = {
         currencyId: values["currency"]["value"],
         amount: values["amount"],
         countryId: values["country"]["value"],
+        default: values["default"] === "true" ? true : false,
       };
       // save new order
       setLoading(true);
