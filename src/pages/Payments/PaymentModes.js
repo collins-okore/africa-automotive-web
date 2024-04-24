@@ -27,6 +27,7 @@ const PaymentModes = ({ validation }) => {
     label: paymentMode?.name,
     code: paymentMode?.code,
   }));
+  console.log("paymentModesOptions", validation.values.paymentMode);
 
   return (
     <Row className="g-4 mb-3 ">
@@ -73,6 +74,7 @@ const PaymentModes = ({ validation }) => {
                     defaultChecked={
                       validation.values.paymentMode === paymentMode.code
                     }
+                    checked={validation.values.paymentMode === paymentMode.code}
                   />
                   <Label
                     className="form-check-label"

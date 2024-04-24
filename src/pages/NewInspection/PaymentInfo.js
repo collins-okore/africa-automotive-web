@@ -53,7 +53,7 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
       //   then: Yup.string().required("Please enter reference number"),
       // }),
       // dateOfPayment: Yup.string().required("Please enter date of payment"),
-      // quotationOrInvoiceNumber: Yup.string().when("paymentMode", {
+      // quotationOrInvoiceNo: Yup.string().when("paymentMode", {
       //   is: (paymentMode) => paymentMode === "INVOICED",
       //   then: Yup.string().required("Please enter quotation/invoice number"),
       // }),
@@ -85,12 +85,13 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
     bankName: "",
     chequeNumber: "",
     referenceNumber: "",
-    quoationOrInvoiceNo: "",
+    quotationOrInvoiceNo: "",
     taxInvoiceNumber: "",
     inspectionNumber: "",
     narration: "",
     paymentType: "",
     paymentMode: "",
+    chassisNumber: [],
   });
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
           page: 1,
           pageSize: 1000,
         },
-        filter: [{ fieldName: "booked", value: false }],
+        filter: [{ fieldName: "fullyUtilized", value: false }],
       })
     ).then(() => {
       setLoading(false);
@@ -124,7 +125,7 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
       const paymentDate = formatDate(new Date(el?.dateOfPayment));
       return {
         value: el?.id,
-        label: `${el?.currency?.name} ${el?.amount} -  Paid By: ${el?.paidBy} - ${paymentDate} - ${el.chasisNumber}`,
+        label: `${el?.currency?.name} ${el?.amount} -  Paid By: ${el?.paidBy} - ${paymentDate} `,
       };
     });
   }, [paymentsList]);
@@ -154,18 +155,21 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
       amount: payment?.amount,
       paidBy: payment?.paidBy,
       dateOfPayment: payment?.dateOfPayment,
-      bankName: payment?.bankName,
+      bankName: payment?.depositedTo?.bankName,
       chequeNumber: payment?.chequeNumber,
       referenceNumber: payment?.referenceNumber,
-      quoationOrInvoiceNo: payment?.quoationOrInvoiceNo,
+      quotationOrInvoiceNo: payment?.quotationOrInvoiceNo,
       taxInvoiceNumber: payment?.taxInvoiceNumber,
       inspectionNumber: payment?.inspectionNumber,
       narration: payment?.narration,
       paymentType: payment?.paymentType?.name,
       paymentMode: payment?.paymentMode?.code,
-      chasisNumber: payment?.chasisNumber,
+      chassisNumbers: payment?.VehiclePayment,
+      balance: payment?.balance,
     });
   };
+
+  console.log("Selected Payment ", selectedPayment);
 
   return (
     <TabPane tabId={2}>
@@ -256,7 +260,7 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
                   className="form-control"
                   placeholder="Enter bank name"
                   type="text"
-                  value={selectedPayment.bankName || ""}
+                  value={selectedPayment?.bankName || ""}
                   disabled
                 />
               </Col>
@@ -301,12 +305,12 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
                     Quotation/Invoice Number
                   </Label>
                   <Input
-                    name="quoationOrInvoiceNo"
-                    id="quoationOrInvoiceNo"
+                    name="quotationOrInvoiceNo"
+                    id="quotationOrInvoiceNo"
                     className="form-control"
                     placeholder="Enter cheque number"
                     type="text"
-                    value={selectedPayment.quoationOrInvoiceNo || ""}
+                    value={selectedPayment.quotationOrInvoiceNo || ""}
                     disabled
                   />
                 </Col>
@@ -394,17 +398,31 @@ const PaymentInfo = ({ toggleTab, activeTab, updateInspection }) => {
                   disabled
                 />
               </Col>
-              <Col md={6} className="mb-3">
+              <Col md={3} className="mb-3">
                 <Label htmlFor="id-field" className="form-label">
-                  Chasis Number
+                  Number of Vehicles
                 </Label>
                 <Input
-                  name="chasisNumber"
-                  id="chasisNumber"
+                  name="chassisNumber"
+                  id="chassisNumber"
+                  className="form-control"
+                  placeholder="Enter number of vehicles"
+                  type="text"
+                  value={selectedPayment?.chassisNumbers?.length || 0}
+                  disabled
+                />
+              </Col>
+              <Col md={3} className="mb-3">
+                <Label htmlFor="id-field" className="form-label">
+                  Payment Balance
+                </Label>
+                <Input
+                  name="chassisNumber"
+                  id="chassisNumber"
                   className="form-control"
                   placeholder="Enter chasis number"
                   type="text"
-                  value={selectedPayment.chasisNumber || ""}
+                  value={selectedPayment?.balance || ""}
                   disabled
                 />
               </Col>

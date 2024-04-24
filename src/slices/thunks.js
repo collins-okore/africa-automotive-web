@@ -57,3 +57,6 @@ export * from "./transmission/thunk";
 
 // Payment
 export * from "./payment/thunk";
+
+// Bank
+export * from "./bank/thunk";

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 import VehicleForm from "./VehicleForm";
 
-const UpdateVehicle = ({ toggle, isModalOpen, selectedRecord }) => {
+const UpdateVehicle = ({ toggle, isModalOpen, selectedRecord, inspection }) => {
   // validation
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -53,6 +53,7 @@ const UpdateVehicle = ({ toggle, isModalOpen, selectedRecord }) => {
         isUpdate={true}
         loading={false}
         toggle={toggle}
+        inspection={inspection}
       />
     </Modal>
   );
@@ -62,6 +63,7 @@ UpdateVehicle.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   selectedRecord: PropTypes.object.isRequired,
+  inspection: PropTypes.object,
 };
 
 export default UpdateVehicle;

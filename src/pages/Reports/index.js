@@ -77,7 +77,7 @@ const Reports = () => {
     onSubmit: (values) => {
       console.log("Received values", values);
       // const data = {
-      //   chasisNumber: values["bodyType"],
+      //   chassisNumber: values["bodyType"],
       //   cor: values["cor"],
       // };
 

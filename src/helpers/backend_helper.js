@@ -236,6 +236,15 @@ export const addNewPayment = (payload) =>
 export const updatePayment = (payload) =>
   api.update(url.UPDATE_PAYMENT + "/" + payload.id, payload);
 
+/* Banks */
+
+export const getBanks = (params) => api.get(url.GET_BANKS, params);
+
+export const addNewBank = (payload) => api.create(url.ADD_NEW_BANK, payload);
+
+export const updateBank = (payload) =>
+  api.update(url.UPDATE_BANK + "/" + payload.id, payload);
+
 // Dashboard Ecommerce
 // Revenue
 export const getAllRevenueData = () => api.get(url.GET_ALLREVENUE_DATA);

@@ -179,19 +179,6 @@ const Payment = () => {
       },
 
       {
-        Header: "Chasis Number",
-        accessor: "chasisNumber",
-        id: "chasisNumber",
-        filterable: false,
-        Cell: (cell) => {
-          return (
-            <Link to="#" className="fw-medium link-primary">
-              {cell.value}
-            </Link>
-          );
-        },
-      },
-      {
         Header: "Paid By",
         accessor: "paidBy",
         id: "paidBy",
@@ -210,6 +197,15 @@ const Payment = () => {
         filterable: false,
       },
       {
+        Header: "Number of Vehicles",
+        accessor: "VehiclePayment",
+        id: "VehiclePayment",
+        filterable: false,
+        Cell: (cell) => {
+          return `${cell?.value?.length} vehicles`;
+        },
+      },
+      {
         Header: "Amount",
         accessor: "amount",
         id: "amount",
@@ -220,10 +216,28 @@ const Payment = () => {
         },
       },
       {
-        Header: "Reference Number",
+        Header: "Reference/Invoice Number",
         accessor: "referenceNumber",
         id: "referenceNumber",
         filterable: false,
+        Cell: (cellProps) => {
+          const rowData = cellProps.row.original;
+          console.log("Reference Number Row data", rowData?.paymentMode?.code);
+          switch (rowData?.paymentMode?.code) {
+            case "CHEQUE_DEPOSIT":
+              return rowData?.chequeNumber;
+            case "BANK_TRANSFER":
+              return rowData?.referenceNumber;
+            case "MOBILE_MONEY":
+              return rowData?.referenceNumber;
+            case "BANK_DEPOSIT":
+              return rowData?.referenceNumber;
+            case "INVOICED":
+              return rowData?.quotationOrInvoiceNo;
+            default:
+              return "N/A";
+          }
+        },
       },
 
       {

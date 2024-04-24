@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, ModalHeader } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -7,7 +7,10 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-import { updatePayment as onUpdatePayment } from "../../slices/thunks";
+import {
+  updatePayment as onUpdatePayment,
+  getInspectionFees as onGetInspectionFee,
+} from "../../slices/thunks";
 import PaymentForm from "./PaymentForm";
 
 const UpdatePayment = ({
@@ -16,6 +19,7 @@ const UpdatePayment = ({
   selectedRecord,
   fetchUpdatedPayments,
 }) => {
+  console.log("selectedRecord", selectedRecord);
   // log selected record
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -39,6 +43,36 @@ const UpdatePayment = ({
   );
   const { paymentModes } = useSelector(selectPaymentModes);
 
+  // Get default inspection fee
+  useEffect(() => {
+    dispatch(
+      onGetInspectionFee({
+        filter: [
+          {
+            fieldName: "default",
+            value: true,
+          },
+        ],
+      })
+    );
+  }, [dispatch]);
+
+  // Get Inspection Fee from store
+  const selectInspectionFee = createSelector(
+    (state) => state.InspectionFee,
+    (state) => ({
+      inspectionFee: state.inspectionFee.data,
+    })
+  );
+  const { inspectionFee } = useSelector(selectInspectionFee);
+
+  // Set default inspection fee
+  useEffect(() => {
+    if (inspectionFee && inspectionFee.length > 0) {
+      validation.setFieldValue("amount", inspectionFee[0].amount);
+    }
+  }, [inspectionFee]);
+
   // validation
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -46,13 +80,18 @@ const UpdatePayment = ({
     initialValues: {
       paymentMode: selectedRecord?.paymentMode?.code || "",
       paymentType: selectedRecord?.paymentType?.code || "",
-      bankName: selectedRecord?.bankName,
+      bankId: selectedRecord?.bankId,
       amount: selectedRecord?.amount,
       chequeNumber: selectedRecord?.chequeNumber,
       referenceNumber: selectedRecord?.referenceNumber,
       dateOfPayment: selectedRecord?.dateOfPayment,
-      quotationOrInvoiceNumber: selectedRecord?.quotationOrInvoiceNumber,
-      chasisNumber: selectedRecord?.chasisNumber,
+      quotationOrInvoiceNo: selectedRecord?.quotationOrInvoiceNo,
+      chassisNumbers:
+        (selectedRecord?.VehiclePayment &&
+          selectedRecord?.VehiclePayment?.map(
+            (vehiclePayment) => vehiclePayment.chassisNumber
+          )) ||
+        [],
       currency: {
         value: selectedRecord?.currency?.id,
         label: selectedRecord?.currency?.name,
@@ -69,7 +108,6 @@ const UpdatePayment = ({
       taxInvoiceNumber: Yup.string().required(
         "Please enter tax invoice number"
       ),
-      chasisNumber: Yup.string().required("Please enter chasis number"),
       currency: Yup.object().shape({
         value: Yup.number().required("Please select currency"),
       }),
@@ -89,17 +127,54 @@ const UpdatePayment = ({
 
       const currencyId = values["currency"] && values["currency"]["value"];
 
+      // validate chassis numbers
+      const chassisNumbers = values["chassisNumbers"];
+
+      //check if there's atleast one chassis number
+      if (chassisNumbers.length === 0) {
+        validation.setFieldError(
+          "chassisNumbersLength",
+          "Please enter at least one chassis number"
+        );
+        return;
+      }
+
+      // check if chassis numbers strings are not empty
+      for (let i = 0; i < chassisNumbers.length; i++) {
+        if (chassisNumbers[i].trim() === "") {
+          validation.setFieldError(
+            "chassisNumbersLength",
+            "Please enter a valid chassis number"
+          );
+          return;
+        }
+      }
+
+      const amount = values["amount"];
+      const fee =
+        inspectionFee && inspectionFee.length > 0 && inspectionFee[0].amount;
+      const expectedAmount = chassisNumbers.length * fee;
+      const currency = values["currency"];
+
+      if (expectedAmount > amount) {
+        validation.setFieldError(
+          "chassisNumbersTotal",
+          `Amount provided does not match number of vehicles in listed chassis numbers. Expected amount is ${currency.label} ${expectedAmount}`
+        );
+        return;
+      }
+
       const updatedPayment = {
         id: selectedRecord?.id,
         paymentModeId: paymentMode.id,
         paymentTypeId: paymentType.id,
-        bankName: values["bankName"],
+        bankId: values["bankId"],
         amount: values["amount"],
         chequeNumber: values["chequeNumber"],
         referenceNumber: values["referenceNumber"],
         dateOfPayment: values["dateOfPayment"],
-        quotationOrInvoiceNumber: values["quotationOrInvoiceNumber"],
-        chasisNumber: values["chasisNumber"],
+        quotationOrInvoiceNo: values["quotationOrInvoiceNo"],
+        chassisNumber: values["chassisNumber"],
         currencyId,
         narration: values["narration"],
         paidBy: values["paidBy"],
@@ -119,12 +194,14 @@ const UpdatePayment = ({
       });
     },
   });
+
+  console.log("Updated Payment Validation", validation.values);
   return (
     <Modal
       id="showModal"
       isOpen={isModalOpen}
       toggle={toggle}
-      size="lg"
+      size="xl"
       centered
     >
       <ModalHeader className="bg-light p-3" toggle={toggle}>

@@ -12,6 +12,7 @@ const AddVehicle = ({
   updateInspection,
   vehicles,
   vehicleLimitReached,
+  inspection,
 }) => {
   // validation
   const validation = useFormik({
@@ -29,7 +30,10 @@ const AddVehicle = ({
       bodyType: "",
       yearOfManufacture: "",
       yearOfRegistration: "",
-      chasisNumber: "",
+      chassisNumber: {
+        value: "",
+        label: "",
+      },
       color: "",
       customsReferenceNumber: "",
       odometer: "",
@@ -61,7 +65,10 @@ const AddVehicle = ({
       yearOfRegistration: Yup.string().required(
         "Please enter year of registration"
       ),
-      chasisNumber: Yup.string().required("Please enter vehicle chasis number"),
+      chassisNumber: Yup.object().shape({
+        value: Yup.string().required("Please select chassis number"),
+        label: Yup.string().required("Please select chassis number"),
+      }),
       color: Yup.string().required("Please enter vehicle color"),
       customsReferenceNumber: Yup.string().required(
         "Please enter customs reference number"
@@ -92,7 +99,7 @@ const AddVehicle = ({
         bodyType: values["bodyType"],
         yearOfManufacture: values["yearOfManufacture"],
         yearOfRegistration: values["yearOfRegistration"],
-        chasisNumber: values["chasisNumber"],
+        chassisNumber: values["chassisNumber"],
         color: values["color"],
         customsReferenceNumber: values["customsReferenceNumber"],
         odometer: values["odometer"],
@@ -126,7 +133,12 @@ const AddVehicle = ({
         Add Vehicle
       </ModalHeader>
 
-      <VehicleForm validation={validation} isUpdate={false} toggle={toggle} />
+      <VehicleForm
+        validation={validation}
+        isUpdate={false}
+        toggle={toggle}
+        inspection={inspection}
+      />
     </Modal>
   );
 };
@@ -137,6 +149,7 @@ AddVehicle.propTypes = {
   updateInspection: PropTypes.func,
   vehicles: PropTypes.array.isRequired,
   vehicleLimitReached: PropTypes.bool.isRequired,
+  inspection: PropTypes.object,
 };
 
 export default AddVehicle;

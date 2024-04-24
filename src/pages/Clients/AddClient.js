@@ -11,7 +11,7 @@ import {
 } from "../../slices/thunks";
 import ClientForm from "./ClientForm";
 
-const AddClient = ({ toggle, isModalOpen, fetchClient, setNewClient }) => {
+const AddClient = ({ toggle, isModalOpen, fetchClient }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   // validation
@@ -65,7 +65,7 @@ const AddClient = ({ toggle, isModalOpen, fetchClient, setNewClient }) => {
           fetchClient();
           validation.resetForm();
           toggle();
-          setNewClient(result.payload.data);
+          // setNewClient(result.payload.data);
         }
       });
     },
@@ -114,7 +114,6 @@ AddClient.propTypes = {
   toggle: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   fetchClient: PropTypes.func.isRequired,
-  setNewClient: PropTypes.func,
 };
 
 export default AddClient;

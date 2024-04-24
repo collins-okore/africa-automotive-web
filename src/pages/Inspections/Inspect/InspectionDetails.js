@@ -48,7 +48,7 @@ const InspectionDetails = ({ inspection }) => {
                     </tr>
                     <tr>
                       <td className="fw-medium">Chasis Number</td>
-                      <td>{vehicle?.chasisNumber}</td>
+                      <td>{vehicle?.chassisNumber}</td>
                     </tr>
                     <tr>
                       <td className="fw-medium">Customs Reference Number</td>

@@ -28,7 +28,7 @@ export const initialState = {
     id: "",
     vehicleMake: "",
     vehicleModel: "",
-    chasisNumber: "",
+    chassisNumber: "",
     customsReferenceNumber: "",
     countryOfOrigin: "",
     color: "",

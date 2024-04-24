@@ -133,8 +133,8 @@ const UpdateInspectionForm = ({ validation, toggle, isUpdate }) => {
               Chasis Number
             </Label>
             <Input
-              name="chasisNumber"
-              id="chasisNumber"
+              name="chassisNumber"
+              id="chassisNumber"
               className="form-control"
               placeholder="Enter chasis number"
               type="text"
@@ -143,18 +143,18 @@ const UpdateInspectionForm = ({ validation, toggle, isUpdate }) => {
               }}
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
-              value={validation.values.chasisNumber || ""}
+              value={validation.values.chassisNumber || ""}
               invalid={
-                validation.touched.chasisNumber &&
-                validation.errors.chasisNumber
+                validation.touched.chassisNumber &&
+                validation.errors.chassisNumber
                   ? true
                   : false
               }
             />
-            {validation.touched.chasisNumber &&
-            validation.errors.chasisNumber ? (
+            {validation.touched.chassisNumber &&
+            validation.errors.chassisNumber ? (
               <FormFeedback type="invalid">
-                {validation.errors.chasisNumber}
+                {validation.errors.chassisNumber}
               </FormFeedback>
             ) : null}
           </div>

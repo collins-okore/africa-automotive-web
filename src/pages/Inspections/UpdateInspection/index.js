@@ -28,7 +28,7 @@ const UpdateInspection = ({ toggle, isModalOpen }) => {
       bodyType: "",
       yearOfManufacture: "",
       yearOfRegistration: "",
-      chasisNumber: "",
+      chassisNumber: "",
       odometer: "",
       distanceUnit: "KM",
       odometerOnEC: "",
@@ -50,7 +50,9 @@ const UpdateInspection = ({ toggle, isModalOpen }) => {
       yearOfRegistration: Yup.string().required(
         "Please enter year of registration"
       ),
-      chasisNumber: Yup.string().required("Please enter vehicle chasis number"),
+      chassisNumber: Yup.string().required(
+        "Please enter vehicle chasis number"
+      ),
       color: Yup.string().required("Please enter vehicle color"),
       customsReferenceNumber: Yup.string().required(
         "Please enter customs reference number"
@@ -69,7 +71,7 @@ const UpdateInspection = ({ toggle, isModalOpen }) => {
       //     bodyType: values["bodyType"],
       //     yearOfManufacture: values["yearOfManufacture"],
       //     yearOfRegistration: values["yearOfRegistration"],
-      //     chasisNumber: values["chasisNumber"],
+      //     chassisNumber: values["chassisNumber"],
       //     color: values["color"],
       //     customsReferenceNumber: values["customsReferenceNumber"],
       //     odometer: values["odometer"],

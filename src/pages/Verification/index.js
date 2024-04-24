@@ -23,18 +23,18 @@ const Verification = () => {
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
-      chasisNumber: "",
+      chassisNumber: "",
       cor: "",
     },
     validationSchema: Yup.object({
-      chasisNumber: Yup.string().required("Please enter chasis number"),
+      chassisNumber: Yup.string().required("Please enter chasis number"),
       cor: Yup.string().required("Please enter cor number"),
     }),
 
     onSubmit: (values) => {
       console.log("Received values", values);
       const data = {
-        chasisNumber: values["bodyType"],
+        chassisNumber: values["bodyType"],
         cor: values["cor"],
       };
 
@@ -81,8 +81,8 @@ const Verification = () => {
                           Chasis Number
                         </Label>
                         <Input
-                          name="chasisNumber"
-                          id="chasisNumber"
+                          name="chassisNumber"
+                          id="chassisNumber"
                           className="form-control"
                           placeholder="Enter chasis number"
                           type="text"
@@ -91,18 +91,18 @@ const Verification = () => {
                           }}
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
-                          value={validation.values.chasisNumber || ""}
+                          value={validation.values.chassisNumber || ""}
                           invalid={
-                            validation.touched.chasisNumber &&
-                            validation.errors.chasisNumber
+                            validation.touched.chassisNumber &&
+                            validation.errors.chassisNumber
                               ? true
                               : false
                           }
                         />
-                        {validation.touched.chasisNumber &&
-                        validation.errors.chasisNumber ? (
+                        {validation.touched.chassisNumber &&
+                        validation.errors.chassisNumber ? (
                           <FormFeedback type="invalid">
-                            {validation.errors.chasisNumber}
+                            {validation.errors.chassisNumber}
                           </FormFeedback>
                         ) : null}
                       </div>

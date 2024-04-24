@@ -196,19 +196,19 @@ const FailedInspections = () => {
       },
       {
         Header: "Chasis Number",
-        accessor: "vehicle.chasisNumber",
-        id: "chasisNumber",
+        accessor: "vehicle.chassisNumber",
+        id: "chassisNumber",
         filterable: false,
       },
       {
         Header: "CC Rating",
-        accessor: "vehicle.chasisNumber",
+        accessor: "vehicle.chassisNumber",
         id: "ccRating",
         filterable: false,
       },
       {
         Header: "Remarks",
-        accessor: "vehicle.chasisNumber",
+        accessor: "vehicle.chassisNumber",
         id: "remarks",
         filterable: false,
       },

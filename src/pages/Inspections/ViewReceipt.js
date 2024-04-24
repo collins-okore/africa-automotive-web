@@ -212,7 +212,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                             <h4 style={{ color: "#ff7507" }}>Chassis Number</h4>
                           </td>
                           <td colSpan="2">
-                            {inspection?.vehicle?.chasisNumber}
+                            {inspection?.vehicle?.chassisNumber}
                           </td>
                         </tr>
                         <tr id="body_tr">

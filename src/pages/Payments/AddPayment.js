@@ -36,86 +36,6 @@ const AddPayment = ({ toggle, isModalOpen, fetchPayments }) => {
   );
   const { paymentModes } = useSelector(selectPaymentModes);
 
-  // validation
-  const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-    initialValues: {
-      paymentMode: "MOBILE_MONEY",
-      paymentType: "PROCEED_TO_INSPECT",
-      bankName: "",
-      amount: "",
-      chequeNumber: "",
-      referenceNumber: "",
-      dateOfPayment: "",
-      quotationOrInvoiceNumber: "",
-      chasisNumber: "",
-      currency: {
-        value: 1,
-        label: "ZMW",
-      },
-      narration: "",
-      paidBy: "",
-      taxInvoiceNumber: "",
-    },
-    validationSchema: Yup.object({
-      paymentMode: Yup.string().required("Please select payment mode"),
-      paymentType: Yup.string().required("Please select payment type"),
-      amount: Yup.number().required("Please enter amount"),
-      paidBy: Yup.string().required("Please enter paid by"),
-      taxInvoiceNumber: Yup.string().required(
-        "Please enter tax invoice number"
-      ),
-      chasisNumber: Yup.string().required("Please enter chasis number"),
-      currency: Yup.object().shape({
-        value: Yup.number().required("Please select currency"),
-      }),
-      dateOfPayment: Yup.date().required("Please select date of payment"),
-    }),
-    onSubmit: (values) => {
-      const paymentMode = paymentModes.find(
-        (paymentMode) => paymentMode.code === values["paymentMode"]
-      );
-      if (!paymentMode) return;
-
-      // fetch payment type from payment type list
-      const paymentType = paymentTypes.find(
-        (paymentType) => paymentType.code === values["paymentType"]
-      );
-      if (!paymentType) return;
-
-      const currencyId = values["currency"] && values["currency"]["value"];
-
-      const newPayment = {
-        paymentModeId: paymentMode.id,
-        paymentTypeId: paymentType.id,
-        bankName: values["bankName"],
-        amount: values["amount"],
-        chequeNumber: values["chequeNumber"],
-        referenceNumber: values["referenceNumber"],
-        dateOfPayment: values["dateOfPayment"],
-        quotationOrInvoiceNumber: values["quotationOrInvoiceNumber"],
-        chasisNumber: values["chasisNumber"],
-        currencyId,
-        narration: values["narration"],
-        paidBy: values["paidBy"],
-        taxInvoiceNumber: values["taxInvoiceNumber"],
-      };
-
-      // save new order
-      setLoading(true);
-      setTimeout(1000, () => {});
-      dispatch(onAddNewPayment(newPayment)).then((result) => {
-        setLoading(false);
-        if (result?.payload?.data) {
-          fetchPayments();
-          validation.resetForm();
-          toggle();
-        }
-      });
-    },
-  });
-
   // Get default inspection fee
   useEffect(() => {
     dispatch(
@@ -146,10 +66,130 @@ const AddPayment = ({ toggle, isModalOpen, fetchPayments }) => {
     }
   }, [inspectionFee]);
 
+  // validation
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+    initialValues: {
+      paymentMode: "MOBILE_MONEY",
+      paymentType: "PROCEED_TO_INSPECT",
+      bankId: null,
+      amount: "",
+      chequeNumber: "",
+      referenceNumber: "",
+      dateOfPayment: "",
+      quotationOrInvoiceNo: "",
+      chassisNumber: "",
+      currency: {
+        value: 1,
+        label: "ZMW",
+      },
+      narration: "",
+      paidBy: "",
+      taxInvoiceNumber: "",
+      chassisNumbers: [""],
+    },
+    validationSchema: Yup.object({
+      paymentMode: Yup.string().required("Please select payment mode"),
+      paymentType: Yup.string().required("Please select payment type"),
+      amount: Yup.number().required("Please enter amount"),
+      paidBy: Yup.string().required("Please enter paid by"),
+      taxInvoiceNumber: Yup.string().required(
+        "Please enter tax invoice number"
+      ),
+      currency: Yup.object().shape({
+        value: Yup.number().required("Please select currency"),
+      }),
+      dateOfPayment: Yup.date().required("Please select date of payment"),
+      chassisNumbers: Yup.array().of(
+        Yup.string().required("Please enter chasis number")
+      ),
+    }),
+    onSubmit: (values) => {
+      const paymentMode = paymentModes.find(
+        (paymentMode) => paymentMode.code === values["paymentMode"]
+      );
+      if (!paymentMode) return;
+
+      // fetch payment type from payment type list
+      const paymentType = paymentTypes.find(
+        (paymentType) => paymentType.code === values["paymentType"]
+      );
+      if (!paymentType) return;
+
+      const currencyId = values["currency"] && values["currency"]["value"];
+
+      // validate chassis numbers
+      const chassisNumbers = values["chassisNumbers"];
+
+      //check if there's atleast one chassis number
+      if (chassisNumbers.length === 0) {
+        validation.setFieldError(
+          "chassisNumbersLength",
+          "Please enter at least one chassis number"
+        );
+        return;
+      }
+
+      // check if chassis numbers strings are not empty
+      for (let i = 0; i < chassisNumbers.length; i++) {
+        if (chassisNumbers[i].trim() === "") {
+          validation.setFieldError(
+            "chassisNumbersLength",
+            "Please enter a valid chassis number"
+          );
+          return;
+        }
+      }
+
+      const amount = values["amount"];
+      const fee =
+        inspectionFee && inspectionFee.length > 0 && inspectionFee[0].amount;
+      const expectedAmount = chassisNumbers.length * fee;
+      const currency = values["currency"];
+
+      if (expectedAmount > amount) {
+        validation.setFieldError(
+          "chassisNumbersTotal",
+          `Amount provided does not match number of vehicles in listed chassis numbers. Expected amount is ${currency.label} ${expectedAmount}`
+        );
+        return;
+      }
+
+      const newPayment = {
+        paymentModeId: paymentMode.id,
+        paymentTypeId: paymentType.id,
+        bankId: values["bankId"],
+        amount: values["amount"],
+        chequeNumber: values["chequeNumber"],
+        referenceNumber: values["referenceNumber"],
+        dateOfPayment: values["dateOfPayment"],
+        quotationOrInvoiceNo: values["quotationOrInvoiceNo"],
+        chassisNumbers: values["chassisNumbers"],
+        currencyId,
+        narration: values["narration"],
+        paidBy: values["paidBy"],
+        taxInvoiceNumber: values["taxInvoiceNumber"],
+      };
+
+      // save new order
+      setLoading(true);
+      setTimeout(1000, () => {});
+      dispatch(onAddNewPayment(newPayment)).then((result) => {
+        setLoading(false);
+        if (result?.payload?.data) {
+          fetchPayments();
+          validation.resetForm();
+          toggle();
+        }
+      });
+    },
+  });
+
   return (
     <Modal
       id="showModal"
-      size="lg"
+      size="xl"
       isOpen={isModalOpen}
       toggle={toggle}
       centered

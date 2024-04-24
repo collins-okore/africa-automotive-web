@@ -34,7 +34,7 @@ const VehicleModel = ({ validation, setLoading }) => {
           filter: [
             {
               fieldName: "vehicleMakeId",
-              value: validation.values?.vehicleMake?.value,
+              value: parseInt(validation.values?.vehicleMake?.value),
             },
           ],
           pagination: {

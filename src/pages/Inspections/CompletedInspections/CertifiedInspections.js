@@ -237,8 +237,8 @@ const CertifiedInspections = () => {
       },
       {
         Header: "Chasis Number",
-        accessor: "vehicle.chasisNumber",
-        id: "chasisNumber",
+        accessor: "vehicle.chassisNumber",
+        id: "chassisNumber",
         filterable: false,
       },
       {

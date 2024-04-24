@@ -93,6 +93,12 @@ export const GET_FUEL_TYPES = "/vehicle-fuel-types";
 // Transmissions
 export const GET_TRANSMISSIONS = "/vehicle-transmissions";
 
+// Get Banks
+export const GET_BANKS = "/banks";
+export const ADD_NEW_BANK = "/banks";
+export const UPDATE_BANK = "/banks";
+export const DELETE_BANK = "/banks";
+
 /*---------Default Urls--------*/
 
 // Calendar

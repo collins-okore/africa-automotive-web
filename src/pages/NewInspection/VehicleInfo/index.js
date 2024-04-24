@@ -23,12 +23,8 @@ const VehicleInfo = ({
   const toggleUpdateModal = () => setIsUpdateModalOpen(!isUpdateModalOpen);
 
   const maxVehicles = useMemo(() => {
-    const estimatedVehicles = Math.floor(
-      parseFloat(inspection?.payment?.amount) /
-        parseFloat(inspection?.inspectionFee)
-    );
-    return estimatedVehicles > 0 ? estimatedVehicles : 1;
-  }, [inspection?.payment?.amount, inspection?.inspectionFee]);
+    return inspection?.payment?.VehiclePayment?.length || 0;
+  }, [inspection?.payment]);
 
   const [vehicleLimitReached, setVehicleLimitReached] = useState(false);
 
@@ -39,6 +35,8 @@ const VehicleInfo = ({
       setVehicleLimitReached(false);
     }
   }, [vehicles, maxVehicles]);
+
+  console.log("Vehicle Info Inspection", inspection);
 
   return (
     <TabPane tabId={3}>
@@ -56,28 +54,6 @@ const VehicleInfo = ({
             <div className="file-manager-content w-100 p-4 pb-0">
               <div className="p-3 bg-light rounded mb-4">
                 <Row className="g-2">
-                  <Col className="col-lg-auto">
-                    <select
-                      className="form-control"
-                      name="choices-select-sortlist"
-                      id="choices-select-sortlist"
-                      onChange={() => {}}
-                    >
-                      <option value="">Sort</option>
-                      <option value="By ID">By Make</option>
-                      <option value="By Name">By Model</option>
-                    </select>
-                  </Col>
-                  <Col className="col-lg-auto">
-                    <select
-                      className="form-control"
-                      name="choices-select-status"
-                      id="choices-select-status"
-                      onChange={() => {}}
-                    >
-                      <option value="">All vehicles</option>
-                    </select>
-                  </Col>
                   <Col className="col-lg">
                     <div className="search-box">
                       <input
@@ -137,7 +113,7 @@ const VehicleInfo = ({
 
                           return (
                             <tr key={key}>
-                              <td>{item.chasisNumber}</td>
+                              <td>{item?.chassisNumber?.value}</td>
                               <td>{item?.vehicleMake}</td>
                               <td>{item?.vehicleModel}</td>
                               <td>{item?.bodyType}</td>
@@ -199,10 +175,12 @@ const VehicleInfo = ({
             updateInspection={updateInspection}
             vehicles={vehicles}
             vehicleLimitReached={vehicleLimitReached}
+            inspection={inspection}
           />
           <UpdateVehicle
             toggle={toggleUpdateModal}
             isModalOpen={isUpdateModalOpen}
+            inspection={inspection}
           />
         </Container>
       </div>

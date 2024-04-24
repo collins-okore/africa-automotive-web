@@ -18,8 +18,9 @@ import CountryOfOrigin from "./CountryOfOrigin";
 import VehicleFuelType from "./VehicleFuelType";
 import Transmission from "./Transmission";
 import VehicleBodyType from "./VehicleBodyType";
+import ChassisNumber from "./ChassisNumber";
 
-const VehicleForm = ({ validation, toggle, isUpdate }) => {
+const VehicleForm = ({ validation, toggle, isUpdate, inspection }) => {
   const [loading, setLoading] = useState(false);
 
   return (
@@ -143,34 +144,7 @@ const VehicleForm = ({ validation, toggle, isUpdate }) => {
             ) : null}
           </div>
           <div className="col-md-6">
-            <Label htmlFor="customername-field" className="form-label">
-              Chasis Number
-            </Label>
-            <Input
-              name="chasisNumber"
-              id="chasisNumber"
-              className="form-control"
-              placeholder="Enter chasis number"
-              type="text"
-              validate={{
-                required: { value: true },
-              }}
-              onChange={validation.handleChange}
-              onBlur={validation.handleBlur}
-              value={validation.values.chasisNumber || ""}
-              invalid={
-                validation.touched.chasisNumber &&
-                validation.errors.chasisNumber
-                  ? true
-                  : false
-              }
-            />
-            {validation.touched.chasisNumber &&
-            validation.errors.chasisNumber ? (
-              <FormFeedback type="invalid">
-                {validation.errors.chasisNumber}
-              </FormFeedback>
-            ) : null}
+            <ChassisNumber validation={validation} inspection={inspection} />
           </div>
         </div>
         <div className="row gy-4 mb-3">
@@ -458,6 +432,7 @@ VehicleForm.propTypes = {
   validation: PropTypes.object.isRequired,
   toggle: PropTypes.func.isRequired,
   isUpdate: PropTypes.bool,
+  inspection: PropTypes.object,
 };
 
 export default VehicleForm;

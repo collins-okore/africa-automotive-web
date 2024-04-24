@@ -56,6 +56,9 @@ import FuelTypeReducer from "./vehicleFuelType/reducer";
 import TransmissionReducer from "./transmission/reducer";
 import PaymentReducer from "./payment/reducer";
 
+// Bank
+import BankReducer from "./bank/reducer";
+
 // Transmissions
 
 const rootReducer = combineReducers({
@@ -81,6 +84,7 @@ const rootReducer = combineReducers({
   FuelType: FuelTypeReducer,
   Transmission: TransmissionReducer,
   Payment: PaymentReducer,
+  Bank: BankReducer,
 });
 
 export default rootReducer;
