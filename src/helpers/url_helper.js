@@ -26,6 +26,7 @@ export const GET_INSPECTION = "/inspections";
 export const INSPECT = "/inspections/inspect";
 export const UPDATE_INSPECTION = "/inspections";
 export const DELETE_INSPECTION = "/inspections";
+export const ISSUE_CERTIFICATE = "/inspections/issue-certificate";
 
 // Vehicle Makes
 export const GET_VEHICLE_MAKES = "/vehicle-makes";

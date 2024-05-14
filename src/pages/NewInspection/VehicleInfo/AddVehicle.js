@@ -27,25 +27,25 @@ const AddVehicle = ({
         value: "",
         label: "",
       },
-      bodyType: "",
+      vehicleBodyType: "",
       yearOfManufacture: "",
       yearOfRegistration: "",
       chassisNumber: {
         value: "",
         label: "",
       },
-      color: "",
+      vehicleBodyColor: "",
       customsReferenceNumber: "",
       odometer: "",
       distanceUnit: "KM",
       odometerOnEC: "",
       engineNumber: "",
-      countryOfOrigin: {
+      countryId: {
         value: "",
         label: "",
       },
-      fuelType: "",
-      transmission: "",
+      vehicleFuelType: "",
+      vehicleTransmission: "",
       inspectionDate: "",
       narration: "",
     },
@@ -58,7 +58,7 @@ const AddVehicle = ({
         value: Yup.string().required("Please select vehicle model"),
         label: Yup.string().required("Please select vehicle model"),
       }),
-      bodyType: Yup.string().required("Please enter body type"),
+      vehicleBodyType: Yup.string().required("Please enter body type"),
       yearOfManufacture: Yup.string().required(
         "Please enter year of manufacture"
       ),
@@ -69,7 +69,9 @@ const AddVehicle = ({
         value: Yup.string().required("Please select chassis number"),
         label: Yup.string().required("Please select chassis number"),
       }),
-      color: Yup.string().required("Please enter vehicle color"),
+      vehicleBodyColor: Yup.string().required(
+        "Please enter vehicle vehicleBodyColor"
+      ),
       customsReferenceNumber: Yup.string().required(
         "Please enter customs reference number"
       ),
@@ -77,12 +79,14 @@ const AddVehicle = ({
       distanceUnit: Yup.string().required("Please enter distance unit"),
       odometerOnEC: Yup.string().required("Please enter odometer on EC"),
       engineNumber: Yup.string().required("Please enter engine number"),
-      countryOfOrigin: Yup.object().shape({
+      countryId: Yup.object().shape({
         value: Yup.number().required("Please select country of origin"),
         label: Yup.string().required("Please select country of origin"),
       }),
-      fuelType: Yup.number().required("Please enter fuel type"),
-      transmission: Yup.string().required("Please select transmission"),
+      vehicleFuelType: Yup.number().required("Please enter fuel type"),
+      vehicleTransmission: Yup.string().required(
+        "Please select vehicleTransmission"
+      ),
       inspectionDate: Yup.string().required("Please enter inspection date"),
       narration: Yup.string().required("Please enter narration"),
     }),
@@ -96,19 +100,19 @@ const AddVehicle = ({
       const data = {
         vehicleMake: values["vehicleMake"]["label"],
         vehicleModel: values["vehicleModel"]["label"],
-        bodyType: values["bodyType"],
+        vehicleBodyType: values["vehicleBodyType"],
         yearOfManufacture: values["yearOfManufacture"],
         yearOfRegistration: values["yearOfRegistration"],
         chassisNumber: values["chassisNumber"],
-        color: values["color"],
+        vehicleBodyColor: values["vehicleBodyColor"],
         customsReferenceNumber: values["customsReferenceNumber"],
         odometer: values["odometer"],
         distanceUnit: values["distanceUnit"],
         odometerOnEC: values["odometerOnEC"],
         engineNumber: values["engineNumber"],
-        countryOfOrigin: values["countryOfOrigin"],
-        fuelType: values["fuelType"],
-        transmission: values["transmission"],
+        countryId: values["countryId"],
+        vehicleFuelType: values["vehicleFuelType"],
+        vehicleTransmission: values["vehicleTransmission"],
         inspectionDate: values["inspectionDate"],
         narration: values["narration"],
       };

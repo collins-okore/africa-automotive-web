@@ -20,7 +20,9 @@ import InspectionForm from "./InspectionForm";
 const InspectionDetails = ({ inspection }) => {
   const vehicle = inspection?.vehicle;
 
-  const [navBadgeTab, setnavBadgeTab] = useState("1");
+  const [navBadgeTab, setnavBadgeTab] = useState(
+    `${inspection?.inspectionCount || 1}`
+  );
   const navBadgeToggle = (tab) => {
     if (navBadgeTab !== tab) {
       setnavBadgeTab(tab);

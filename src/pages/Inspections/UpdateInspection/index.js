@@ -79,8 +79,8 @@ const UpdateInspection = ({ toggle, isModalOpen }) => {
       //     odometerOnEC: values["odometerOnEC"],
       //     engineNumber: values["engineNumber"],
       //     countryOfOrigin: values["countryOfOrigin"],
-      //     fuelType: values["fuelType"],
-      //     transmission: values["transmission"],
+      //     chassisNumber: values["chassisNumber"],
+      //     vehicleTransmission: values["vehicleTransmission"],
       //     inspectionDate: values["inspectionDate"],
       //     narration: values["narration"],
       //   };

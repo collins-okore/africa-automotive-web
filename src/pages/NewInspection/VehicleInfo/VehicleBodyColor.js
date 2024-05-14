@@ -46,28 +46,34 @@ const VehicleBodyColor = ({ validation }) => {
         Color
       </Label>
       <Input
-        name="color"
+        name="vehicleBodyColor"
         type="select"
         className="form-select"
         id="choices-publish-body-input"
         onChange={validation.handleChange}
         onBlur={validation.handleBlur}
-        value={validation.values.color || ""}
+        value={validation.values.vehicleBodyColor || ""}
         invalid={
-          validation.touched.color && validation.errors.color ? true : false
+          validation.touched.vehicleBodyColor &&
+          validation.errors.vehicleBodyColor
+            ? true
+            : false
         }
       >
         <option value="" disabled selected>
           Select an option
         </option>
-        {colorOptions.map((color) => (
-          <option value={color.value} key={color.value}>
-            {color.label}
+        {colorOptions.map((vehicleBodyColor) => (
+          <option value={vehicleBodyColor.value} key={vehicleBodyColor.value}>
+            {vehicleBodyColor.label}
           </option>
         ))}
       </Input>
-      {validation.touched.color && validation.errors.color ? (
-        <FormFeedback type="invalid">{validation.errors.color}</FormFeedback>
+      {validation.touched.vehicleBodyColor &&
+      validation.errors.vehicleBodyColor ? (
+        <FormFeedback type="invalid">
+          {validation.errors.vehicleBodyColor}
+        </FormFeedback>
       ) : null}
     </>
   );

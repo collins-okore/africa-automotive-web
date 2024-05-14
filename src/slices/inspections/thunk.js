@@ -6,6 +6,7 @@ import {
   getInspection as getInspectionApi,
   addNewInspection as addNewInspectionApi,
   inspect as inspectApi,
+  issueCertificate as issueCertificateApi,
 } from "../../helpers/backend_helper";
 
 export const getInspections = createAsyncThunk(
@@ -56,11 +57,35 @@ export const getInspection = createAsyncThunk(
   }
 );
 
+export const getOtherInspection = createAsyncThunk(
+  "inspections/getOtherInspection",
+  async (inspectionId) => {
+    try {
+      const response = getInspectionApi(inspectionId);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const inspect = createAsyncThunk(
   "inspections/inspect",
   async (payload) => {
     try {
       const response = inspectApi(payload);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const issueCertificate = createAsyncThunk(
+  "inspections/issueCertificate",
+  async (payload) => {
+    try {
+      const response = issueCertificateApi(payload);
       return response;
     } catch (error) {
       return error;

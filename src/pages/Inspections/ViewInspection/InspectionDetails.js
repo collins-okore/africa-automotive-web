@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -13,14 +13,19 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import InspectionFormMuted from "./InspectionFormMuted";
+import { getInspections as onGetInspections } from "../../../slices/thunks";
+import { createSelector } from "reselect";
 
 // import prop types
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 
 const InspectionDetails = ({ inspection }) => {
   const vehicle = inspection?.vehicle;
 
-  const [navBadgeTab, setnavBadgeTab] = useState("1");
+  const [navBadgeTab, setnavBadgeTab] = useState(
+    `${inspection?.inspectionCount || 1}`
+  );
   const navBadgeToggle = (tab) => {
     if (navBadgeTab !== tab) {
       setnavBadgeTab(tab);
@@ -38,6 +43,43 @@ const InspectionDetails = ({ inspection }) => {
     }
     return [false, false];
   }, [inspection?.inspectionCount]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (inspection?.id)
+      dispatch(
+        onGetInspections({
+          pagination: {
+            page: 1,
+            pageSize: 5,
+          },
+          sort: {
+            fieldName: "inspectionCount",
+            order: "desc",
+          },
+
+          filter: [
+            {
+              fieldName: "id",
+              value: inspection?.id,
+            },
+          ],
+        })
+      );
+  }, [inspection?.inspectionCount, inspection?.id, dispatch]);
+
+  const selectLayoutState = (state) => state.Inspections;
+  const selectInspectionsProperties = createSelector(
+    selectLayoutState,
+    (state) => ({
+      inspections: state.inspections.data,
+      meta: state.inspections.meta,
+      error: state.error,
+    })
+  );
+  // Inside your component
+  const { inspections } = useSelector(selectInspectionsProperties);
 
   return (
     <React.Fragment>
@@ -162,15 +204,23 @@ const InspectionDetails = ({ inspection }) => {
 
                 <TabContent activeTab={navBadgeTab} className="text-muted">
                   <TabPane tabId="1" id="nav-badge-home">
-                    <InspectionFormMuted inspection={inspection} />
+                    <InspectionFormMuted inspections={inspections} tabId="1" />
                   </TabPane>
 
                   <TabPane tabId="2" id="nav-badge-profile">
-                    <InspectionFormMuted inspection={inspection} />
+                    <InspectionFormMuted
+                      inspections={inspections}
+                      tabId="2"
+                      active={isInspection2Active}
+                    />
                   </TabPane>
 
                   <TabPane tabId="3" id="nav-badge-messages">
-                    <InspectionFormMuted inspection={inspection} />
+                    <InspectionFormMuted
+                      inspections={inspections}
+                      tabId="3"
+                      active={isInspection3Active}
+                    />
                   </TabPane>
                 </TabContent>
                 {/* </CardBody>

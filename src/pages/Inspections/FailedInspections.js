@@ -31,6 +31,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createSelector } from "reselect";
 import UpdateInspection from "./UpdateInspection";
+import BookReInspection from "./ReInspections/BookReInspection";
 
 const FilterSection = ({ searchValue, setSearchValue }) => {
   return (
@@ -146,7 +147,7 @@ const FailedInspections = () => {
             },
             {
               fieldName: "result",
-              value: "Failed",
+              value: "Fail",
             },
           ],
         })
@@ -180,6 +181,13 @@ const FailedInspections = () => {
   const showUpdateModalForm = (inspection) => {
     setSelectedRecord(inspection);
     setIsUpdateModalOpen(true);
+  };
+
+  const [isBookReInspectionModalOpen, setIsBookReInspectionModalOpen] =
+    useState(false);
+  const showBookReInspectionModalForm = (inspection) => {
+    setSelectedRecord(inspection);
+    setIsBookReInspectionModalOpen(true);
   };
 
   //Column
@@ -259,26 +267,26 @@ const FailedInspections = () => {
 
       {
         Header: "Inspection Result",
-        accessor: "payment.status",
-        id: "paymentStatus",
+        accessor: "result",
+        id: "result",
         filterable: false,
         Cell: (cell) => {
           switch (cell.value) {
-            case "Paidz":
+            case "Pass":
               return (
                 <span className="badge text-uppercase bg-success-subtle text-success">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Pendingz":
+            case "Pending":
               return (
                 <span className="badge text-uppercase bg-warning-subtle text-warning">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Cancelledz":
+            case "Fail":
               return (
                 <span className="badge text-uppercase bg-danger-subtle text-danger">
                   {" "}
@@ -288,7 +296,7 @@ const FailedInspections = () => {
             default:
               return (
                 <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  Passed
+                  N/A
                 </span>
               );
           }
@@ -321,16 +329,21 @@ const FailedInspections = () => {
               {/* <Button size="sm" color="secondary" style={{ marginRight: 5 }}>
                 View Receipt
               </Button> */}
-              <Button size="sm" color="primary" style={{ marginRight: 5 }}>
+              <Button
+                onClick={() => showBookReInspectionModalForm()}
+                size="sm"
+                color="primary"
+                style={{ marginRight: 5 }}
+              >
                 {" "}
-                Pay Now{" "}
+                Book Re-Inspection{" "}
               </Button>{" "}
-              <Link
+              {/* <Link
                 to={`/inspections/inspect/${rowData.id}`}
                 className="btn btn-sm btn-outline-secondary"
               >
                 Re-inspect
-              </Link>
+              </Link> */}
             </>
           );
         },
@@ -394,6 +407,11 @@ const FailedInspections = () => {
                   <UpdateInspection
                     toggle={() => setIsUpdateModalOpen((state) => !state)}
                     isModalOpen={isUpdateModalOpen}
+                    selectedRecord={selectedRecord}
+                  />
+                  <BookReInspection
+                    toggle={() => setIsBookReInspectionModalOpen(false)}
+                    isModalOpen={isBookReInspectionModalOpen}
                     selectedRecord={selectedRecord}
                   />
                 </CardBody>

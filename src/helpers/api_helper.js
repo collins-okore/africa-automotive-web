@@ -111,6 +111,14 @@ class APIClient {
     }
     return axios.post(url, data);
   };
+  createAndUpload = (url, data) => {
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    return axios.post(url, data, config);
+  };
   /**
    * Updates data
    */

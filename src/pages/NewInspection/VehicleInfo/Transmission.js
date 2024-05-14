@@ -24,11 +24,11 @@ const Transmission = ({ validation }) => {
   const selectTransmissionProperties = createSelector(
     selectLayoutState,
     (state) => ({
-      transmission: state?.transmission?.data,
+      vehicleTransmission: state?.vehicleTransmission?.data,
     })
   );
 
-  const { transmission: transmissionList } = useSelector(
+  const { vehicleTransmission: transmissionList } = useSelector(
     selectTransmissionProperties
   );
 
@@ -47,36 +47,41 @@ const Transmission = ({ validation }) => {
         Transmission
       </Label>
       <Input
-        name="transmission"
+        name="vehicleTransmission"
         type="select"
         className="form-select"
         id="choices-publish-body-input"
         onChange={(e) => {
-          validation.setFieldValue("transmission", e.target.value);
+          validation.setFieldValue("vehicleTransmission", e.target.value);
           // Reset the error when a value is selected
-          validation.setFieldError("transmission", "");
+          validation.setFieldError("vehicleTransmission", "");
         }}
         invalid={
-          validation.touched.transmission && validation.errors.transmission
+          validation.touched.vehicleTransmission &&
+          validation.errors.vehicleTransmission
             ? true
             : false
         }
-        onBlur={() => validation.setFieldTouched("transmission", true)}
-        value={validation.values.transmission || ""}
+        onBlur={() => validation.setFieldTouched("vehicleTransmission", true)}
+        value={validation.values.vehicleTransmission || ""}
       >
         <option value="" disabled selected>
           Select an option
         </option>
-        {transmissionOptions.map((transmission) => (
-          <option value={transmission.label} key={transmission.value}>
-            {transmission.label}
+        {transmissionOptions.map((vehicleTransmission) => (
+          <option
+            value={vehicleTransmission.label}
+            key={vehicleTransmission.value}
+          >
+            {vehicleTransmission.label}
           </option>
         ))}
       </Input>
 
-      {validation.touched.transmission && validation.errors.transmission ? (
+      {validation.touched.vehicleTransmission &&
+      validation.errors.vehicleTransmission ? (
         <FormFeedback type="invalid">
-          {validation.errors.transmission}
+          {validation.errors.vehicleTransmission}
         </FormFeedback>
       ) : null}
     </>

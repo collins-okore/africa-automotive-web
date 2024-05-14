@@ -20,12 +20,13 @@ const Finish = ({ inspection }) => {
     const vehicles = inspection.vehicles.map((el) => {
       return {
         ...el,
-        countryId: el.countryOfOrigin.value,
-        vehicleTransmission: el.transmission,
+        countryId: el.countryId.value,
+        vehicleTransmission: el.vehicleTransmission,
         inspectionDate: el.inspectionDate,
-        vehicleBodyType: el.bodyType,
-        vehicleFuelType: el.fuelType,
-        vehicleBodyColor: el.color,
+        vehicleBodyType: el.vehicleBodyType,
+        vehicleFuelType: el.vehicleFuelType,
+        vehicleBodyColor: el.vehicleBodyColor,
+        chassisNumber: el.chassisNumber?.value,
       };
     });
 
@@ -174,7 +175,7 @@ const Finish = ({ inspection }) => {
                         </p>
                         <p className="text-muted mb-1">
                           <span>Receipt Number: </span>
-                          <span id="shipping-phone-no">{`${payment?.receiptNumber}`}</span>
+                          <span id="shipping-phone-no">{`N/A`}</span>
                         </p>
                       </Col>
                     </Row>

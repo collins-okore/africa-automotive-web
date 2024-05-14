@@ -12,9 +12,10 @@ import { useParams } from "react-router-dom";
 //Import actions
 import { getInspection as onGetInspection } from "../../../slices/thunks";
 import { useNavigate } from "react-router-dom";
+import constants from "../../../Components/constants";
 
 const Inspect = () => {
-  const { navigate } = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Get :id from url
@@ -36,11 +37,13 @@ const Inspect = () => {
   console.log("Inspection", inspection);
 
   useEffect(() => {
-    if (inspection?.status === "completed") {
-      // Redirect to view inspection page
-      navigate("/inspections/view/" + inspection.id);
-    }
-  });
+    // check if inspectionId from useParams is not equal to inspection.id
+    if (inspection?.id == inspectionId)
+      if (inspection?.status === constants.INSPECTION_COMPLETED) {
+        // Redirect to view inspection page
+        navigate("/inspections/view/" + inspection.id);
+      }
+  }, [inspection.id, inspection?.status, inspectionId, navigate]);
 
   document.title = "Inspect | Automotive Africa";
   return (

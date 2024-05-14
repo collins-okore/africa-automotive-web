@@ -13,13 +13,12 @@ const CountryOfOrigin = ({ validation }) => {
     control: (styles) => ({
       ...styles,
       borderColor:
-        validation.touched.countryOfOrigin && validation.errors.countryOfOrigin
+        validation.touched.countryId && validation.errors.countryId
           ? "red"
           : styles.borderColor,
       "&:hover": {
         borderColor:
-          validation.touched.countryOfOrigin &&
-          validation.errors.countryOfOrigin
+          validation.touched.countryId && validation.errors.countryId
             ? "red"
             : styles["&:hover"].borderColor,
       },
@@ -64,26 +63,25 @@ const CountryOfOrigin = ({ validation }) => {
         Country Of Origin
       </Label>
       <Select
-        name="countryOfOrigin"
-        id="countryOfOrigin"
-        value={validation.values.countryOfOrigin || {}}
+        name="countryId"
+        id="countryId"
+        value={validation.values.countryId || {}}
         placeholder="Select country"
         onChange={(value) => {
-          validation.setFieldValue("countryOfOrigin", value);
+          validation.setFieldValue("countryId", value);
           // Reset the error when a value is selected
-          validation.setFieldError("countryOfOrigin", "");
+          validation.setFieldError("countryId", "");
         }}
         options={countryOptions}
-        onBlur={() => validation.setFieldTouched("countryOfOrigin", true)}
+        onBlur={() => validation.setFieldTouched("countryId", true)}
         className={
-          validation.touched.countryOfOrigin &&
-          validation.errors.countryOfOrigin
+          validation.touched.countryId && validation.errors.countryId
             ? "is-invalid"
             : ""
         }
         styles={customSelectStyles}
       />
-      <FormFeedback>{validation.errors.countryOfOrigin?.value}</FormFeedback>
+      <FormFeedback>{validation.errors.countryId?.value}</FormFeedback>
     </FormGroup>
   );
 };

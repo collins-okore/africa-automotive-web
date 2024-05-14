@@ -41,12 +41,17 @@ const ChassisNumber = ({ validation, inspection }) => {
           console.log("Does not exist", el.chassisNumber);
           return true;
         }
-      }).map((el) => {
-        return {
-          value: el?.chassisNumber,
-          label: el?.chassisNumber,
-        };
-      });
+      })
+        .filter((el) => {
+          console.log("Utilized", el.utilized);
+          return el.utilized === false;
+        })
+        .map((el) => {
+          return {
+            value: el?.chassisNumber,
+            label: el?.chassisNumber,
+          };
+        });
     }
   }, [inspection?.payment, inspection?.vehicles]);
 

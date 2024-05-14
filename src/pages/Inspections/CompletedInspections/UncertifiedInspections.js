@@ -28,6 +28,7 @@ import Loader from "../../../Components/Common/Loader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createSelector } from "reselect";
+import IssueCertificate from "./IssueCertificate";
 
 const FilterSection = ({ searchValue, setSearchValue }) => {
   return (
@@ -149,31 +150,18 @@ const UnCertifiedInspections = () => {
     [dispatch]
   );
 
-  //   const fetchUpdatedInspections = useCallback(() => {
-  //     onPageChange(pageCache);
-  //   }, [pageCache, onPageChange]);
-
-  //   // Delete Data
-  //   const onClickDelete = (vehicleModel) => {
-  //     setSelectedRecord(vehicleModel);
-  //     setDeleteModal(true);
-  //   };
-  const [deleting, setDeleting] = useState();
-  const handleDelete = () => {
-    if (selectedRecord) {
-      // setDeleting(true);
-      // dispatch(onDeleteInspections(selectedRecord)).then(() => {
-      //   setDeleting(false);
-      //   fetchUpdatedInspections();
-      //   setDeleteModal(false);
-      // });
-    }
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
+  const showIssueCertifcateForm = (inspection) => {
+    setSelectedRecord(inspection);
+    setIsCertificateModalOpen(true);
   };
 
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const showUpdateModalForm = (inspection) => {
-    setSelectedRecord(inspection);
-    setIsUpdateModalOpen(true);
+  const fetchInspections = () => {
+    onPageChange({
+      page: 1,
+      sorted: [{ id: "createdAt", desc: true }],
+      searchValue: "",
+    });
   };
 
   //Column
@@ -328,11 +316,11 @@ const UnCertifiedInspections = () => {
                 <DropdownItem
                   href="#"
                   onClick={() => {
-                    showUpdateModalForm(rowData);
+                    showIssueCertifcateForm(rowData);
                   }}
                 >
                   <i className="ri-pencil-line align-bottom me-2 text-muted"></i>{" "}
-                  Edit Inspection
+                  Issue Certificate
                 </DropdownItem>
 
                 {/* <DropdownItem divider /> */}
@@ -384,6 +372,12 @@ const UnCertifiedInspections = () => {
           <Loader error={error} />
         )}
         <ToastContainer closeButton={false} limit={1} />
+        <IssueCertificate
+          isModalOpen={isCertificateModalOpen}
+          toggle={() => setIsCertificateModalOpen((state) => !state)}
+          fetchInspections={fetchInspections}
+          selectedRecord={selectedRecord}
+        />
       </div>
     </React.Fragment>
   );

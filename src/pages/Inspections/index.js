@@ -250,26 +250,26 @@ const Inspections = () => {
 
       {
         Header: "Inspection Result",
-        accessor: "payment.status",
+        accessor: "result",
         id: "paymentStatus",
         filterable: false,
         Cell: (cell) => {
           switch (cell.value) {
-            case "Paidz":
+            case "Pass":
               return (
                 <span className="badge text-uppercase bg-success-subtle text-success">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Pendingz":
+            case "Pending":
               return (
                 <span className="badge text-uppercase bg-warning-subtle text-warning">
                   {" "}
                   {cell.value}{" "}
                 </span>
               );
-            case "Cancelledz":
+            case "Failed":
               return (
                 <span className="badge text-uppercase bg-danger-subtle text-danger">
                   {" "}
@@ -278,8 +278,8 @@ const Inspections = () => {
               );
             default:
               return (
-                <span className="badge text-uppercase bg-primary-subtle text-primary">
-                  N/A
+                <span className="badge text-uppercase bg-warning-subtle text-warning">
+                  Pending
                 </span>
               );
           }
@@ -307,6 +307,7 @@ const Inspections = () => {
         id: "action",
         Cell: (cellProps) => {
           const rowData = cellProps.row.original;
+          if (!rowData.result) return;
           return (
             <UncontrolledDropdown>
               <DropdownToggle
@@ -321,7 +322,7 @@ const Inspections = () => {
                   <i className="ri-eye-line align-bottom me-2 text-muted"></i>{" "}
                   View Inspection
                 </DropdownItem>
-
+                {/* 
                 <DropdownItem
                   href="#"
                   onClick={() => {
@@ -330,7 +331,7 @@ const Inspections = () => {
                 >
                   <i className="ri-pencil-line align-bottom me-2 text-muted"></i>{" "}
                   Edit Inspection
-                </DropdownItem>
+                </DropdownItem> */}
 
                 {/* <DropdownItem divider /> */}
 

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getTransmissions } from "./thunk";
 export const initialState = {
-  transmission: {
+  vehicleTransmission: {
     data: [],
     meta: {
       page: 1,
@@ -20,8 +20,10 @@ const TransmissionSlice = createSlice({
   reducer: {},
   extraReducers: (builder) => {
     builder.addCase(getTransmissions.fulfilled, (state, action) => {
-      state.transmission.data = action.payload?.data || state.transmission.data;
-      state.transmission.meta = action.payload?.meta || state.transmission.meta;
+      state.vehicleTransmission.data =
+        action.payload?.data || state.vehicleTransmission.data;
+      state.vehicleTransmission.meta =
+        action.payload?.meta || state.vehicleTransmission.meta;
     });
     builder.addCase(getTransmissions.rejected, (state, action) => {
       state.error = action.error?.message || null;

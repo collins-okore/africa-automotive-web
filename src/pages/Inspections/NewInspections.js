@@ -188,7 +188,6 @@ const NewInspections = () => {
         id: "vehicleMake",
         filterable: false,
       },
-
       {
         Header: "Vehicle Model",
         accessor: "vehicle.vehicleModel",
@@ -294,18 +293,17 @@ const NewInspections = () => {
           const rowData = cellProps.row.original;
           return (
             <>
-              <Button
-                size="sm"
-                color="secondary"
+              <Link
                 style={{ marginRight: 5 }}
-                onClick={() => {
-                  setIsReceiptModalOpen(true);
-                  setSelectedRecord(rowData);
-                }}
+                to={`${rowData.receiptlink || "#"}`}
+                className={`btn btn-sm btn-secondary ${
+                  rowData.receiptlink ? "" : "disabled"
+                }`}
+                target="_blank"
               >
-                {" "}
-                View Receipt{" "}
-              </Button>{" "}
+                View Receipt
+              </Link>
+
               <Link
                 to={`/inspections/inspect/${rowData.id}`}
                 className="btn btn-sm btn-outline-secondary"

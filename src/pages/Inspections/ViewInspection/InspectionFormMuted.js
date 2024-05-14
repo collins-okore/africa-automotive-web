@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { addNewVehicleMake as onAddNewVehicleMake } from "../../../slices/thunks";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { Form, Label, Input, Row } from "reactstrap";
+import constants from "../../../Components/constants";
 
-const InspectionFormMuted = ({ inspection }) => {
+const InspectionFormMuted = ({ inspections, tabId }) => {
+  const inspection = useMemo(() => {
+    return (
+      inspections.find(
+        (inspection) => inspection?.inspectionCount == parseInt(tabId)
+      ) || {}
+    );
+  }, [inspections, tabId]);
+
   return (
     <Row>
       <Form
@@ -21,9 +26,14 @@ const InspectionFormMuted = ({ inspection }) => {
             RWI Sheet
           </Label>
           <div>
-            <button type="submit" className="btn btn-primary">
+            <a
+              href={inspection?.rwiSheet || "#"}
+              target="_blank"
+              className="btn btn-primary"
+              rel="noopener noreferrer"
+            >
               View RWI Sheet
-            </button>
+            </a>
           </div>
         </div>
         <div className="mb-3">
@@ -31,9 +41,14 @@ const InspectionFormMuted = ({ inspection }) => {
             Dropbox Link
           </Label>
           <div>
-            <button type="submit" className="btn btn-primary">
+            <a
+              href={inspection?.dropboxlink || "#"}
+              target="_blank"
+              className="btn btn-primary"
+              rel="noopener noreferrer"
+            >
               View Dropbox Files
-            </button>
+            </a>
           </div>
         </div>
         <div className="mb-3">
@@ -47,6 +62,7 @@ const InspectionFormMuted = ({ inspection }) => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
+              checked={inspection?.result == constants.INSPECTION_PASSED}
             />
             <Label className="form-check-label" htmlFor="flexRadioDefault1">
               Inspection Passed
@@ -59,6 +75,7 @@ const InspectionFormMuted = ({ inspection }) => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault2"
+              checked={inspection?.result == constants.INSPECTION_FAILED}
             />
             <Label className="form-check-label" htmlFor="flexRadioDefault2">
               Inspection Failed
@@ -79,7 +96,7 @@ const InspectionFormMuted = ({ inspection }) => {
             validate={{
               required: { value: true },
             }}
-            value={""}
+            value={inspection?.remarks}
           />
         </div>
       </Form>
@@ -89,6 +106,8 @@ const InspectionFormMuted = ({ inspection }) => {
 
 InspectionFormMuted.propTypes = {
   inspection: PropTypes.object,
+  tabId: PropTypes.string,
+  inspections: PropTypes.array,
 };
 
 export default InspectionFormMuted;

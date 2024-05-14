@@ -24,11 +24,11 @@ const VehicleFuelType = ({ validation }) => {
   const selectVehicleFuelTypeProperties = createSelector(
     selectLayoutState,
     (state) => ({
-      fuelType: state?.fuelType?.data,
+      vehicleFuelType: state?.vehicleFuelType?.data,
     })
   );
 
-  const { fuelType: fuelTypeList } = useSelector(
+  const { vehicleFuelType: fuelTypeList } = useSelector(
     selectVehicleFuelTypeProperties
   );
 
@@ -47,19 +47,20 @@ const VehicleFuelType = ({ validation }) => {
         Fuel Type
       </Label>
       <Input
-        name="fuelType"
+        name="vehicleFuelType"
         type="select"
         className="form-select"
         id="choices-publish-body-input"
         onChange={(e) => {
-          validation.setFieldValue("fuelType", e.target.value);
+          validation.setFieldValue("vehicleFuelType", e.target.value);
           // Reset the error when a value is selected
-          validation.setFieldError("fuelType", "");
+          validation.setFieldError("vehicleFuelType", "");
         }}
-        onBlur={() => validation.setFieldTouched("fuelType", true)}
-        value={validation.values.fuelType || ""}
+        onBlur={() => validation.setFieldTouched("vehicleFuelType", true)}
+        value={validation.values.vehicleFuelType || ""}
         invalid={
-          validation.touched.fuelType && validation.errors.fuelType
+          validation.touched.vehicleFuelType &&
+          validation.errors.vehicleFuelType
             ? true
             : false
         }
@@ -67,14 +68,17 @@ const VehicleFuelType = ({ validation }) => {
         <option value="" disabled selected>
           Select an option
         </option>
-        {fuelTypeOptions.map((fuelType) => (
-          <option value={fuelType.value} key={fuelType.value}>
-            {fuelType.label}
+        {fuelTypeOptions.map((vehicleFuelType) => (
+          <option value={vehicleFuelType.value} key={vehicleFuelType.value}>
+            {vehicleFuelType.label}
           </option>
         ))}
       </Input>
-      {validation.touched.fuelType && validation.errors.fuelType ? (
-        <FormFeedback type="invalid">{validation.errors.fuelType}</FormFeedback>
+      {validation.touched.vehicleFuelType &&
+      validation.errors.vehicleFuelType ? (
+        <FormFeedback type="invalid">
+          {validation.errors.vehicleFuelType}
+        </FormFeedback>
       ) : null}
     </>
   );

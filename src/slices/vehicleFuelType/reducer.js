@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFuelTypes } from "./thunk";
 export const initialState = {
-  fuelType: {
+  vehicleFuelType: {
     data: [],
     meta: {
       page: 1,
@@ -20,8 +20,10 @@ const FuelTypeSlice = createSlice({
   reducer: {},
   extraReducers: (builder) => {
     builder.addCase(getFuelTypes.fulfilled, (state, action) => {
-      state.fuelType.data = action.payload?.data || state.fuelType.data;
-      state.fuelType.meta = action.payload?.meta || state.fuelType.meta;
+      state.vehicleFuelType.data =
+        action.payload?.data || state.vehicleFuelType.data;
+      state.vehicleFuelType.meta =
+        action.payload?.meta || state.vehicleFuelType.meta;
     });
     builder.addCase(getFuelTypes.rejected, (state, action) => {
       state.error = action.error?.message || null;

@@ -47,20 +47,21 @@ const VehicleBodyType = ({ validation }) => {
         Body Type
       </Label>
       <Input
-        name="bodyType"
+        name="vehicleBodyType"
         type="select"
         className="form-select"
         id="choices-publish-body-input"
         onChange={(e) => {
-          validation.setFieldValue("bodyType", e.target.value);
+          validation.setFieldValue("vehicleBodyType", e.target.value);
           // Reset the error when a value is selected
-          validation.setFieldError("bodyType", "");
+          validation.setFieldError("vehicleBodyType", "");
         }}
-        onBlur={() => validation.setFieldTouched("bodyType", true)}
-        value={validation.values.bodyType || ""}
-        defaultValue={validation.values.bodyType || ""}
+        onBlur={() => validation.setFieldTouched("vehicleBodyType", true)}
+        value={validation.values.vehicleBodyType || ""}
+        defaultValue={validation.values.vehicleBodyType || ""}
         invalid={
-          validation.touched.bodyType && validation.errors.bodyType
+          validation.touched.vehicleBodyType &&
+          validation.errors.vehicleBodyType
             ? true
             : false
         }
@@ -68,9 +69,9 @@ const VehicleBodyType = ({ validation }) => {
         <option value="" disabled>
           Select an option
         </option>
-        {bodyTypeOptions.map((bodyType) => (
-          <option value={bodyType.value} key={bodyType.value}>
-            {bodyType.label}
+        {bodyTypeOptions.map((vehicleBodyType) => (
+          <option value={vehicleBodyType.value} key={vehicleBodyType.value}>
+            {vehicleBodyType.label}
           </option>
         ))}
       </Input>

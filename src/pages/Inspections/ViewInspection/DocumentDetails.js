@@ -1,15 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
+import Proptypes from "prop-types";
 
-const DocumentDetails = () => {
+const DocumentDetails = ({ inspection }) => {
   return (
     <React.Fragment>
       <Col xxl={3}>
         <Card>
           <CardHeader>
             <h6 className=" fw-semibold text-uppercase   mb-0">
-              Receipts,Certificates and Documents
+              Receipts, Certificates and Documents
             </h6>
           </CardHeader>
           <CardBody>
@@ -21,16 +22,28 @@ const DocumentDetails = () => {
               </div>
               <div className="flex-grow-1 ms-3">
                 <h6 className="mb-1">
-                  <Link to="#" className="text-primary">
+                  <a
+                    href={inspection?.receiptlink || "#"}
+                    target="_blank"
+                    className="text-primary"
+                    rel="noopener noreferrer"
+                  >
                     Print Payment Receipt
-                  </Link>
+                  </a>
                 </h6>
-                <small className="text-muted">ZN24040232#69176</small>
+                <small className="text-muted">
+                  {inspection?.receiptNumber || ""}
+                </small>
               </div>
               <div className="hstack gap-3 fs-16">
-                <Link to="#" className="text-muted">
+                <a
+                  href={inspection?.receiptlink || "#"}
+                  target="_blank"
+                  className="text-muted"
+                  rel="noopener noreferrer"
+                >
                   <i className="ri-download-2-line"></i>
-                </Link>
+                </a>
               </div>
             </div>
             <div className="d-flex  align-items-center border border-dashed p-2 rounded mt-2">
@@ -41,19 +54,29 @@ const DocumentDetails = () => {
               </div>
               <div className="flex-grow-1 ms-3">
                 <h6 className="mb-1">
-                  <Link to="#" className="text-primary">
+                  <a
+                    href={inspection?.inspectionNoteLink || "#"}
+                    target="_blank"
+                    className="text-primary"
+                    rel="noopener noreferrer"
+                  >
                     Print Inspection Note
-                  </Link>
+                  </a>
                 </h6>
                 <small className="text-muted">#NOTE - 69175</small>
               </div>
               <div className="hstack gap-3 fs-16">
-                <Link to="#" className="text-muted">
+                <a
+                  href={inspection?.inspectionNoteLink || "#"}
+                  target="_blank"
+                  className="text-muted"
+                  rel="noopener noreferrer"
+                >
                   <i className="ri-download-2-line"></i>
-                </Link>
+                </a>
               </div>
             </div>
-            <div className="d-flex align-items-center border border-dashed p-2 rounded">
+            <div className="d-flex align-items-center border border-dashed p-2 rounded mt-2">
               <div className="flex-shrink-0 avatar-sm">
                 <div className="avatar-title bg-light rounded">
                   <i className="ri-file-zip-line fs-20 text-primary"></i>
@@ -61,19 +84,19 @@ const DocumentDetails = () => {
               </div>
               <div className="flex-grow-1 ms-3">
                 <h6 className="mb-1">
-                  <Link to="#" className="text-primary">
+                  <Link to={inspection?.corDoclink} className="text-primary">
                     Download COR Data
                   </Link>
                 </h6>
                 <small className="text-muted">AZMZMC2404040213</small>
               </div>
               <div className="hstack gap-3 fs-16">
-                <Link to="#" className="text-muted">
+                <Link to={inspection?.corDoclink} className="text-muted">
                   <i className="ri-download-2-line"></i>
                 </Link>
               </div>
             </div>
-            <div className="d-flex align-items-center border border-dashed p-2 rounded">
+            <div className="d-flex align-items-center border border-dashed p-2 rounded mt-2">
               <div className="flex-shrink-0 avatar-sm">
                 <div className="avatar-title bg-light rounded">
                   <i className="ri-file-zip-line fs-20 text-primary"></i>
@@ -81,14 +104,14 @@ const DocumentDetails = () => {
               </div>
               <div className="flex-grow-1 ms-3">
                 <h6 className="mb-1">
-                  <Link to="#" className="text-primary">
+                  <Link to={inspection?.corDocV2Link} className="text-primary">
                     Download COR Data V2
                   </Link>
                 </h6>
                 <small className="text-muted">AZMZMC2404040213</small>
               </div>
               <div className="hstack gap-3 fs-16">
-                <Link to="#" className="text-muted">
+                <Link to={inspection?.corDocV2Link} className="text-muted">
                   <i className="ri-download-2-line"></i>
                 </Link>
               </div>
@@ -98,6 +121,10 @@ const DocumentDetails = () => {
       </Col>
     </React.Fragment>
   );
+};
+
+DocumentDetails.propTypes = {
+  inspection: Proptypes.object,
 };
 
 export default DocumentDetails;

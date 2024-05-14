@@ -4,10 +4,20 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { inspect as onInspect } from "../../../slices/thunks";
 import PropTypes from "prop-types";
-import { Form, Label, FormFeedback, Input, Spinner, Row } from "reactstrap";
+import {
+  Form,
+  Label,
+  FormFeedback,
+  Input,
+  Spinner,
+  Row,
+  Card,
+  Col,
+} from "reactstrap";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const InspectionForm = ({ inspection }) => {
   const navigate = useNavigate();
@@ -31,16 +41,23 @@ const InspectionForm = ({ inspection }) => {
     onSubmit: (values) => {
       console.log("Submitted values", values);
 
-      const inspectionResult = {
-        inspectionId: inspection.id,
-        dropBoxLink: values["dropBoxLink"],
-        result: values["result"],
-        remarks: values["remarks"],
-      };
+      if (!selectedFiles.length) {
+        toast.error("Please upload RWI sheet.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("inspectionId", parseFloat(inspection.id));
+      formData.append("dropBoxLink", values["dropBoxLink"]);
+      formData.append("result", values["result"]);
+      formData.append("remarks", values["remarks"]);
+      selectedFiles.forEach((file) => {
+        formData.append("rwiSheet", file);
+      });
       // save new order
       setLoading(true);
       setTimeout(1000, () => {});
-      dispatch(onInspect(inspectionResult)).then((action) => {
+      dispatch(onInspect(formData)).then((action) => {
         setLoading(false);
         console.log("Action", action);
         if (action.error?.message) {
@@ -101,12 +118,14 @@ const InspectionForm = ({ inspection }) => {
           </Label>
           <Dropzone
             onDrop={(acceptedFiles) => {
+              console.log("File dropped");
               handleAcceptedFiles(acceptedFiles);
             }}
           >
             {({ getRootProps, getInputProps }) => (
               <div className="dropzone dz-clickable">
                 <div className="dz-message needsclick" {...getRootProps()}>
+                  <input {...getInputProps()} />
                   <div className="mb-3 mt-5">
                     <i className="display-4 text-muted ri-upload-cloud-2-fill" />
                   </div>
@@ -115,6 +134,38 @@ const InspectionForm = ({ inspection }) => {
               </div>
             )}
           </Dropzone>
+          <div className="list-unstyled mb-0" id="file-previews">
+            {selectedFiles.map((f, i) => {
+              return (
+                <Card
+                  className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
+                  key={i + "-file"}
+                >
+                  <div className="p-2">
+                    <Row className="align-items-center">
+                      <Col className="col-auto">
+                        <img
+                          data-dz-thumbnail=""
+                          height="80"
+                          className="avatar-sm rounded bg-light"
+                          alt={f.name}
+                          src={f.preview}
+                        />
+                      </Col>
+                      <Col>
+                        <Link to="#" className="text-muted font-weight-bold">
+                          {f.name}
+                        </Link>
+                        <p className="mb-0">
+                          <strong>{f.formattedSize}</strong>
+                        </p>
+                      </Col>
+                    </Row>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
         </div>
         <div className="mb-3">
           <Label htmlFor="choices-publish-status-input" className="form-label">
